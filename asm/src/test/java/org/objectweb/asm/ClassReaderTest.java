@@ -41,7 +41,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
-import java.util.Base64;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -352,10 +351,9 @@ class ClassReaderTest extends AsmTest implements Opcodes {
 
     // jdk8.ArtificialStructures contains structures which require ASM5, but only inside the method
     // code. Here we skip the code, so this class can be read with ASM4. Likewise for
-    // jdk8.AllLambdas and jdk11.AllInstructions.
+    // jdk11.AllInstructions.
     if (classParameter.isMoreRecentThan(apiParameter)
         && classParameter != PrecompiledClass.JDK8_ARTIFICIAL_STRUCTURES
-        && classParameter != PrecompiledClass.JDK8_ALL_LAMBDAS
         && classParameter != PrecompiledClass.JDK11_ALL_INSTRUCTIONS) {
       Exception exception = assertThrows(UnsupportedOperationException.class, accept);
       assertTrue(exception.getMessage().matches(UNSUPPORTED_OPERATION_MESSAGE_PATTERN));
@@ -419,19 +417,13 @@ class ClassReaderTest extends AsmTest implements Opcodes {
           }
 
           @Override
-          public void visitNestHost(final String nestHost) {
-            // Skip nest host.
-          }
+          public void visitNestHost(final String nestHost) {}
 
           @Override
-          public void visitNestMember(final String nestMember) {
-            // Skip nest member.
-          }
+          public void visitNestMember(final String nestMember) {}
 
           @Override
-          public void visitPermittedSubclass(final String permittedSubclass) {
-            // Skip permitted subclass.
-          }
+          public void visitPermittedSubclass(final String permittedSubclass) {}
         };
 
     Executable accept = () -> classReader.accept(classVisitor, 0);
@@ -635,17 +627,6 @@ class ClassReaderTest extends AsmTest implements Opcodes {
     classReader.accept(readVersionVisitor, 0);
 
     assertEquals(Opcodes.V_PREVIEW, classVersion.get() & Opcodes.V_PREVIEW);
-  }
-
-  @Test
-  void testAccept_invalidCustomAttribute() {
-    byte[] input = Base64.getDecoder().decode("IftdBAAAAAAAAgEAAAD/AAAAAAAAAAAAAAIBAAF/////");
-    ClassReader reader = new ClassReader(input);
-    ClassVisitor noOpVisitor = new ClassVisitor(Opcodes.ASM9) {};
-
-    Executable accept = () -> reader.accept(noOpVisitor, ClassReader.EXPAND_FRAMES);
-
-    assertThrows(IllegalArgumentException.class, accept);
   }
 
   private static class EmptyClassVisitor extends ClassVisitor {

@@ -103,7 +103,7 @@ package org.objectweb.asm;
  *
  * @author Eric Bruneton
  */
-class Frame {
+public class Frame {
 
   // Constants used in the StackMapTable attribute.
   // See https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.4.
@@ -127,44 +127,44 @@ class Frame {
   static final int ITEM_OBJECT = 7;
   static final int ITEM_UNINITIALIZED = 8;
   // Additional, ASM specific constants used in abstract types below.
-  private static final int ITEM_ASM_BOOLEAN = 9;
-  private static final int ITEM_ASM_BYTE = 10;
-  private static final int ITEM_ASM_CHAR = 11;
-  private static final int ITEM_ASM_SHORT = 12;
+  public static final int ITEM_ASM_BOOLEAN = 9;
+  public static final int ITEM_ASM_BYTE = 10;
+  public static final int ITEM_ASM_CHAR = 11;
+  public static final int ITEM_ASM_SHORT = 12;
 
   // The size and offset in bits of each field of an abstract type.
 
-  private static final int DIM_SIZE = 6;
-  private static final int KIND_SIZE = 4;
-  private static final int FLAGS_SIZE = 2;
-  private static final int VALUE_SIZE = 32 - DIM_SIZE - KIND_SIZE - FLAGS_SIZE;
+  public static final int DIM_SIZE = 6;
+  public static final int KIND_SIZE = 4;
+  public static final int FLAGS_SIZE = 2;
+  public static final int VALUE_SIZE = 32 - DIM_SIZE - KIND_SIZE - FLAGS_SIZE;
 
-  private static final int DIM_SHIFT = KIND_SIZE + FLAGS_SIZE + VALUE_SIZE;
-  private static final int KIND_SHIFT = FLAGS_SIZE + VALUE_SIZE;
-  private static final int FLAGS_SHIFT = VALUE_SIZE;
+  public static final int DIM_SHIFT = KIND_SIZE + FLAGS_SIZE + VALUE_SIZE;
+  public static final int KIND_SHIFT = FLAGS_SIZE + VALUE_SIZE;
+  public static final int FLAGS_SHIFT = VALUE_SIZE;
 
   // Bitmasks to get each field of an abstract type.
 
-  private static final int DIM_MASK = ((1 << DIM_SIZE) - 1) << DIM_SHIFT;
-  private static final int KIND_MASK = ((1 << KIND_SIZE) - 1) << KIND_SHIFT;
-  private static final int VALUE_MASK = (1 << VALUE_SIZE) - 1;
+  public static final int DIM_MASK = ((1 << DIM_SIZE) - 1) << DIM_SHIFT;
+  public static final int KIND_MASK = ((1 << KIND_SIZE) - 1) << KIND_SHIFT;
+  public static final int VALUE_MASK = (1 << VALUE_SIZE) - 1;
 
   // Constants to manipulate the DIM field of an abstract type.
 
   /** The constant to be added to an abstract type to get one with one more array dimension. */
-  private static final int ARRAY_OF = +1 << DIM_SHIFT;
+  public static final int ARRAY_OF = +1 << DIM_SHIFT;
 
   /** The constant to be added to an abstract type to get one with one less array dimension. */
-  private static final int ELEMENT_OF = -1 << DIM_SHIFT;
+  public static final int ELEMENT_OF = -1 << DIM_SHIFT;
 
   // Possible values for the KIND field of an abstract type.
 
-  private static final int CONSTANT_KIND = 1 << KIND_SHIFT;
-  private static final int REFERENCE_KIND = 2 << KIND_SHIFT;
-  private static final int UNINITIALIZED_KIND = 3 << KIND_SHIFT;
-  private static final int FORWARD_UNINITIALIZED_KIND = 4 << KIND_SHIFT;
-  private static final int LOCAL_KIND = 5 << KIND_SHIFT;
-  private static final int STACK_KIND = 6 << KIND_SHIFT;
+  public static final int CONSTANT_KIND = 1 << KIND_SHIFT;
+  public static final int REFERENCE_KIND = 2 << KIND_SHIFT;
+  public static final int UNINITIALIZED_KIND = 3 << KIND_SHIFT;
+  public static final int FORWARD_UNINITIALIZED_KIND = 4 << KIND_SHIFT;
+  public static final int LOCAL_KIND = 5 << KIND_SHIFT;
+  public static final int STACK_KIND = 6 << KIND_SHIFT;
 
   // Possible flags for the FLAGS field of an abstract type.
 
@@ -173,21 +173,21 @@ class Frame {
    * concrete type is LONG or DOUBLE, TOP should be used instead (because the value has been
    * partially overridden with an xSTORE instruction).
    */
-  private static final int TOP_IF_LONG_OR_DOUBLE_FLAG = 1 << FLAGS_SHIFT;
+  public static final int TOP_IF_LONG_OR_DOUBLE_FLAG = 1 << FLAGS_SHIFT;
 
   // Useful predefined abstract types (all the possible CONSTANT_KIND types).
 
-  private static final int TOP = CONSTANT_KIND | ITEM_TOP;
-  private static final int BOOLEAN = CONSTANT_KIND | ITEM_ASM_BOOLEAN;
-  private static final int BYTE = CONSTANT_KIND | ITEM_ASM_BYTE;
-  private static final int CHAR = CONSTANT_KIND | ITEM_ASM_CHAR;
-  private static final int SHORT = CONSTANT_KIND | ITEM_ASM_SHORT;
-  private static final int INTEGER = CONSTANT_KIND | ITEM_INTEGER;
-  private static final int FLOAT = CONSTANT_KIND | ITEM_FLOAT;
-  private static final int LONG = CONSTANT_KIND | ITEM_LONG;
-  private static final int DOUBLE = CONSTANT_KIND | ITEM_DOUBLE;
-  private static final int NULL = CONSTANT_KIND | ITEM_NULL;
-  private static final int UNINITIALIZED_THIS = CONSTANT_KIND | ITEM_UNINITIALIZED_THIS;
+  public static final int TOP = CONSTANT_KIND | ITEM_TOP;
+  public static final int BOOLEAN = CONSTANT_KIND | ITEM_ASM_BOOLEAN;
+  public static final int BYTE = CONSTANT_KIND | ITEM_ASM_BYTE;
+  public static final int CHAR = CONSTANT_KIND | ITEM_ASM_CHAR;
+  public static final int SHORT = CONSTANT_KIND | ITEM_ASM_SHORT;
+  public static final int INTEGER = CONSTANT_KIND | ITEM_INTEGER;
+  public static final int FLOAT = CONSTANT_KIND | ITEM_FLOAT;
+  public static final int LONG = CONSTANT_KIND | ITEM_LONG;
+  public static final int DOUBLE = CONSTANT_KIND | ITEM_DOUBLE;
+  public static final int NULL = CONSTANT_KIND | ITEM_NULL;
+  public static final int UNINITIALIZED_THIS = CONSTANT_KIND | ITEM_UNINITIALIZED_THIS;
 
   // -----------------------------------------------------------------------------------------------
   // Instance fields
@@ -197,16 +197,16 @@ class Frame {
   Label owner;
 
   /** The input stack map frame locals. This is an array of abstract types. */
-  private int[] inputLocals;
+  public int[] inputLocals;
 
   /** The input stack map frame stack. This is an array of abstract types. */
-  private int[] inputStack;
+  public int[] inputStack;
 
   /** The output stack map frame locals. This is an array of abstract types. */
-  private int[] outputLocals;
+  public int[] outputLocals;
 
   /** The output stack map frame stack. This is an array of abstract types. */
-  private int[] outputStack;
+  public int[] outputStack;
 
   /**
    * The start of the output stack, relatively to the input stack. This offset is always negative or
@@ -214,13 +214,13 @@ class Frame {
    * offset means that the first n output stack elements must replace the top n input stack
    * elements, and that the other elements must be appended to the input stack.
    */
-  private short outputStackStart;
+  public short outputStackStart;
 
   /** The index of the top stack element in {@link #outputStack}. */
-  private short outputStackTop;
+  public short outputStackTop;
 
   /** The number of types that are initialized in the basic block. See {@link #initializations}. */
-  private int initializationCount;
+  public int initializationCount;
 
   /**
    * The abstract types that are initialized in the basic block. A constructor invocation on an
@@ -232,7 +232,7 @@ class Frame {
    * during the second step of the algorithm, where the frames are fully computed. Note that this
    * array can contain abstract types that are relative to the input locals or to the input stack.
    */
-  private int[] initializations;
+  public int[] initializations;
 
   // -----------------------------------------------------------------------------------------------
   // Constructor
@@ -318,7 +318,7 @@ class Frame {
    * @param offset the start offset of the type descriptor in buffer.
    * @return the abstract type corresponding to the given type descriptor.
    */
-  private static int getAbstractTypeFromDescriptor(
+  public static int getAbstractTypeFromDescriptor(
       final SymbolTable symbolTable, final String buffer, final int offset) {
     String internalName;
     switch (buffer.charAt(offset)) {
@@ -486,7 +486,7 @@ class Frame {
    * @param localIndex the index of the local variable whose value must be returned.
    * @return the abstract type stored at the given local variable index in the output frame.
    */
-  private int getLocal(final int localIndex) {
+  public int getLocal(final int localIndex) {
     if (outputLocals == null || localIndex >= outputLocals.length) {
       // If this local has never been assigned in this basic block, it is still equal to its value
       // in the input frame.
@@ -508,7 +508,7 @@ class Frame {
    * @param localIndex the index of the output frame local variable that must be set.
    * @param abstractType the value that must be set.
    */
-  private void setLocal(final int localIndex, final int abstractType) {
+  public void setLocal(final int localIndex, final int abstractType) {
     // Create and/or resize the output local variables array if necessary.
     if (outputLocals == null) {
       outputLocals = new int[10];
@@ -528,7 +528,7 @@ class Frame {
    *
    * @param abstractType an abstract type.
    */
-  private void push(final int abstractType) {
+  public void push(final int abstractType) {
     // Create and/or resize the output stack array if necessary.
     if (outputStack == null) {
       outputStack = new int[10];
@@ -555,7 +555,7 @@ class Frame {
    * @param symbolTable the type table to use to lookup and store type {@link Symbol}.
    * @param descriptor a type or method descriptor (in which case its return type is pushed).
    */
-  private void push(final SymbolTable symbolTable, final String descriptor) {
+  public void push(final SymbolTable symbolTable, final String descriptor) {
     int typeDescriptorOffset =
         descriptor.charAt(0) == '(' ? Type.getReturnTypeOffset(descriptor) : 0;
     int abstractType = getAbstractTypeFromDescriptor(symbolTable, descriptor, typeDescriptorOffset);
@@ -572,7 +572,7 @@ class Frame {
    *
    * @return the abstract type that has been popped from the output frame stack.
    */
-  private int pop() {
+  public int pop() {
     if (outputStackTop > 0) {
       return outputStack[--outputStackTop];
     } else {
@@ -586,7 +586,7 @@ class Frame {
    *
    * @param elements the number of abstract types that must be popped.
    */
-  private void pop(final int elements) {
+  public void pop(final int elements) {
     if (outputStackTop >= elements) {
       outputStackTop -= elements;
     } else {
@@ -602,7 +602,7 @@ class Frame {
    *
    * @param descriptor a type or method descriptor (in which case its argument types are popped).
    */
-  private void pop(final String descriptor) {
+  public void pop(final String descriptor) {
     char firstDescriptorChar = descriptor.charAt(0);
     if (firstDescriptorChar == '(') {
       pop((Type.getArgumentsAndReturnSizes(descriptor) >> 2) - 1);
@@ -623,7 +623,7 @@ class Frame {
    *
    * @param abstractType an abstract type on a which a constructor is invoked.
    */
-  private void addInitializedType(final int abstractType) {
+  public void addInitializedType(final int abstractType) {
     // Create and/or resize the initializations array if necessary.
     if (initializations == null) {
       initializations = new int[2];
@@ -649,7 +649,7 @@ class Frame {
    *     one of the types on which a constructor is invoked in the basic block. Otherwise returns
    *     abstractType.
    */
-  private int getInitializedType(final SymbolTable symbolTable, final int abstractType) {
+  public int getInitializedType(final SymbolTable symbolTable, final int abstractType) {
     if (abstractType == UNINITIALIZED_THIS
         || (abstractType & (DIM_MASK | KIND_MASK)) == UNINITIALIZED_KIND
         || (abstractType & (DIM_MASK | KIND_MASK)) == FORWARD_UNINITIALIZED_KIND) {
@@ -1130,7 +1130,7 @@ class Frame {
    *     STACK_KIND kind.
    * @return the concrete output type corresponding to 'abstractOutputType'.
    */
-  private int getConcreteOutputType(final int abstractOutputType, final int numStack) {
+  public int getConcreteOutputType(final int abstractOutputType, final int numStack) {
     int dim = abstractOutputType & DIM_MASK;
     int kind = abstractOutputType & KIND_MASK;
     if (kind == LOCAL_KIND) {
@@ -1272,7 +1272,7 @@ class Frame {
    * @param dstIndex the index of the type that must be merged in dstTypes.
    * @return {@literal true} if the type array has been modified by this operation.
    */
-  private static boolean merge(
+  public static boolean merge(
       final SymbolTable symbolTable,
       final int sourceType,
       final int[] dstTypes,

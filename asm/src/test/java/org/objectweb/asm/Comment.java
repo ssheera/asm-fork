@@ -44,7 +44,7 @@ public class Comment extends Attribute {
   }
 
   @Override
-  protected Attribute read(
+  public Attribute read(
       final ClassReader classReader,
       final int offset,
       final int length,
@@ -55,7 +55,7 @@ public class Comment extends Attribute {
   }
 
   @Override
-  protected ByteVector write(
+  public ByteVector write(
       final ClassWriter classWriter,
       final byte[] code,
       final int codeLength,

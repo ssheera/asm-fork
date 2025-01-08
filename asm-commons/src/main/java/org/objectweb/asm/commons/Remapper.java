@@ -43,55 +43,6 @@ import org.objectweb.asm.signature.SignatureWriter;
  */
 public abstract class Remapper {
 
-  // The class name of LambdaMetafactory.
-  private static final String LAMBDA_FACTORY_CLASSNAME = "java/lang/invoke/LambdaMetafactory";
-
-  // The method signature of LambdaMetafactory.metafactory(...).
-  private static final String LAMBDA_FACTORY_METAFACTORY =
-      "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;"
-          + "Ljava/lang/invoke/MethodType;Ljava/lang/invoke/MethodHandle;"
-          + "Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;";
-
-  // The method signature of LambdaMetafactory.altMetafactory(...).
-  private static final String LAMBDA_FACTORY_ALTMETAFACTORY =
-      "(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;"
-          + "[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;";
-
-  /**
-   * The ASM API version supported by this remapper, or 0 for instances created with the deprecated
-   * constructor.
-   */
-  final int api;
-
-  /**
-   * Creates a new {@link Remapper}.
-   *
-   * @deprecated use {@link #Remapper(int)} instead.
-   */
-  @Deprecated(forRemoval = false)
-  protected Remapper() {
-    this.api = 0;
-  }
-
-  /**
-   * Creates a new {@link Remapper}.
-   *
-   * @param api the ASM API version supported by this remapper. Must be one of the {@code
-   *     ASM}<i>x</i> values in {@link Opcodes}.
-   */
-  protected Remapper(final int api) {
-    if (api != Opcodes.ASM9
-        && api != Opcodes.ASM8
-        && api != Opcodes.ASM7
-        && api != Opcodes.ASM6
-        && api != Opcodes.ASM5
-        && api != Opcodes.ASM4
-        && api != Opcodes.ASM10_EXPERIMENTAL) {
-      throw new IllegalArgumentException("Unsupported api " + api);
-    }
-    this.api = api;
-  }
-
   /**
    * Returns the given descriptor, remapped with {@link #map(String)}.
    *
@@ -114,7 +65,7 @@ public abstract class Remapper {
    *     is) or, of the type is a method type, with its descriptor remapped with {@link
    *     #mapMethodDesc(String)}. See {@link Type#getInternalName()}.
    */
-  private Type mapType(final Type type) {
+  public Type mapType(final Type type) {
     switch (type.getSort()) {
       case Type.ARRAY:
         StringBuilder remappedDescriptor = new StringBuilder();
@@ -226,26 +177,17 @@ public abstract class Remapper {
     }
     if (value instanceof ConstantDynamic) {
       ConstantDynamic constantDynamic = (ConstantDynamic) value;
-      String name = constantDynamic.getName();
-      String descriptor = constantDynamic.getDescriptor();
-      Handle bootstrapMethod = constantDynamic.getBootstrapMethod();
       int bootstrapMethodArgumentCount = constantDynamic.getBootstrapMethodArgumentCount();
-      Object[] bootstrapMethodArguments = new Object[bootstrapMethodArgumentCount];
       Object[] remappedBootstrapMethodArguments = new Object[bootstrapMethodArgumentCount];
       for (int i = 0; i < bootstrapMethodArgumentCount; ++i) {
-        bootstrapMethodArguments[i] = constantDynamic.getBootstrapMethodArgument(i);
-        remappedBootstrapMethodArguments[i] = mapValue(bootstrapMethodArguments[i]);
+        remappedBootstrapMethodArguments[i] =
+            mapValue(constantDynamic.getBootstrapMethodArgument(i));
       }
-      if (api == 0) {
-        name = mapInvokeDynamicMethodName(name, descriptor);
-      } else {
-        name =
-            mapInvokeDynamicMethodName(name, descriptor, bootstrapMethod, bootstrapMethodArguments);
-      }
+      String descriptor = constantDynamic.getDescriptor();
       return new ConstantDynamic(
-          name,
+          mapInvokeDynamicMethodName(constantDynamic.getName(), descriptor),
           mapDesc(descriptor),
-          (Handle) mapValue(bootstrapMethod),
+          (Handle) mapValue(constantDynamic.getBootstrapMethod()),
           remappedBootstrapMethodArguments);
     }
     return value;
@@ -283,8 +225,8 @@ public abstract class Remapper {
    * @return the newly created remapper.
    * @deprecated use {@link #createSignatureRemapper} instead.
    */
-  @Deprecated(forRemoval = false)
-  protected SignatureVisitor createRemappingSignatureAdapter(
+  @Deprecated
+  public SignatureVisitor createRemappingSignatureAdapter(
       final SignatureVisitor signatureVisitor) {
     return createSignatureRemapper(signatureVisitor);
   }
@@ -296,7 +238,7 @@ public abstract class Remapper {
    * @param signatureVisitor the SignatureVisitor the remapper must delegate to.
    * @return the newly created remapper.
    */
-  protected SignatureVisitor createSignatureRemapper(final SignatureVisitor signatureVisitor) {
+  public SignatureVisitor createSignatureRemapper(final SignatureVisitor signatureVisitor) {
     return new SignatureRemapper(signatureVisitor, this);
   }
 
@@ -333,11 +275,11 @@ public abstract class Remapper {
     } else {
       int originSplit = name.lastIndexOf('/');
       int remappedSplit = remappedInnerName.lastIndexOf('/');
-      if (originSplit != -1
-          && remappedSplit != -1
-          && name.substring(originSplit).equals(remappedInnerName.substring(remappedSplit))) {
-        // class name not changed
-        return innerName;
+      if (originSplit != -1 && remappedSplit != -1) {
+        if (name.substring(originSplit).equals(remappedInnerName.substring(remappedSplit))) {
+          // class name not changed
+          return innerName;
+        }
       }
     }
 
@@ -374,123 +316,8 @@ public abstract class Remapper {
    * @param name the name of the method.
    * @param descriptor the descriptor of the method.
    * @return the new name of the method.
-   * @deprecated use {@link #mapInvokeDynamicMethodName(String, String, Handle, Object...)} instead.
    */
-  @Deprecated(forRemoval = false)
   public String mapInvokeDynamicMethodName(final String name, final String descriptor) {
-    return name;
-  }
-
-  /**
-   * Maps an invokedynamic or a constant dynamic method name to its new name. Subclasses can
-   * override.
-   *
-   * <p>The default implementation of this method first performs well-known rule checks (calling
-   * {@link #mapWellKnownInvokeDynamicMethodName(String, String, Handle, Object...)}) and then
-   * performs basic remapping (calling {@link #mapBasicInvokeDynamicMethodName(String, String,
-   * Handle, Object...)}).
-   *
-   * <p>For most users, only {@link #mapBasicInvokeDynamicMethodName(String, String, Handle,
-   * Object...)} needs to be overridden.
-   *
-   * @param name the name of the method.
-   * @param descriptor the descriptor of the method.
-   * @param bootstrapMethodHandle the bootstrap method.
-   * @param bootstrapMethodArguments the bootstrap method constant arguments. Each argument must be
-   *     an {@link Integer}, {@link Float}, {@link Long}, {@link Double}, {@link String}, {@link
-   *     Type}, {@link Handle} or {@link ConstantDynamic} value. This method is allowed to modify
-   *     the content of the array so a caller should expect that this array may change.
-   * @return the new name of the method.
-   */
-  public String mapInvokeDynamicMethodName(
-      final String name,
-      final String descriptor,
-      final Handle bootstrapMethodHandle,
-      final Object... bootstrapMethodArguments) {
-    String mappedWellKnownName =
-        mapWellKnownInvokeDynamicMethodName(
-            name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
-    if (mappedWellKnownName != null) {
-      return mappedWellKnownName;
-    }
-    return mapBasicInvokeDynamicMethodName(
-        name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
-  }
-
-  /**
-   * Maps well-known invokedynamic (e.g. lambda creation) or const dynamic method names to their new
-   * names. This method detects specific invokedynamic method rules and remaps using the
-   * corresponding rules. When no rule is matched, returns {@literal null}. When non-null is
-   * returned, it means that this invokedynamic method name matches a rule and has been remapped
-   * with the relevant rule. Subclasses can override.
-   *
-   * @param name the name of the method.
-   * @param descriptor the descriptor of the method.
-   * @param bootstrapMethodHandle the bootstrap method.
-   * @param bootstrapMethodArguments the bootstrap method constant arguments. Each argument must be
-   *     an {@link Integer}, {@link Float}, {@link Long}, {@link Double}, {@link String}, {@link
-   *     Type}, {@link Handle} or {@link ConstantDynamic} value. This method is allowed to modify
-   *     the content of the array so a caller should expect that this array may change.
-   * @return the new name of the method, or null if no special rule is matched.
-   */
-  public String mapWellKnownInvokeDynamicMethodName(
-      final String name,
-      final String descriptor,
-      final Handle bootstrapMethodHandle,
-      final Object... bootstrapMethodArguments) {
-
-    if (LAMBDA_FACTORY_CLASSNAME.equals(bootstrapMethodHandle.getOwner())
-        && bootstrapMethodHandle.getTag() == Opcodes.H_INVOKESTATIC) {
-      // This is a lambda creation.
-      // Note: **if** is reserved for future JDK changes.
-      boolean isMetafactory = false;
-      isMetafactory |=
-          "metafactory".equals(bootstrapMethodHandle.getName())
-              && LAMBDA_FACTORY_METAFACTORY.equals(bootstrapMethodHandle.getDesc());
-      isMetafactory |=
-          "altMetafactory".equals(bootstrapMethodHandle.getName())
-              && LAMBDA_FACTORY_ALTMETAFACTORY.equals(bootstrapMethodHandle.getDesc());
-
-      if (isMetafactory) {
-        // Note:
-        // Java lambda instances are created by LambdaMetafactory.metafactory() and
-        // LambdaMetafactory.altMetafactory().
-        // The specification can be found in the LambdaMetafactory javadoc:
-        // https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/invoke/LambdaMetafactory.html
-        //
-        // In short, all the necessary parameters can be obtained from this invokedynamic, including
-        // the following three:
-        // - Class name: From return type of method descriptor.
-        // - Method name: Same as the name of invokedynamic.
-        // - Method descriptor: From the first bootstrap argument.
-        return mapMethodName(
-            Type.getReturnType(descriptor).getInternalName(),
-            name,
-            bootstrapMethodArguments[0].toString());
-      }
-    }
-
-    return null;
-  }
-
-  /**
-   * Maps an invokedynamic or a constant dynamic method name to its new name. The default
-   * implementation of this method returns the given name, unchanged. Subclasses can override.
-   *
-   * @param name the name of the method.
-   * @param descriptor the descriptor of the method.
-   * @param bootstrapMethodHandle the bootstrap method.
-   * @param bootstrapMethodArguments the bootstrap method constant arguments. Each argument must be
-   *     an {@link Integer}, {@link Float}, {@link Long}, {@link Double}, {@link String}, {@link
-   *     Type}, {@link Handle} or {@link ConstantDynamic} value. This method is allowed to modify
-   *     the content of the array so a caller should expect that this array may change.
-   * @return the new name of the method.
-   */
-  public String mapBasicInvokeDynamicMethodName(
-      final String name,
-      final String descriptor,
-      final Handle bootstrapMethodHandle,
-      final Object... bootstrapMethodArguments) {
     return name;
   }
 

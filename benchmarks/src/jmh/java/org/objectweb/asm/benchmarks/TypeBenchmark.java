@@ -27,8 +27,8 @@ import org.openjdk.jmh.infra.Blackhole;
 @State(Scope.Thread)
 public class TypeBenchmark extends AbstractBenchmark {
 
-  private ArrayList<String> descriptors;
-  private ArrayList<String> methodDescriptors;
+  public ArrayList<String> descriptors;
+  public ArrayList<String> methodDescriptors;
 
   public TypeBenchmark() {
     super("org.objectweb.asm.benchmarks.Type");

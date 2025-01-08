@@ -69,7 +69,7 @@ public class ClassWriter extends ClassVisitor {
    * The flags passed to the constructor. Must be zero or more of {@link #COMPUTE_MAXS} and {@link
    * #COMPUTE_FRAMES}.
    */
-  private final int flags;
+  public final int flags;
 
   // Note: fields are ordered as in the ClassFile structure, and those related to attributes are
   // ordered as in Section 4.7 of the JVMS.
@@ -78,130 +78,130 @@ public class ClassWriter extends ClassVisitor {
    * The minor_version and major_version fields of the JVMS ClassFile structure. minor_version is
    * stored in the 16 most significant bits, and major_version in the 16 least significant bits.
    */
-  private int version;
+  public int version;
 
   /** The symbol table for this class (contains the constant_pool and the BootstrapMethods). */
-  private final SymbolTable symbolTable;
+  public final SymbolTable symbolTable;
 
   /**
    * The access_flags field of the JVMS ClassFile structure. This field can contain ASM specific
    * access flags, such as {@link Opcodes#ACC_DEPRECATED} or {@link Opcodes#ACC_RECORD}, which are
    * removed when generating the ClassFile structure.
    */
-  private int accessFlags;
+  public int accessFlags;
 
   /** The this_class field of the JVMS ClassFile structure. */
-  private int thisClass;
+  public int thisClass;
 
   /** The super_class field of the JVMS ClassFile structure. */
-  private int superClass;
+  public int superClass;
 
   /** The interface_count field of the JVMS ClassFile structure. */
-  private int interfaceCount;
+  public int interfaceCount;
 
   /** The 'interfaces' array of the JVMS ClassFile structure. */
-  private int[] interfaces;
+  public int[] interfaces;
 
   /**
    * The fields of this class, stored in a linked list of {@link FieldWriter} linked via their
    * {@link FieldWriter#fv} field. This field stores the first element of this list.
    */
-  private FieldWriter firstField;
+  public FieldWriter firstField;
 
   /**
    * The fields of this class, stored in a linked list of {@link FieldWriter} linked via their
    * {@link FieldWriter#fv} field. This field stores the last element of this list.
    */
-  private FieldWriter lastField;
+  public FieldWriter lastField;
 
   /**
    * The methods of this class, stored in a linked list of {@link MethodWriter} linked via their
    * {@link MethodWriter#mv} field. This field stores the first element of this list.
    */
-  private MethodWriter firstMethod;
+  public MethodWriter firstMethod;
 
   /**
    * The methods of this class, stored in a linked list of {@link MethodWriter} linked via their
    * {@link MethodWriter#mv} field. This field stores the last element of this list.
    */
-  private MethodWriter lastMethod;
+  public MethodWriter lastMethod;
 
   /** The number_of_classes field of the InnerClasses attribute, or 0. */
-  private int numberOfInnerClasses;
+  public int numberOfInnerClasses;
 
   /** The 'classes' array of the InnerClasses attribute, or {@literal null}. */
-  private ByteVector innerClasses;
+  public ByteVector innerClasses;
 
   /** The class_index field of the EnclosingMethod attribute, or 0. */
-  private int enclosingClassIndex;
+  public int enclosingClassIndex;
 
   /** The method_index field of the EnclosingMethod attribute. */
-  private int enclosingMethodIndex;
+  public int enclosingMethodIndex;
 
   /** The signature_index field of the Signature attribute, or 0. */
-  private int signatureIndex;
+  public int signatureIndex;
 
   /** The source_file_index field of the SourceFile attribute, or 0. */
-  private int sourceFileIndex;
+  public int sourceFileIndex;
 
   /** The debug_extension field of the SourceDebugExtension attribute, or {@literal null}. */
-  private ByteVector debugExtension;
+  public ByteVector debugExtension;
 
   /**
    * The last runtime visible annotation of this class. The previous ones can be accessed with the
    * {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleAnnotation;
+  public AnnotationWriter lastRuntimeVisibleAnnotation;
 
   /**
    * The last runtime invisible annotation of this class. The previous ones can be accessed with the
    * {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleAnnotation;
 
   /**
    * The last runtime visible type annotation of this class. The previous ones can be accessed with
    * the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeVisibleTypeAnnotation;
 
   /**
    * The last runtime invisible type annotation of this class. The previous ones can be accessed
    * with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
 
   /** The Module attribute of this class, or {@literal null}. */
-  private ModuleWriter moduleWriter;
+  public ModuleWriter moduleWriter;
 
   /** The host_class_index field of the NestHost attribute, or 0. */
-  private int nestHostClassIndex;
+  public int nestHostClassIndex;
 
   /** The number_of_classes field of the NestMembers attribute, or 0. */
-  private int numberOfNestMemberClasses;
+  public int numberOfNestMemberClasses;
 
   /** The 'classes' array of the NestMembers attribute, or {@literal null}. */
-  private ByteVector nestMemberClasses;
+  public ByteVector nestMemberClasses;
 
   /** The number_of_classes field of the PermittedSubclasses attribute, or 0. */
-  private int numberOfPermittedSubclasses;
+  public int numberOfPermittedSubclasses;
 
   /** The 'classes' array of the PermittedSubclasses attribute, or {@literal null}. */
-  private ByteVector permittedSubclasses;
+  public ByteVector permittedSubclasses;
 
   /**
    * The record components of this class, stored in a linked list of {@link RecordComponentWriter}
    * linked via their {@link RecordComponentWriter#delegate} field. This field stores the first
    * element of this list.
    */
-  private RecordComponentWriter firstRecordComponent;
+  public RecordComponentWriter firstRecordComponent;
 
   /**
    * The record components of this class, stored in a linked list of {@link RecordComponentWriter}
    * linked via their {@link RecordComponentWriter#delegate} field. This field stores the last
    * element of this list.
    */
-  private RecordComponentWriter lastRecordComponent;
+  public RecordComponentWriter lastRecordComponent;
 
   /**
    * The first non standard attribute of this class. The next ones can be accessed with the {@link
@@ -212,7 +212,7 @@ public class ClassWriter extends ClassVisitor {
    * #toByteArray} method writes the attributes in the order defined by this list, i.e. in the
    * reverse order specified by the user.
    */
-  private Attribute firstAttribute;
+  public Attribute firstAttribute;
 
   /**
    * Indicates what must be automatically computed in {@link MethodWriter}. Must be one of {@link
@@ -220,7 +220,7 @@ public class ClassWriter extends ClassVisitor {
    * MethodWriter#COMPUTE_MAX_STACK_AND_LOCAL_FROM_FRAMES}, {@link
    * MethodWriter#COMPUTE_INSERTED_FRAMES}, or {@link MethodWriter#COMPUTE_ALL_FRAMES}.
    */
-  private int compute;
+  public int compute;
 
   // -----------------------------------------------------------------------------------------------
   // Constructor
@@ -233,7 +233,11 @@ public class ClassWriter extends ClassVisitor {
    *     be zero or more of {@link #COMPUTE_MAXS} and {@link #COMPUTE_FRAMES}.
    */
   public ClassWriter(final int flags) {
-    this(null, flags);
+    this(null, flags, null);
+  }
+
+  public ClassWriter(final int flags, final SymbolTable symbolTable) {
+    this(null, flags, symbolTable);
   }
 
   /**
@@ -260,10 +264,13 @@ public class ClassWriter extends ClassVisitor {
    *     do not affect methods that are copied as is in the new class. This means that neither the
    *     maximum stack size nor the stack frames will be computed for these methods</i>.
    */
-  public ClassWriter(final ClassReader classReader, final int flags) {
+  public ClassWriter(final ClassReader classReader, final int flags, final SymbolTable symTable) {
     super(/* latest api = */ Opcodes.ASM9);
     this.flags = flags;
-    symbolTable = classReader == null ? new SymbolTable(this) : new SymbolTable(this, classReader);
+    if (symTable == null)
+      symbolTable = classReader == null ? new SymbolTable(this) : new SymbolTable(this, classReader);
+    else
+        symbolTable = symTable;
     setFlags(flags);
   }
 
@@ -459,15 +466,26 @@ public class ClassWriter extends ClassVisitor {
       final String name,
       final String descriptor,
       final String signature,
-      final String[] exceptions) {
+      final String[] exceptions,
+      final boolean noverify) {
     MethodWriter methodWriter =
-        new MethodWriter(symbolTable, access, name, descriptor, signature, exceptions, compute);
+        new MethodWriter(symbolTable, access, name, descriptor, signature, exceptions, compute, noverify);
     if (firstMethod == null) {
       firstMethod = methodWriter;
     } else {
       lastMethod.mv = methodWriter;
     }
     return lastMethod = methodWriter;
+  }
+
+  @Override
+  public final MethodVisitor visitMethod(
+          final int access,
+          final String name,
+          final String descriptor,
+          final String signature,
+          final String[] exceptions) {
+    return visitMethod(access, name, descriptor, signature, exceptions, false);
   }
 
   @Override
@@ -748,7 +766,7 @@ public class ClassWriter extends ClassVisitor {
    * @return an equivalent of 'classFile', with the ASM specific instructions replaced with standard
    *     ones.
    */
-  private byte[] replaceAsmInstructions(final byte[] classFile, final boolean hasFrames) {
+  public byte[] replaceAsmInstructions(final byte[] classFile, final boolean hasFrames) {
     final Attribute[] attributes = getAttributePrototypes();
     firstField = null;
     lastField = null;
@@ -781,7 +799,7 @@ public class ClassWriter extends ClassVisitor {
    *
    * @return the prototypes of the attributes used by this class, its fields and its methods.
    */
-  private Attribute[] getAttributePrototypes() {
+  public Attribute[] getAttributePrototypes() {
     Attribute.Set attributePrototypes = new Attribute.Set();
     attributePrototypes.addAttributes(firstAttribute);
     FieldWriter fieldWriter = firstField;
@@ -1053,7 +1071,7 @@ public class ClassWriter extends ClassVisitor {
    * @return the internal name of the common super class of the two given classes (see {@link
    *     Type#getInternalName()}).
    */
-  protected String getCommonSuperClass(final String type1, final String type2) {
+  public String getCommonSuperClass(final String type1, final String type2) {
     ClassLoader classLoader = getClassLoader();
     Class<?> class1;
     try {
@@ -1090,7 +1108,7 @@ public class ClassWriter extends ClassVisitor {
    *
    * @return ClassLoader
    */
-  protected ClassLoader getClassLoader() {
+  public ClassLoader getClassLoader() {
     return getClass().getClassLoader();
   }
 }

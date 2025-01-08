@@ -62,14 +62,14 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
    * The instructions that belong to the main "subroutine". Bit i is set iff instruction at index i
    * belongs to this main "subroutine".
    */
-  private final BitSet mainSubroutineInsns = new BitSet();
+  public final BitSet mainSubroutineInsns = new BitSet();
 
   /**
    * The instructions that belong to each subroutine. For each label which is the target of a JSR
    * instruction, bit i of the corresponding BitSet in this map is set iff instruction at index i
    * belongs to this subroutine.
    */
-  private final Map<LabelNode, BitSet> subroutinesInsns = new HashMap<>();
+  public final Map<LabelNode, BitSet> subroutinesInsns = new HashMap<>();
 
   /**
    * The instructions that belong to more that one subroutine. Bit i is set iff instruction at index
@@ -127,7 +127,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
    * @param exceptions the internal names of the method's exception classes (see {@link
    *     org.objectweb.asm.Type#getInternalName()}). May be {@literal null}.
    */
-  protected JSRInlinerAdapter(
+  public JSRInlinerAdapter(
       final int api,
       final MethodVisitor methodVisitor,
       final int access,
@@ -161,7 +161,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
   }
 
   /** Determines, for each instruction, to which subroutine(s) it belongs. */
-  private void findSubroutinesInsns() {
+  public void findSubroutinesInsns() {
     // Find the instructions that belong to main subroutine.
     BitSet visitedInsns = new BitSet();
     findSubroutineInsns(0, mainSubroutineInsns, visitedInsns);
@@ -184,7 +184,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
    *     previous calls to this method). This bitset is updated by this method each time a new
    *     instruction is visited. It is used to make sure each instruction is visited at most once.
    */
-  private void findSubroutineInsns(
+  public void findSubroutineInsns(
       final int startInsnIndex, final BitSet subroutineInsns, final BitSet visitedInsns) {
     // First find the instructions reachable via normal execution.
     findReachableInsns(startInsnIndex, subroutineInsns, visitedInsns);
@@ -229,7 +229,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
    *     previous calls to this method). This bitset is updated by this method each time a new
    *     instruction is visited. It is used to make sure each instruction is visited at most once.
    */
-  private void findReachableInsns(
+  public void findReachableInsns(
       final int insnIndex, final BitSet subroutineInsns, final BitSet visitedInsns) {
     int currentInsnIndex = insnIndex;
     // We implicitly assume below that execution can always fall through to the next instruction
@@ -299,7 +299,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
    * Creates the new instructions, inlining each instantiation of each subroutine until the code is
    * fully elaborated.
    */
-  private void emitCode() {
+  public void emitCode() {
     LinkedList<Instantiation> worklist = new LinkedList<>();
     // Create an instantiation of the main "subroutine", which is just the main routine.
     worklist.add(new Instantiation(null, mainSubroutineInsns));
@@ -331,7 +331,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
    * @param newLocalVariables the local variables list to which the instantiated local variables
    *     must be appended.
    */
-  private void emitInstantiation(
+  public void emitInstantiation(
       final Instantiation instantiation,
       final List<Instantiation> worklist,
       final InsnList newInstructions,
@@ -425,7 +425,7 @@ public class JSRInlinerAdapter extends MethodNode implements Opcodes {
   }
 
   /** An instantiation of a subroutine. */
-  private final class Instantiation extends AbstractMap<LabelNode, LabelNode> {
+  public final class Instantiation extends AbstractMap<LabelNode, LabelNode> {
 
     /**
      * The instantiation from which this one was created (or {@literal null} for the instantiation

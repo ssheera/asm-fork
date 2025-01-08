@@ -105,7 +105,7 @@ class AnnotationVisitorTest extends AsmTest {
     }
   }
 
-  private static class EmptyAnnotationVisitor extends AnnotationVisitor {
+  public static class EmptyAnnotationVisitor extends AnnotationVisitor {
 
     EmptyAnnotationVisitor(final int api) {
       super(api);
@@ -122,7 +122,7 @@ class AnnotationVisitorTest extends AsmTest {
     }
   }
 
-  private static class RemoveAnnotationsAdapter extends ClassVisitor {
+  public static class RemoveAnnotationsAdapter extends ClassVisitor {
 
     RemoveAnnotationsAdapter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);
@@ -210,7 +210,7 @@ class AnnotationVisitorTest extends AsmTest {
     }
   }
 
-  private static class DeleteAnnotationsAdapter extends ClassVisitor {
+  public static class DeleteAnnotationsAdapter extends ClassVisitor {
 
     DeleteAnnotationsAdapter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);

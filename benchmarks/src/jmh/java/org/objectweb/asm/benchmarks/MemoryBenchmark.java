@@ -48,13 +48,13 @@ import org.openjdk.jmh.annotations.Warmup;
 @State(Scope.Thread)
 public class MemoryBenchmark extends AbstractBenchmark {
 
-  private Factory asm4dot0;
-  private Factory asm5dot0;
-  private Factory asm6dot0;
-  private Factory asm7dot0;
-  private Factory asm8dot0;
-  private Factory asm9dot0;
-  private Factory asmCurrent;
+  public Factory asm4dot0;
+  public Factory asm5dot0;
+  public Factory asm6dot0;
+  public Factory asm7dot0;
+  public Factory asm8dot0;
+  public Factory asm9dot0;
+  public Factory asmCurrent;
 
   public MemoryBenchmark() {
     super("org.objectweb.asm.benchmarks.AsmFactory");

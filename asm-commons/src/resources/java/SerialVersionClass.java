@@ -36,7 +36,7 @@ class SerialVersionClass implements Serializable {
 
   // No serial version UID on purpose, to test SerialVersionUIDAdder.
 
-  protected static final int someField = 32;
+  public static final int someField = 32;
 
   static {
     assert someField > 0;

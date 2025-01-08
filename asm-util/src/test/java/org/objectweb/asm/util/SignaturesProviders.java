@@ -20,9 +20,9 @@ import org.objectweb.asm.test.AsmTest.PrecompiledClass;
  */
 public final class SignaturesProviders {
 
-  private static final List<String> CLASS_SIGNATURES = new ArrayList<>();
-  private static final List<String> FIELD_SIGNATURES = new ArrayList<>();
-  private static final List<String> METHOD_SIGNATURES = new ArrayList<>();
+  public static final List<String> CLASS_SIGNATURES = new ArrayList<>();
+  public static final List<String> FIELD_SIGNATURES = new ArrayList<>();
+  public static final List<String> METHOD_SIGNATURES = new ArrayList<>();
 
   static {
     AsmTest.allClassesAndLatestApi()
@@ -34,9 +34,9 @@ public final class SignaturesProviders {
     assertFalse(METHOD_SIGNATURES.isEmpty());
   }
 
-  private SignaturesProviders() {}
+  public SignaturesProviders() {}
 
-  private static void collectSignatures(final PrecompiledClass classParameter) {
+  public static void collectSignatures(final PrecompiledClass classParameter) {
     ClassReader classReader = new ClassReader(classParameter.getBytes());
     classReader.accept(
         new ClassVisitor(/* latest api*/ Opcodes.ASM9) {

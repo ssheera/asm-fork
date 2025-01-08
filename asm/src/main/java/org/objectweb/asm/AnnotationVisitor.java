@@ -41,13 +41,13 @@ public abstract class AnnotationVisitor {
    * The ASM API version implemented by this visitor. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
 
   /**
    * The annotation visitor to which this visitor must delegate method calls. May be {@literal
    * null}.
    */
-  protected AnnotationVisitor av;
+  public AnnotationVisitor av;
 
   /**
    * Constructs a new {@link AnnotationVisitor}.
@@ -55,7 +55,7 @@ public abstract class AnnotationVisitor {
    * @param api the ASM API version implemented by this visitor. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected AnnotationVisitor(final int api) {
+  public AnnotationVisitor(final int api) {
     this(api, null);
   }
 
@@ -67,7 +67,7 @@ public abstract class AnnotationVisitor {
    * @param annotationVisitor the annotation visitor to which this visitor must delegate method
    *     calls. May be {@literal null}.
    */
-  protected AnnotationVisitor(final int api, final AnnotationVisitor annotationVisitor) {
+  public AnnotationVisitor(final int api, final AnnotationVisitor annotationVisitor) {
     if (api != Opcodes.ASM9
         && api != Opcodes.ASM8
         && api != Opcodes.ASM7

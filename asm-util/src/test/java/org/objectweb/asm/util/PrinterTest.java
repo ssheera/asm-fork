@@ -44,7 +44,7 @@ import org.objectweb.asm.Opcodes;
  */
 class PrinterTest {
 
-  private static final String UNSUPPORTED_OPERATION_MESSAGE = "Must be overridden";
+  public static final String UNSUPPORTED_OPERATION_MESSAGE = "Must be overridden";
 
   @Test
   void testVisitModule_unsupportedByDefault() {

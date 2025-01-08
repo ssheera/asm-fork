@@ -32,7 +32,7 @@ package jdk3;
  * jsr_w, etc). Must be compiled with "javac -g".
  */
 public class LargeMethod {
-  private int f;
+  public int f;
 
   LargeMethod(int v0, float v1, long v2, double v3, Object v4) {}
 

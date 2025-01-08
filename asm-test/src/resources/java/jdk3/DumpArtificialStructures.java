@@ -63,7 +63,7 @@ public class DumpArtificialStructures implements Opcodes {
     fileOutputStream.close();
   }
 
-  private static byte[] dump() {
+  public static byte[] dump() {
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
     FieldVisitor fieldVisitor;
     MethodVisitor methodVisitor;

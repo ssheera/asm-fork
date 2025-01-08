@@ -184,7 +184,7 @@ class ByteVectorTest {
     assertEquals(3, byteVector.size());
   }
 
-  private static byte[] toArray(final ByteVector byteVector) {
+  public static byte[] toArray(final ByteVector byteVector) {
     byte[] result = new byte[byteVector.length];
     System.arraycopy(byteVector.data, 0, result, 0, byteVector.length);
     return result;

@@ -51,22 +51,22 @@ import org.objectweb.asm.Type;
 public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes {
 
   /** The "uninitialized this" value. */
-  private static final Object UNINITIALIZED_THIS = new Object();
+  public static final Object UNINITIALIZED_THIS = new Object();
 
   /** Any value other than "uninitialized this". */
-  private static final Object OTHER = new Object();
+  public static final Object OTHER = new Object();
 
   /** Prefix of the error message when invalid opcodes are found. */
-  private static final String INVALID_OPCODE = "Invalid opcode ";
+  public static final String INVALID_OPCODE = "Invalid opcode ";
 
   /** The access flags of the visited method. */
-  protected int methodAccess;
+  public int methodAccess;
 
   /** The descriptor of the visited method. */
-  protected String methodDesc;
+  public String methodDesc;
 
   /** Whether the visited method is a constructor. */
-  private final boolean isConstructor;
+  public final boolean isConstructor;
 
   /**
    * Whether the super class constructor has been called (if the visited method is a constructor),
@@ -76,7 +76,7 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
    * to another where it has not been called yet. Therefore, this value can change from false to
    * true, and vice-versa.
    */
-  private boolean superClassConstructorCalled;
+  public boolean superClassConstructorCalled;
 
   /**
    * The values on the current execution stack frame (long and double are represented by two
@@ -84,7 +84,7 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
    * or {@link #OTHER} (for any other value). This field is only maintained for constructors, in
    * branches where the super class constructor has not been called yet.
    */
-  private List<Object> stackFrame;
+  public List<Object> stackFrame;
 
   /**
    * The stack map frames corresponding to the labels of the forward jumps made *before* the super
@@ -93,7 +93,7 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
    * we reach a label from this map, {@link #superClassConstructorCalled} must be reset to false.
    * This field is only maintained for constructors.
    */
-  private Map<Label, List<Object>> forwardJumpStackFrames;
+  public Map<Label, List<Object>> forwardJumpStackFrames;
 
   /**
    * Constructs a new {@link AdviceAdapter}.
@@ -105,7 +105,7 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
    * @param name the method's name.
    * @param descriptor the method's descriptor (see {@link Type Type}).
    */
-  protected AdviceAdapter(
+  public AdviceAdapter(
       final int api,
       final MethodVisitor methodVisitor,
       final int access,
@@ -459,7 +459,7 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
     doVisitMethodInsn(opcode, name, descriptor);
   }
 
-  private void doVisitMethodInsn(final int opcode, final String name, final String descriptor) {
+  public void doVisitMethodInsn(final int opcode, final String name, final String descriptor) {
     if (isConstructor && !superClassConstructorCalled) {
       for (Type argumentType : Type.getArgumentTypes(descriptor)) {
         popValue();
@@ -584,21 +584,21 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
     }
   }
 
-  private void addForwardJumps(final Label dflt, final Label[] labels) {
+  public void addForwardJumps(final Label dflt, final Label[] labels) {
     addForwardJump(dflt);
     for (Label label : labels) {
       addForwardJump(label);
     }
   }
 
-  private void addForwardJump(final Label label) {
+  public void addForwardJump(final Label label) {
     if (forwardJumpStackFrames.containsKey(label)) {
       return;
     }
     forwardJumpStackFrames.put(label, new ArrayList<>(stackFrame));
   }
 
-  private void endConstructorBasicBlockWithoutSuccessor() {
+  public void endConstructorBasicBlockWithoutSuccessor() {
     // The next instruction is not reachable from this instruction. If it is dead code, we
     // should not try to simulate stack operations, and there is no need to insert advices
     // here. If it is reachable with a backward jump, the only possible case is that the super
@@ -611,15 +611,15 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
     superClassConstructorCalled = true;
   }
 
-  private Object popValue() {
+  public Object popValue() {
     return stackFrame.remove(stackFrame.size() - 1);
   }
 
-  private Object peekValue() {
+  public Object peekValue() {
     return stackFrame.get(stackFrame.size() - 1);
   }
 
-  private void pushValue(final Object value) {
+  public void pushValue(final Object value) {
     stackFrame.add(value);
   }
 
@@ -629,7 +629,7 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
    * of the stack. This method is called at the beginning of the method or after super class
    * constructor has been called (in constructors).
    */
-  protected void onMethodEnter() {}
+  public void onMethodEnter() {}
 
   /**
    * Generates the "after" advice for the visited method. The default implementation of this method
@@ -666,5 +666,5 @@ public abstract class AdviceAdapter extends GeneratorAdapter implements Opcodes 
    *     {@link Opcodes#ARETURN}, {@link Opcodes#LRETURN}, {@link Opcodes#DRETURN} or {@link
    *     Opcodes#ATHROW}.
    */
-  protected void onMethodExit(final int opcode) {}
+  public void onMethodExit(final int opcode) {}
 }

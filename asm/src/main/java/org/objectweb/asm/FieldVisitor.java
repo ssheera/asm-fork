@@ -40,10 +40,10 @@ public abstract class FieldVisitor {
    * The ASM API version implemented by this visitor. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
 
   /** The field visitor to which this visitor must delegate method calls. May be {@literal null}. */
-  protected FieldVisitor fv;
+  public FieldVisitor fv;
 
   /**
    * Constructs a new {@link FieldVisitor}.
@@ -51,7 +51,7 @@ public abstract class FieldVisitor {
    * @param api the ASM API version implemented by this visitor. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected FieldVisitor(final int api) {
+  public FieldVisitor(final int api) {
     this(api, null);
   }
 
@@ -63,7 +63,7 @@ public abstract class FieldVisitor {
    * @param fieldVisitor the field visitor to which this visitor must delegate method calls. May be
    *     null.
    */
-  protected FieldVisitor(final int api, final FieldVisitor fieldVisitor) {
+  public FieldVisitor(final int api, final FieldVisitor fieldVisitor) {
     if (api != Opcodes.ASM9
         && api != Opcodes.ASM8
         && api != Opcodes.ASM7

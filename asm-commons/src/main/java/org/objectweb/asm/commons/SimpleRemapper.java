@@ -40,7 +40,7 @@ import org.objectweb.asm.Opcodes;
  */
 public class SimpleRemapper extends Remapper {
 
-  private final Map<String, String> mapping;
+  public final Map<String, String> mapping;
 
   /**
    * Constructs a new {@link SimpleRemapper} with the given mapping.
@@ -90,7 +90,7 @@ public class SimpleRemapper extends Remapper {
    *     </ul>
    */
   public SimpleRemapper(final int api, final Map<String, String> mapping) {
-    super(api);
+//    super(api);
     this.mapping = mapping;
   }
 
@@ -119,7 +119,7 @@ public class SimpleRemapper extends Remapper {
    *     org.objectweb.asm.Type#getInternalName()}).
    */
   public SimpleRemapper(final int api, final String oldName, final String newName) {
-    super(api);
+//    super(api);
     this.mapping = Collections.singletonMap(oldName, newName);
   }
 
@@ -133,7 +133,7 @@ public class SimpleRemapper extends Remapper {
    * Maps an invokedynamic or a constant dynamic method name to its new name.
    *
    * @param name the name of the method.
-   * @param descriptor the descriptor of the method.
+   * @param descriptor the descriptor of the method.s
    * @return the new name of the method.
    * @deprecated use {@link #mapInvokeDynamicMethodName(String, String, Handle, Object...)} instead.
    */
@@ -144,15 +144,15 @@ public class SimpleRemapper extends Remapper {
     return remappedName == null ? name : remappedName;
   }
 
-  @Override
-  public String mapBasicInvokeDynamicMethodName(
-      final String name,
-      final String descriptor,
-      final Handle bootstrapMethodHandle,
-      final Object... bootstrapMethodArguments) {
-    String remappedName = map('.' + name + descriptor);
-    return remappedName == null ? name : remappedName;
-  }
+//  @Override
+//  public String mapBasicInvokeDynamicMethodName(
+//      final String name,
+//      final String descriptor,
+//      final Handle bootstrapMethodHandle,
+//      final Object... bootstrapMethodArguments) {
+//    String remappedName = map('.' + name + descriptor);
+//    return remappedName == null ? name : remappedName;
+//  }
 
   @Override
   public String mapAnnotationAttributeName(final String descriptor, final String name) {

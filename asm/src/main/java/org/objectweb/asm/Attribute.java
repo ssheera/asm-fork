@@ -48,20 +48,20 @@ public class Attribute {
    * #write(ClassWriter,byte[],int,int,int)}. The 6 header bytes of the attribute
    * (attribute_name_index and attribute_length) are <i>not</i> included.
    */
-  private ByteVector cachedContent;
+  public ByteVector cachedContent;
 
   /**
    * The next attribute in this attribute list (Attribute instances can be linked via this field to
    * store a list of class, field, method or Code attributes). May be {@literal null}.
    */
-  Attribute nextAttribute;
+  public Attribute nextAttribute;
 
   /**
    * Constructs a new empty attribute.
    *
    * @param type the type of the attribute.
    */
-  protected Attribute(final String type) {
+  public Attribute(final String type) {
     this.type = type;
   }
 
@@ -95,8 +95,8 @@ public class Attribute {
    *     a Code attribute that contains labels.
    * @deprecated no longer used by ASM.
    */
-  @Deprecated(forRemoval = false)
-  protected Label[] getLabels() {
+  @Deprecated
+  public Label[] getLabels() {
     return new Label[0];
   }
 
@@ -122,7 +122,7 @@ public class Attribute {
    *     {@link Label} instances directly).
    * @return a <i>new</i> {@link Attribute} object corresponding to the specified bytes.
    */
-  protected Attribute read(
+  public Attribute read(
       final ClassReader classReader,
       final int offset,
       final int length,
@@ -174,7 +174,6 @@ public class Attribute {
    * ClassReader overrides {@link ClassReader#readLabel}. Hence {@link #read(ClassReader, int, int,
    * char[], int, Label[])} must not manually create {@link Label} instances.
    *
-   * @param classReader the class that contains the attribute to be read.
    * @param bytecodeOffset a bytecode offset in a method.
    * @param labels the already created labels, indexed by their offset. If a label already exists
    *     for bytecodeOffset this method does not create a new one. Otherwise it stores the new label
@@ -204,7 +203,7 @@ public class Attribute {
    *     attribute, or -1 if this attribute is not a Code attribute.
    * @return the byte array form of this attribute.
    */
-  private ByteVector maybeWrite(
+  public ByteVector maybeWrite(
       final ClassWriter classWriter,
       final byte[] code,
       final int codeLength,
@@ -238,7 +237,7 @@ public class Attribute {
    *     attribute, or -1 if this attribute is not a Code attribute.
    * @return the byte array form of this attribute.
    */
-  protected ByteVector write(
+  public ByteVector write(
       final ClassWriter classWriter,
       final byte[] code,
       final int codeLength,
@@ -284,7 +283,7 @@ public class Attribute {
    *
    * @return the number of attributes of the attribute list that begins with this attribute.
    */
-  final int getAttributeCount() {
+  public  int getAttributeCount() {
     int count = 0;
     Attribute attribute = this;
     while (attribute != null) {
@@ -303,7 +302,7 @@ public class Attribute {
    * @return the size of all the attributes in this attribute list. This size includes the size of
    *     the attribute headers.
    */
-  final int computeAttributesSize(final SymbolTable symbolTable) {
+  public final int computeAttributesSize(final SymbolTable symbolTable) {
     final byte[] code = null;
     final int codeLength = 0;
     final int maxStack = -1;
@@ -330,7 +329,7 @@ public class Attribute {
    * @return the size of all the attributes in this attribute list. This size includes the size of
    *     the attribute headers.
    */
-  final int computeAttributesSize(
+  public  int computeAttributesSize(
       final SymbolTable symbolTable,
       final byte[] code,
       final int codeLength,
@@ -359,7 +358,7 @@ public class Attribute {
    * @return the size of all the attributes in bytes. This size includes the size of the attribute
    *     headers.
    */
-  static int computeAttributesSize(
+  public static int computeAttributesSize(
       final SymbolTable symbolTable, final int accessFlags, final int signatureIndex) {
     int size = 0;
     // Before Java 1.5, synthetic fields are represented with a Synthetic attribute.
@@ -391,7 +390,7 @@ public class Attribute {
    * @param symbolTable where the constants used in the attributes must be stored.
    * @param output where the attributes must be written.
    */
-  final void putAttributes(final SymbolTable symbolTable, final ByteVector output) {
+  public void putAttributes(final SymbolTable symbolTable, final ByteVector output) {
     final byte[] code = null;
     final int codeLength = 0;
     final int maxStack = -1;
@@ -417,7 +416,7 @@ public class Attribute {
    *     Code attributes, or -1 if they are not Code attribute.
    * @param output where the attributes must be written.
    */
-  final void putAttributes(
+  public void putAttributes(
       final SymbolTable symbolTable,
       final byte[] code,
       final int codeLength,
@@ -468,14 +467,14 @@ public class Attribute {
   }
 
   /** A set of attribute prototypes (attributes with the same type are considered equal). */
-  static final class Set {
+  public static class Set {
 
-    private static final int SIZE_INCREMENT = 6;
+    public static final int SIZE_INCREMENT = 6;
 
-    private int size;
-    private Attribute[] data = new Attribute[SIZE_INCREMENT];
+    public int size;
+    public Attribute[] data = new Attribute[SIZE_INCREMENT];
 
-    void addAttributes(final Attribute attributeList) {
+    public void addAttributes(final Attribute attributeList) {
       Attribute attribute = attributeList;
       while (attribute != null) {
         if (!contains(attribute)) {
@@ -485,13 +484,13 @@ public class Attribute {
       }
     }
 
-    Attribute[] toArray() {
+    public Attribute[] toArray() {
       Attribute[] result = new Attribute[size];
       System.arraycopy(data, 0, result, 0, size);
       return result;
     }
 
-    private boolean contains(final Attribute attribute) {
+    public boolean contains(final Attribute attribute) {
       for (int i = 0; i < size; ++i) {
         if (data[i].type.equals(attribute.type)) {
           return true;
@@ -500,7 +499,7 @@ public class Attribute {
       return false;
     }
 
-    private void add(final Attribute attribute) {
+    public void add(final Attribute attribute) {
       if (size >= data.length) {
         Attribute[] newData = new Attribute[data.length + SIZE_INCREMENT];
         System.arraycopy(data, 0, newData, 0, size);

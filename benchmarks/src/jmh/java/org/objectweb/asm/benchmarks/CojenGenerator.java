@@ -42,7 +42,7 @@ import org.cojen.classfile.TypeDesc;
  */
 public class CojenGenerator extends Generator {
 
-  private static final TypeDesc PRINT_STREAM = TypeDesc.forClass("java.io.PrintStream");
+  public static final TypeDesc PRINT_STREAM = TypeDesc.forClass("java.io.PrintStream");
 
   @Override
   public byte[] generateClass() {

@@ -43,7 +43,7 @@ import org.objectweb.asm.TypeReference;
 public class CheckRecordComponentAdapter extends RecordComponentVisitor {
 
   /** Whether the {@link #visitEnd()} method has been called. */
-  private boolean visitEndCalled;
+  public boolean visitEndCalled;
 
   /**
    * Constructs a new {@link CheckRecordComponentAdapter}. <i>Subclasses must not use this
@@ -69,7 +69,7 @@ public class CheckRecordComponentAdapter extends RecordComponentVisitor {
    * @param recordComponentVisitor the record component visitor to which this adapter must delegate
    *     calls.
    */
-  protected CheckRecordComponentAdapter(
+  public CheckRecordComponentAdapter(
       final int api, final RecordComponentVisitor recordComponentVisitor) {
     super(api, recordComponentVisitor);
   }
@@ -113,7 +113,7 @@ public class CheckRecordComponentAdapter extends RecordComponentVisitor {
     super.visitEnd();
   }
 
-  private void checkVisitEndNotCalled() {
+  public void checkVisitEndNotCalled() {
     if (visitEndCalled) {
       throw new IllegalStateException("Cannot call a visit method after visitEnd has been called");
     }

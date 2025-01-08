@@ -42,22 +42,22 @@ import org.objectweb.asm.Type;
 public class SimpleVerifier extends BasicVerifier {
 
   /** The type of the Object class. */
-  private static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
+  public static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
 
   /** The type of the class that is verified. */
-  private final Type currentClass;
+  public final Type currentClass;
 
   /** The type of the super class of the class that is verified. */
-  private final Type currentSuperClass;
+  public final Type currentSuperClass;
 
   /** The types of the interfaces directly implemented by the class that is verified. */
-  private final List<Type> currentClassInterfaces;
+  public final List<Type> currentClassInterfaces;
 
   /** Whether the class that is verified is an interface. */
-  private final boolean isInterface;
+  public final boolean isInterface;
 
   /** The loader to use to load the referenced classes. */
-  private ClassLoader loader = getClass().getClassLoader();
+  public ClassLoader loader = getClass().getClassLoader();
 
   /**
    * Constructs a new {@link SimpleVerifier}. <i>Subclasses must not use this constructor</i>.
@@ -120,7 +120,7 @@ public class SimpleVerifier extends BasicVerifier {
    *     be verified.
    * @param isInterface whether the class to be verifier is an interface.
    */
-  protected SimpleVerifier(
+  public SimpleVerifier(
       final int api,
       final Type currentClass,
       final Type currentSuperClass,
@@ -179,13 +179,13 @@ public class SimpleVerifier extends BasicVerifier {
   }
 
   @Override
-  protected boolean isArrayValue(final BasicValue value) {
+  public boolean isArrayValue(final BasicValue value) {
     Type type = value.getType();
     return type != null && (type.getSort() == Type.ARRAY || type.equals(NULL_TYPE));
   }
 
   @Override
-  protected BasicValue getElementValue(final BasicValue objectArrayValue) throws AnalyzerException {
+  public BasicValue getElementValue(final BasicValue objectArrayValue) throws AnalyzerException {
     Type arrayType = objectArrayValue.getType();
     if (arrayType != null) {
       if (arrayType.getSort() == Type.ARRAY) {
@@ -198,7 +198,7 @@ public class SimpleVerifier extends BasicVerifier {
   }
 
   @Override
-  protected boolean isSubTypeOf(final BasicValue value, final BasicValue expected) {
+  public boolean isSubTypeOf(final BasicValue value, final BasicValue expected) {
     Type type = value.getType();
     Type expectedType = expected.getType();
     // Null types correspond to BasicValue.UNINITIALIZED_VALUE.
@@ -340,7 +340,7 @@ public class SimpleVerifier extends BasicVerifier {
     return newArrayValue(OBJECT_TYPE, dim1);
   }
 
-  private BasicValue newArrayValue(final Type type, final int dimensions) {
+  public BasicValue newArrayValue(final Type type, final int dimensions) {
     if (dimensions == 0) {
       return newValue(type);
     } else {
@@ -361,7 +361,7 @@ public class SimpleVerifier extends BasicVerifier {
    * @param type an object reference type (i.e., with Type.OBJECT sort).
    * @return whether 'type' corresponds to an interface.
    */
-  protected boolean isInterface(final Type type) {
+  public boolean isInterface(final Type type) {
     if (currentClass != null && currentClass.equals(type)) {
       return isInterface;
     }
@@ -377,7 +377,7 @@ public class SimpleVerifier extends BasicVerifier {
    * @return the type corresponding to the super class of 'type', or {@literal null} if 'type' is
    *     the type of the Object class.
    */
-  protected Type getSuperClass(final Type type) {
+  public Type getSuperClass(final Type type) {
     if (currentClass != null && currentClass.equals(type)) {
       return currentSuperClass;
     }
@@ -397,7 +397,7 @@ public class SimpleVerifier extends BasicVerifier {
    * @return whether the class corresponding to 'type1' is either the same as, or is a superclass or
    *     superinterface of the class corresponding to 'type2'.
    */
-  protected boolean isAssignableFrom(final Type type1, final Type type2) {
+  public boolean isAssignableFrom(final Type type1, final Type type2) {
     if (type1.equals(type2)) {
       return true;
     }
@@ -437,7 +437,7 @@ public class SimpleVerifier extends BasicVerifier {
    * @param type an object reference type (i.e., with Type.OBJECT sort).
    * @return the class corresponding to 'type'.
    */
-  protected Class<?> getClass(final Type type) {
+  public Class<?> getClass(final Type type) {
     try {
       if (type.getSort() == Type.ARRAY) {
         // This should never happen, given the preconditions of this method, but is kept for

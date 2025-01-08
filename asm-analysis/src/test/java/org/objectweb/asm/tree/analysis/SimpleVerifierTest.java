@@ -94,7 +94,7 @@ class SimpleVerifierTest {
           }
 
           @Override
-          protected Class<?> getClass(final Type type) {
+          public Class<?> getClass(final Type type) {
             // Return dummy classes, to make sure isAssignable in test() does not rely on them.
             if (type == baseType) {
               return int.class;
@@ -123,7 +123,7 @@ class SimpleVerifierTest {
             /* latest */ Opcodes.ASM10_EXPERIMENTAL, interfaceType, null, null, true) {
 
           @Override
-          protected Type getSuperClass(final Type type) {
+          public Type getSuperClass(final Type type) {
             return Type.getObjectType("java/lang/Object");
           }
         };

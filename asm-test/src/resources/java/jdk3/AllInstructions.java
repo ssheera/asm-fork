@@ -33,10 +33,10 @@ package jdk3;
  * be compiled with "javac -g".
  */
 class AllInstructions {
-  private int f;
-  private long g;
-  private AllInstructions field;
-  private static AllInstructions staticField;
+  public int f;
+  public long g;
+  public AllInstructions field;
+  public static AllInstructions staticField;
 
   AllInstructions() {}
 

@@ -91,11 +91,11 @@ class ClassWriterFlagsTest {
     Assertions.assertEquals(0, maxs.locals, "Max locals is not 1");
   }
 
-  private static final class CompiledClass {
+  public static final class CompiledClass {
 
-    private final byte[] clazz;
+    public final byte[] clazz;
 
-    private CompiledClass(final byte[] clazz) {
+    public CompiledClass(final byte[] clazz) {
       this.clazz = clazz;
     }
 
@@ -134,17 +134,17 @@ class ClassWriterFlagsTest {
     }
   }
 
-  private static final class DummyClass {
+  public static final class DummyClass {
 
     /** Class writer to use in a test. */
-    private final ClassWriter writer;
+    public final ClassWriter writer;
 
     /**
      * Constructor.
      *
      * @param writer Class writer to use in a test.
      */
-    private DummyClass(final ClassWriter writer) {
+    public DummyClass(final ClassWriter writer) {
       this.writer = writer;
       this.writer.visit(
           Opcodes.V1_7, Opcodes.ACC_PUBLIC, "SomeClass", null, "java/lang/Object", null);
@@ -174,12 +174,12 @@ class ClassWriterFlagsTest {
     }
   }
 
-  private static final class Maxs {
+  public static final class Maxs {
 
     final int stack;
     final int locals;
 
-    private Maxs(final int stack, final int locals) {
+    public Maxs(final int stack, final int locals) {
       this.stack = stack;
       this.locals = locals;
     }

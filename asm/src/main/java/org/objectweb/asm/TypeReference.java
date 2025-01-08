@@ -182,7 +182,7 @@ public class TypeReference {
    *     href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.20.1">JVMS
    *     4.7.20.1</a>
    */
-  private final int targetTypeAndInfo;
+  public final int targetTypeAndInfo;
 
   /**
    * Constructs a new TypeReference.

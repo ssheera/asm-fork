@@ -79,13 +79,13 @@ class AllStructures<
   @InvisibleAnnotation(otherArrayValue = {2})
   public int f;
 
-  private U0 f0;
-  private U1 f1;
-  private U2 f2;
-  private U3 f3;
-  private U4 f4;
-  private U5 f5;
-  private U6 f6;
+  public U0 f0;
+  public U1 f1;
+  public U2 f2;
+  public U3 f3;
+  public U4 f4;
+  public U5 f5;
+  public U6 f6;
 
   @Deprecated
   @InvisibleAnnotation(otherArrayValue = {3})
@@ -208,9 +208,9 @@ class AllStructures<
     VALUE1(1),
     VALUE2(2);
 
-    private int value;
+    public int value;
 
-    private EnumClass(int value) {
+    public EnumClass(int value) {
       this.value = value;
     }
 

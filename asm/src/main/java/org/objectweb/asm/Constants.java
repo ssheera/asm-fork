@@ -180,7 +180,7 @@ final class Constants {
   static final int ASM_IFNONNULL = Opcodes.IFNONNULL + ASM_IFNULL_OPCODE_DELTA;
   static final int ASM_GOTO_W = 220;
 
-  private Constants() {}
+  public Constants() {}
 
   static void checkAsmExperimental(final Object caller) {
     Class<?> callerClass = caller.getClass();

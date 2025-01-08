@@ -45,26 +45,26 @@ import java.util.ArrayList;
 public abstract class AbstractBenchmark {
 
   // The root directory of the ASM project.
-  private static final String ROOT_DIR = System.getProperty("user.dir");
+  public static final String ROOT_DIR = System.getProperty("user.dir");
 
   // The sub directories of ROOT_DIR where the different versions of ASM can be found.
-  private static final String BUILD_DIR = "/benchmarks/build/";
-  private static final String ASM4_0 = BUILD_DIR + "asm4.0/";
-  private static final String ASM5_0 = BUILD_DIR + "asm5.0.1/";
-  private static final String ASM6_0 = BUILD_DIR + "asm6.0/";
-  private static final String ASM7_0 = BUILD_DIR + "asm7.0/";
-  private static final String ASM8_0 = BUILD_DIR + "asm8.0.1/";
-  private static final String ASM9_0 = BUILD_DIR + "asm9.0/";
+  public static final String BUILD_DIR = "/benchmarks/build/";
+  public static final String ASM4_0 = BUILD_DIR + "asm4.0/";
+  public static final String ASM5_0 = BUILD_DIR + "asm5.0.1/";
+  public static final String ASM6_0 = BUILD_DIR + "asm6.0/";
+  public static final String ASM7_0 = BUILD_DIR + "asm7.0/";
+  public static final String ASM8_0 = BUILD_DIR + "asm8.0.1/";
+  public static final String ASM9_0 = BUILD_DIR + "asm9.0/";
 
   // The directories where the Java 1.5 input data classes for the benchmarks can be found.
-  private static final String ASM_CORE_CURRENT = "/asm/build/classes/java/main/";
-  private static final String ASM_TREE_CURRENT = "/asm-tree/build/classes/java/main/";
+  public static final String ASM_CORE_CURRENT = "/asm/build/classes/java/main/";
+  public static final String ASM_TREE_CURRENT = "/asm-tree/build/classes/java/main/";
 
   // The directory where the Java 8 input data classes for the benchmarks can be found.
-  private static final String INPUT_CLASSES_JAVA8 =
+  public static final String INPUT_CLASSES_JAVA8 =
       "/benchmarks/build/input-classes-java8/io/vavr/control/";
 
-  private final String asmBenchmarkClass;
+  public final String asmBenchmarkClass;
 
   /**
    * Some Java 1.5 class files that can be used as input data for benchmarks. These classes do not
@@ -119,12 +119,12 @@ public abstract class AbstractBenchmark {
    *
    * @param asmBenchmarkClass the benchmark class to instantiate for the ASM benchmarks.
    */
-  protected AbstractBenchmark(final String asmBenchmarkClass) {
+  public AbstractBenchmark(final String asmBenchmarkClass) {
     this.asmBenchmarkClass = asmBenchmarkClass;
   }
 
   /** Creates and populates {@link #classFiles} with some class files read from disk. */
-  protected void prepareClasses() throws IOException {
+  public void prepareClasses() throws IOException {
     classFiles = new ArrayList<>();
     java8classFiles = new ArrayList<>();
     findClasses(new File(ROOT_DIR + ASM_CORE_CURRENT), classFiles);
@@ -132,7 +132,7 @@ public abstract class AbstractBenchmark {
     findClasses(new File(ROOT_DIR + INPUT_CLASSES_JAVA8), java8classFiles);
   }
 
-  private static void findClasses(final File directory, final ArrayList<byte[]> classFiles)
+  public static void findClasses(final File directory, final ArrayList<byte[]> classFiles)
       throws IOException {
     for (File file : directory.listFiles()) {
       if (file.isDirectory()) {
@@ -143,7 +143,7 @@ public abstract class AbstractBenchmark {
     }
   }
 
-  private static byte[] readInputStream(final InputStream inputStream) throws IOException {
+  public static byte[] readInputStream(final InputStream inputStream) throws IOException {
     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
       byte[] data = new byte[8192];
       int bytesRead;
@@ -180,7 +180,7 @@ public abstract class AbstractBenchmark {
     }
 
     @Override
-    protected Class<?> loadClass(final String name, final boolean resolve)
+    public Class<?> loadClass(final String name, final boolean resolve)
         throws ClassNotFoundException {
       // Force the loading of the asmBenchmarkClass class by this class loader (and not its parent).
       // This is needed to make sure that the classes it references (i.e. the ASM library classes)

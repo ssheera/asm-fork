@@ -288,16 +288,16 @@ public abstract class Printer {
   };
 
   /** Message of the UnsupportedOperationException thrown by methods which must be overridden. */
-  private static final String UNSUPPORTED_OPERATION = "Must be overridden";
+  public static final String UNSUPPORTED_OPERATION = "Must be overridden";
 
   /**
    * The ASM API version implemented by this class. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
 
   /** The builder used to build strings in the various visit methods. */
-  protected final StringBuilder stringBuilder;
+  public final StringBuilder stringBuilder;
 
   /**
    * The text to be printed. Since the code of methods is not necessarily visited in sequential
@@ -321,7 +321,7 @@ public abstract class Printer {
    * @param api the ASM API version implemented by this printer. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected Printer(final int api) {
+  public Printer(final int api) {
     this.api = api;
     this.stringBuilder = new StringBuilder();
     this.text = new ArrayList<>();
@@ -380,7 +380,7 @@ public abstract class Printer {
 
   /**
    * Visits the nest host class of the class. A nest is a set of classes of the same package that
-   * share access to their private members. One of these classes, called the host, lists the other
+   * share access to their public members. One of these classes, called the host, lists the other
    * members of the nest, which in turn should link to the host of their nest. This method must be
    * called only once and only if the visited class is a non-host member of a nest. A class is
    * implicitly its own nest, so it's invalid to call this method with the visited class name as
@@ -442,7 +442,7 @@ public abstract class Printer {
 
   /**
    * Visits a member of the nest. A nest is a set of classes of the same package that share access
-   * to their private members. One of these classes, called the host, lists the other members of the
+   * to their public members. One of these classes, called the host, lists the other members of the
    * nest, which in turn should link to the host of their nest. This method must be called only if
    * the visited class is the host of a nest. A nest host is implicitly a member of its own nest, so
    * it's invalid to call this method with the visited class name as argument.

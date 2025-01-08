@@ -50,7 +50,7 @@ import org.objectweb.asm.tree.MethodNode;
  */
 class AnalyzerWithBasicVerifierTest extends AsmTest {
 
-  private static final String CLASS_NAME = "C";
+  public static final String CLASS_NAME = "C";
 
   @Test
   void testConstructor() {
@@ -310,7 +310,7 @@ class AnalyzerWithBasicVerifierTest extends AsmTest {
     }
   }
 
-  private static Analyzer<BasicValue> newAnalyzer() {
+  public static Analyzer<BasicValue> newAnalyzer() {
     return new Analyzer<>(new BasicVerifier());
   }
 }

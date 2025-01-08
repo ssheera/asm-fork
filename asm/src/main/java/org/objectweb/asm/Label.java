@@ -152,27 +152,27 @@ public class Label {
    * #FLAG_REACHABLE}, {@link #FLAG_SUBROUTINE_CALLER}, {@link #FLAG_SUBROUTINE_START}, {@link
    * #FLAG_SUBROUTINE_END}.
    */
-  short flags;
+  public short flags;
 
   /**
    * The source line number corresponding to this label, if {@link #FLAG_LINE_NUMBER} is set. If
    * there are several source line numbers corresponding to this label, the first one is stored in
    * this field, and the remaining ones are stored in {@link #otherLineNumbers}.
    */
-  private short lineNumber;
+  public short lineNumber;
 
   /**
    * The source line numbers corresponding to this label, in addition to {@link #lineNumber}, or
    * null. The first element of this array is the number n of source line numbers it contains, which
    * are stored between indices 1 and n (inclusive).
    */
-  private int[] otherLineNumbers;
+  public int[] otherLineNumbers;
 
   /**
    * The offset of this label in the bytecode of its method, in bytes. This value is set if and only
    * if the {@link #FLAG_RESOLVED} flag is set.
    */
-  int bytecodeOffset;
+  public int bytecodeOffset;
 
   /**
    * The forward references to this label. The first element is the number of forward references,
@@ -197,7 +197,7 @@ public class Label {
    * instruction uses a 4 bytes bytecode offset operand stored one to four bytes after the start of
    * the instruction itself).
    */
-  private int[] forwardReferences;
+  public int[] forwardReferences;
 
   // -----------------------------------------------------------------------------------------------
 
@@ -227,20 +227,20 @@ public class Label {
    * The number of elements in the input stack of the basic block corresponding to this label. This
    * field is computed in {@link MethodWriter#computeMaxStackAndLocal}.
    */
-  short inputStackSize;
+  public short inputStackSize;
 
   /**
    * The number of elements in the output stack, at the end of the basic block corresponding to this
    * label. This field is only computed for basic blocks that end with a RET instruction.
    */
-  short outputStackSize;
+  public short outputStackSize;
 
   /**
    * The maximum height reached by the output stack, relatively to the top of the input stack, in
    * the basic block corresponding to this label. This maximum is always positive or {@literal
    * null}.
    */
-  short outputStackMax;
+  public short outputStackMax;
 
   /**
    * The id of the subroutine to which this basic block belongs, or 0. If the basic block belongs to
@@ -249,14 +249,14 @@ public class Label {
    * computed in {@link MethodWriter#computeMaxStackAndLocal}, if the method contains JSR
    * instructions.
    */
-  short subroutineId;
+  public short subroutineId;
 
   /**
    * The input and output stack map frames of the basic block corresponding to this label. This
    * field is only used when the {@link MethodWriter#COMPUTE_ALL_FRAMES} or {@link
    * MethodWriter#COMPUTE_INSERTED_FRAMES} option is used.
    */
-  Frame frame;
+  public Frame frame;
 
   /**
    * The successor of this label, in the order they are visited in {@link MethodVisitor#visitLabel}.
@@ -265,14 +265,14 @@ public class Label {
    * then it does not contain either successive labels that denote the same bytecode offset (in this
    * case only the first label appears in this list).
    */
-  Label nextBasicBlock;
+  public Label nextBasicBlock;
 
   /**
    * The outgoing edges of the basic block corresponding to this label, in the control flow graph of
    * its method. These edges are stored in a linked list of {@link Edge} objects, linked to each
    * other by their {@link Edge#nextEdge} field.
    */
-  Edge outgoingEdges;
+  public Edge outgoingEdges;
 
   /**
    * The next element in the list of labels to which this label belongs, or {@literal null} if it
@@ -289,7 +289,7 @@ public class Label {
    * methods, this field should be null (this property is a precondition and a postcondition of
    * these methods).
    */
-  Label nextListElement;
+  public Label nextListElement;
 
   // -----------------------------------------------------------------------------------------------
   // Constructor and accessors
@@ -437,7 +437,7 @@ public class Label {
    * @param referenceHandle the offset in the bytecode where the forward reference value must be
    *     stored.
    */
-  private void addForwardReference(
+  public void addForwardReference(
       final int sourceInsnBytecodeOffset, final int referenceType, final int referenceHandle) {
     if (forwardReferences == null) {
       forwardReferences = new int[FORWARD_REFERENCES_CAPACITY_INCREMENT];
@@ -619,7 +619,7 @@ public class Label {
    *     {@link #nextListElement} field.
    * @return the new list of blocks to process.
    */
-  private Label pushSuccessors(final Label listOfLabelsToProcess) {
+  public Label pushSuccessors(final Label listOfLabelsToProcess) {
     Label newListOfLabelsToProcess = listOfLabelsToProcess;
     Edge outgoingEdge = outgoingEdges;
     while (outgoingEdge != null) {

@@ -98,16 +98,16 @@ import org.objectweb.asm.tree.analysis.Value;
 class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
 
   /** The interpreter to use to symbolically interpret the bytecode instructions. */
-  private final Interpreter<V> interpreter;
+  public final Interpreter<V> interpreter;
 
   /** The instructions of the currently analyzed method. */
-  private InsnList insnList;
+  public InsnList insnList;
 
   /**
    * The number of locals in the last stack map frame processed by {@link expandFrame}. Long and
    * double values are represented with two elements.
    */
-  private int currentLocals;
+  public int currentLocals;
 
   CheckFrameAnalyzer(final Interpreter<V> interpreter) {
     super(interpreter);
@@ -115,7 +115,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
   }
 
   @Override
-  protected void init(final String owner, final MethodNode method) throws AnalyzerException {
+  public void init(final String owner, final MethodNode method) throws AnalyzerException {
     insnList = method.instructions;
     currentLocals = Type.getArgumentsAndReturnSizes(method.desc) >> 2;
     if ((method.access & Opcodes.ACC_STATIC) != 0) {
@@ -228,7 +228,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @throws AnalyzerException if the stack map frames of 'method', i.e. its FrameNode
    *     "instructions", are invalid.
    */
-  private void expandFrames(
+  public void expandFrames(
       final String owner, final MethodNode method, final Frame<V> initialFrame)
       throws AnalyzerException {
     int lastJvmOrFrameInsnIndex = -1;
@@ -262,7 +262,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @return the expanded version of 'frameNode'.
    * @throws AnalyzerException if 'frameNode' is invalid.
    */
-  private Frame<V> expandFrame(
+  public Frame<V> expandFrame(
       final String owner, final Frame<V> previousFrame, final FrameNode frameNode)
       throws AnalyzerException {
     Frame<V> frame = newFrame(previousFrame);
@@ -326,7 +326,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @return a value that represents the given type.
    * @throws AnalyzerException if 'type' is an invalid stack map frame type.
    */
-  private V newFrameValue(final String owner, final FrameNode frameNode, final Object type)
+  public V newFrameValue(final String owner, final FrameNode frameNode, final Object type)
       throws AnalyzerException {
     if (type == Opcodes.TOP) {
       return interpreter.newValue(null);
@@ -370,7 +370,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @throws AnalyzerException if the frames have incompatible sizes or if the frame at 'insnIndex'
    *     is missing (if required) or not compatible with 'frame'.
    */
-  private void checkFrame(final int insnIndex, final Frame<V> frame, final boolean requireFrame)
+  public void checkFrame(final int insnIndex, final Frame<V> frame, final boolean requireFrame)
       throws AnalyzerException {
     Frame<V> oldFrame = getFrames()[insnIndex];
     if (oldFrame == null) {
@@ -402,7 +402,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    *     frame is not a sub type of the corresponding type in the destination frame. Returns
    *     {@literal null} otherwise.
    */
-  private String checkMerge(final Frame<V> srcFrame, final Frame<V> dstFrame) {
+  public String checkMerge(final Frame<V> srcFrame, final Frame<V> dstFrame) {
     int numLocals = srcFrame.getLocals();
     if (numLocals != dstFrame.getLocals()) {
       throw new AssertionError();
@@ -444,7 +444,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @throws AnalyzerException if 'insnIndex' is not the last instruction and there is no frame at
    *     'insnIndex' + 1 in {@link #getFrames}.
    */
-  private void endControlFlow(final int insnIndex) throws AnalyzerException {
+  public void endControlFlow(final int insnIndex) throws AnalyzerException {
     if (hasNextJvmInsnOrFrame(insnIndex) && getFrames()[insnIndex + 1] == null) {
       throw new AnalyzerException(
           null, "Expected stack map frame at instruction " + (insnIndex + 1));
@@ -457,7 +457,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @param insnIndex an instruction index.
    * @return true if 'insnIndex' is followed by a JVM instruction or a by stack map frame.
    */
-  private boolean hasNextJvmInsnOrFrame(final int insnIndex) {
+  public boolean hasNextJvmInsnOrFrame(final int insnIndex) {
     AbstractInsnNode insn = insnList.get(insnIndex).getNext();
     while (insn != null) {
       if (isJvmInsnNode(insn) || insn instanceof FrameNode) {
@@ -474,7 +474,7 @@ class CheckFrameAnalyzer<V extends Value> extends Analyzer<V> {
    * @param insnNode an instruction node.
    * @return true except for label, line number and stack map frame nodes.
    */
-  private static boolean isJvmInsnNode(final AbstractInsnNode insnNode) {
+  public static boolean isJvmInsnNode(final AbstractInsnNode insnNode) {
     return insnNode.getOpcode() >= 0;
   }
 }

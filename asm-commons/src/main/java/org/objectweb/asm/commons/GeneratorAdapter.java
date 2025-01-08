@@ -82,39 +82,39 @@ import org.objectweb.asm.Type;
  */
 public class GeneratorAdapter extends LocalVariablesSorter {
 
-  private static final String CLASS_DESCRIPTOR = "Ljava/lang/Class;";
+  public static final String CLASS_DESCRIPTOR = "Ljava/lang/Class;";
 
-  private static final Type BYTE_TYPE = Type.getObjectType("java/lang/Byte");
+  public static final Type BYTE_TYPE = Type.getObjectType("java/lang/Byte");
 
-  private static final Type BOOLEAN_TYPE = Type.getObjectType("java/lang/Boolean");
+  public static final Type BOOLEAN_TYPE = Type.getObjectType("java/lang/Boolean");
 
-  private static final Type SHORT_TYPE = Type.getObjectType("java/lang/Short");
+  public static final Type SHORT_TYPE = Type.getObjectType("java/lang/Short");
 
-  private static final Type CHARACTER_TYPE = Type.getObjectType("java/lang/Character");
+  public static final Type CHARACTER_TYPE = Type.getObjectType("java/lang/Character");
 
-  private static final Type INTEGER_TYPE = Type.getObjectType("java/lang/Integer");
+  public static final Type INTEGER_TYPE = Type.getObjectType("java/lang/Integer");
 
-  private static final Type FLOAT_TYPE = Type.getObjectType("java/lang/Float");
+  public static final Type FLOAT_TYPE = Type.getObjectType("java/lang/Float");
 
-  private static final Type LONG_TYPE = Type.getObjectType("java/lang/Long");
+  public static final Type LONG_TYPE = Type.getObjectType("java/lang/Long");
 
-  private static final Type DOUBLE_TYPE = Type.getObjectType("java/lang/Double");
+  public static final Type DOUBLE_TYPE = Type.getObjectType("java/lang/Double");
 
-  private static final Type NUMBER_TYPE = Type.getObjectType("java/lang/Number");
+  public static final Type NUMBER_TYPE = Type.getObjectType("java/lang/Number");
 
-  private static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
+  public static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
 
-  private static final Method BOOLEAN_VALUE = Method.getMethod("boolean booleanValue()");
+  public static final Method BOOLEAN_VALUE = Method.getMethod("boolean booleanValue()");
 
-  private static final Method CHAR_VALUE = Method.getMethod("char charValue()");
+  public static final Method CHAR_VALUE = Method.getMethod("char charValue()");
 
-  private static final Method INT_VALUE = Method.getMethod("int intValue()");
+  public static final Method INT_VALUE = Method.getMethod("int intValue()");
 
-  private static final Method FLOAT_VALUE = Method.getMethod("float floatValue()");
+  public static final Method FLOAT_VALUE = Method.getMethod("float floatValue()");
 
-  private static final Method LONG_VALUE = Method.getMethod("long longValue()");
+  public static final Method LONG_VALUE = Method.getMethod("long longValue()");
 
-  private static final Method DOUBLE_VALUE = Method.getMethod("double doubleValue()");
+  public static final Method DOUBLE_VALUE = Method.getMethod("double doubleValue()");
 
   /** Constant for the {@link #math} method. */
   public static final int ADD = Opcodes.IADD;
@@ -171,19 +171,19 @@ public class GeneratorAdapter extends LocalVariablesSorter {
   public static final int LE = Opcodes.IFLE;
 
   /** The access flags of the visited method. */
-  private final int access;
+  public final int access;
 
   /** The name of the visited method. */
-  private final String name;
+  public final String name;
 
   /** The return type of the visited method. */
-  private final Type returnType;
+  public final Type returnType;
 
   /** The argument types of the visited method. */
-  private final Type[] argumentTypes;
+  public final Type[] argumentTypes;
 
   /** The types of the local variables of the visited method. */
-  private final List<Type> localTypes = new ArrayList<>();
+  public final List<Type> localTypes = new ArrayList<>();
 
   /**
    * Constructs a new {@link GeneratorAdapter}. <i>Subclasses must not use this constructor</i>.
@@ -217,7 +217,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param name the method's name.
    * @param descriptor the method's descriptor (see {@link Type}).
    */
-  protected GeneratorAdapter(
+  public GeneratorAdapter(
       final int api,
       final MethodVisitor methodVisitor,
       final int access,
@@ -278,7 +278,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param types a set of types.
    * @return the internal names of the given types (see {@link Type#getInternalName()}).
    */
-  private static String[] getInternalNames(final Type[] types) {
+  public static String[] getInternalNames(final Type[] types) {
     String[] names = new String[types.length];
     for (int i = 0; i < names.length; ++i) {
       names[i] = types[i].getInternalName();
@@ -466,7 +466,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param arg the index of a method argument.
    * @return the index of the given method argument in the frame's local variables array.
    */
-  private int getArgIndex(final int arg) {
+  public int getArgIndex(final int arg) {
     int index = (access & Opcodes.ACC_STATIC) == 0 ? 1 : 0;
     for (int i = 0; i < arg; i++) {
       index += argumentTypes[i].getSize();
@@ -480,7 +480,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param type the type of the local variable to be loaded.
    * @param index an index in the frame's local variables array.
    */
-  private void loadInsn(final Type type, final int index) {
+  public void loadInsn(final Type type, final int index) {
     mv.visitVarInsn(type.getOpcode(Opcodes.ILOAD), index);
   }
 
@@ -490,7 +490,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param type the type of the local variable to be stored.
    * @param index an index in the frame's local variables array.
    */
-  private void storeInsn(final Type type, final int index) {
+  public void storeInsn(final Type type, final int index) {
     mv.visitVarInsn(type.getOpcode(Opcodes.ISTORE), index);
   }
 
@@ -572,7 +572,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
   }
 
   @Override
-  protected void setLocalType(final int local, final Type type) {
+  public void setLocalType(final int local, final Type type) {
     int index = local - firstLocal;
     while (localTypes.size() < index + 1) {
       localTypes.add(null);
@@ -769,7 +769,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
   // Instructions to do boxing and unboxing operations
   // -----------------------------------------------------------------------------------------------
 
-  private static Type getBoxedType(final Type type) {
+  public static Type getBoxedType(final Type type) {
     switch (type.getSort()) {
       case Type.BYTE:
         return BYTE_TYPE;
@@ -1123,7 +1123,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param name the name of the field.
    * @param fieldType the type of the field.
    */
-  private void fieldInsn(
+  public void fieldInsn(
       final int opcode, final Type ownerType, final String name, final Type fieldType) {
     mv.visitFieldInsn(opcode, ownerType.getInternalName(), name, fieldType.getDescriptor());
   }
@@ -1184,7 +1184,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param method the method to be invoked.
    * @param isInterface whether the 'type' class is an interface or not.
    */
-  private void invokeInsn(
+  public void invokeInsn(
       final int opcode, final Type type, final Method method, final boolean isInterface) {
     String owner = type.getSort() == Type.ARRAY ? type.getDescriptor() : type.getInternalName();
     mv.visitMethodInsn(opcode, owner, method.getName(), method.getDescriptor(), isInterface);
@@ -1259,7 +1259,7 @@ public class GeneratorAdapter extends LocalVariablesSorter {
    * @param opcode the instruction's opcode.
    * @param type the instruction's operand.
    */
-  private void typeInsn(final int opcode, final Type type) {
+  public void typeInsn(final int opcode, final Type type) {
     mv.visitTypeInsn(opcode, type.getInternalName());
   }
 

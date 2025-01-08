@@ -49,18 +49,20 @@ package org.objectweb.asm;
  */
 public abstract class MethodVisitor {
 
-  private static final String REQUIRES_ASM5 = "This feature requires ASM5";
+  public static final String REQUIRES_ASM5 = "This feature requires ASM5";
 
   /**
    * The ASM API version implemented by this visitor. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
+
+  public boolean noverify;
 
   /**
    * The method visitor to which this visitor must delegate method calls. May be {@literal null}.
    */
-  protected MethodVisitor mv;
+  public MethodVisitor mv;
 
   /**
    * Constructs a new {@link MethodVisitor}.
@@ -68,7 +70,7 @@ public abstract class MethodVisitor {
    * @param api the ASM API version implemented by this visitor. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected MethodVisitor(final int api) {
+  public MethodVisitor(final int api) {
     this(api, null);
   }
 
@@ -80,7 +82,7 @@ public abstract class MethodVisitor {
    * @param methodVisitor the method visitor to which this visitor must delegate method calls. May
    *     be null.
    */
-  protected MethodVisitor(final int api, final MethodVisitor methodVisitor) {
+  public MethodVisitor(final int api, final MethodVisitor methodVisitor) {
     if (api != Opcodes.ASM9
         && api != Opcodes.ASM8
         && api != Opcodes.ASM7

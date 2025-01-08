@@ -64,7 +64,7 @@ public class SourceInterpreter extends Interpreter<SourceValue> implements Opcod
    * @param api the ASM API version supported by this interpreter. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected SourceInterpreter(final int api) {
+  public SourceInterpreter(final int api) {
     super(api);
   }
 
@@ -226,7 +226,7 @@ public class SourceInterpreter extends Interpreter<SourceValue> implements Opcod
     return value1;
   }
 
-  private static <E> boolean containsAll(final Set<E> self, final Set<E> other) {
+  public static <E> boolean containsAll(final Set<E> self, final Set<E> other) {
     if (self.size() < other.size()) {
       return false;
     }

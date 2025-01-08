@@ -54,7 +54,7 @@ import org.objectweb.asm.test.AsmTest;
  */
 class TextifierTest extends AsmTest {
 
-  private static final String EXPECTED_USAGE =
+  public static final String EXPECTED_USAGE =
       "Prints a disassembled view of the given class.\n"
           + "Usage: Textifier [-nodebug] <fully qualified class name or class file name>";
 

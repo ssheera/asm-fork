@@ -80,7 +80,7 @@ public class AnalyzerAdapter extends MethodVisitor {
   public List<Object> stack;
 
   /** The labels that designate the next instruction to be visited. May be {@literal null}. */
-  private List<Label> labels;
+  public List<Label> labels;
 
   /**
    * The uninitialized types in the current execution frame. This map associates internal names to
@@ -91,13 +91,13 @@ public class AnalyzerAdapter extends MethodVisitor {
   public Map<Object, Object> uninitializedTypes;
 
   /** The maximum stack size of this method. */
-  private int maxStack;
+  public int maxStack;
 
   /** The maximum number of local variables of this method. */
-  private int maxLocals;
+  public int maxLocals;
 
   /** The owner's class name. */
-  private String owner;
+  public String owner;
 
   /**
    * Constructs a new {@link AnalyzerAdapter}. <i>Subclasses must not use this constructor</i>.
@@ -136,7 +136,7 @@ public class AnalyzerAdapter extends MethodVisitor {
    * @param methodVisitor the method visitor to which this adapter delegates calls. May be {@literal
    *     null}.
    */
-  protected AnalyzerAdapter(
+  public AnalyzerAdapter(
       final int api,
       final String owner,
       final int access,
@@ -216,7 +216,7 @@ public class AnalyzerAdapter extends MethodVisitor {
     maxStack = Math.max(maxStack, this.stack.size());
   }
 
-  private static void visitFrameTypes(
+  public static void visitFrameTypes(
       final int numTypes, final Object[] frameTypes, final List<Object> result) {
     for (int i = 0; i < numTypes; ++i) {
       Object frameType = frameTypes[i];
@@ -455,12 +455,12 @@ public class AnalyzerAdapter extends MethodVisitor {
 
   // -----------------------------------------------------------------------------------------------
 
-  private Object get(final int local) {
+  public Object get(final int local) {
     maxLocals = Math.max(maxLocals, local + 1);
     return local < locals.size() ? locals.get(local) : Opcodes.TOP;
   }
 
-  private void set(final int local, final Object type) {
+  public void set(final int local, final Object type) {
     maxLocals = Math.max(maxLocals, local + 1);
     while (local >= locals.size()) {
       locals.add(Opcodes.TOP);
@@ -468,12 +468,12 @@ public class AnalyzerAdapter extends MethodVisitor {
     locals.set(local, type);
   }
 
-  private void push(final Object type) {
+  public void push(final Object type) {
     stack.add(type);
     maxStack = Math.max(maxStack, stack.size());
   }
 
-  private void pushDescriptor(final String fieldOrMethodDescriptor) {
+  public void pushDescriptor(final String fieldOrMethodDescriptor) {
     String descriptor =
         fieldOrMethodDescriptor.charAt(0) == '('
             ? Type.getReturnType(fieldOrMethodDescriptor).getDescriptor()
@@ -510,11 +510,11 @@ public class AnalyzerAdapter extends MethodVisitor {
     }
   }
 
-  private Object pop() {
+  public Object pop() {
     return stack.remove(stack.size() - 1);
   }
 
-  private void pop(final int numSlots) {
+  public void pop(final int numSlots) {
     int size = stack.size();
     int end = size - numSlots;
     for (int i = size - 1; i >= end; --i) {
@@ -522,7 +522,7 @@ public class AnalyzerAdapter extends MethodVisitor {
     }
   }
 
-  private void pop(final String descriptor) {
+  public void pop(final String descriptor) {
     char firstDescriptorChar = descriptor.charAt(0);
     if (firstDescriptorChar == '(') {
       int numSlots = 0;
@@ -538,7 +538,7 @@ public class AnalyzerAdapter extends MethodVisitor {
     }
   }
 
-  private void execute(final int opcode, final int intArg, final String stringArg) {
+  public void execute(final int opcode, final int intArg, final String stringArg) {
     if (opcode == Opcodes.JSR || opcode == Opcodes.RET) {
       throw new IllegalArgumentException("JSR/RET are not supported");
     }

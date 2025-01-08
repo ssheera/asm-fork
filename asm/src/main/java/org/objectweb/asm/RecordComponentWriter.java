@@ -29,46 +29,46 @@ package org.objectweb.asm;
 
 final class RecordComponentWriter extends RecordComponentVisitor {
   /** Where the constants used in this RecordComponentWriter must be stored. */
-  private final SymbolTable symbolTable;
+  public final SymbolTable symbolTable;
 
   // Note: fields are ordered as in the record_component_info structure, and those related to
   // attributes are ordered as in Section 4.7 of the JVMS.
 
   /** The name_index field of the Record attribute. */
-  private final int nameIndex;
+  public final int nameIndex;
 
   /** The descriptor_index field of the Record attribute. */
-  private final int descriptorIndex;
+  public final int descriptorIndex;
 
   /**
    * The signature_index field of the Signature attribute of this record component, or 0 if there is
    * no Signature attribute.
    */
-  private int signatureIndex;
+  public int signatureIndex;
 
   /**
    * The last runtime visible annotation of this record component. The previous ones can be accessed
    * with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleAnnotation;
+  public AnnotationWriter lastRuntimeVisibleAnnotation;
 
   /**
    * The last runtime invisible annotation of this record component. The previous ones can be
    * accessed with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleAnnotation;
 
   /**
    * The last runtime visible type annotation of this record component. The previous ones can be
    * accessed with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeVisibleTypeAnnotation;
 
   /**
    * The last runtime invisible type annotation of this record component. The previous ones can be
    * accessed with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
 
   /**
    * The first non standard attribute of this record component. The next ones can be accessed with
@@ -79,7 +79,7 @@ final class RecordComponentWriter extends RecordComponentVisitor {
    * The {@link #putRecordComponentInfo(ByteVector)} method writes the attributes in the order
    * defined by this list, i.e. in the reverse order specified by the user.
    */
-  private Attribute firstAttribute;
+  public Attribute firstAttribute;
 
   /**
    * Constructs a new {@link RecordComponentWriter}.

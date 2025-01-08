@@ -65,11 +65,11 @@ import org.objectweb.asm.test.ClassFile;
 // DontCheck(AbbreviationAsWordInName)
 class ASMifierTest extends AsmTest {
 
-  private static final String EXPECTED_USAGE =
+  public static final String EXPECTED_USAGE =
       "Prints the ASM code to generate the given class.\n"
           + "Usage: ASMifier [-nodebug] <fully qualified class name or class file name>";
 
-  private static final IClassLoader ICLASS_LOADER =
+  public static final IClassLoader ICLASS_LOADER =
       new ClassLoaderIClassLoader(new URLClassLoader(new URL[0]));
 
   @Test
@@ -107,7 +107,7 @@ class ASMifierTest extends AsmTest {
     assertEquals(new ClassFile(classFile), new ClassFile(dumpClassFile));
   }
 
-  private static byte[] compile(final String name, final String source) throws IOException {
+  public static byte[] compile(final String name, final String source) throws IOException {
     Parser parser = new Parser(new Scanner(name, new StringReader(source)));
     ArrayList<org.codehaus.janino.util.ClassFile> generatedClassFiles = new ArrayList<>();
     try {

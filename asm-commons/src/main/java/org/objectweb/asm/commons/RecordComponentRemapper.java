@@ -41,7 +41,7 @@ import org.objectweb.asm.TypePath;
 public class RecordComponentRemapper extends RecordComponentVisitor {
 
   /** The remapper used to remap the types in the visited field. */
-  protected final Remapper remapper;
+  public Remapper remapper;
 
   /**
    * Constructs a new {@link RecordComponentRemapper}. <i>Subclasses must not use this
@@ -64,7 +64,7 @@ public class RecordComponentRemapper extends RecordComponentVisitor {
    * @param recordComponentVisitor the record component visitor this remapper must delegate to.
    * @param remapper the remapper to use to remap the types in the visited record component.
    */
-  protected RecordComponentRemapper(
+  public RecordComponentRemapper(
       final int api, final RecordComponentVisitor recordComponentVisitor, final Remapper remapper) {
     super(api, recordComponentVisitor);
     this.remapper = remapper;
@@ -97,8 +97,8 @@ public class RecordComponentRemapper extends RecordComponentVisitor {
    * @return the newly created remapper.
    * @deprecated use {@link #createAnnotationRemapper(String, AnnotationVisitor)} instead.
    */
-  @Deprecated(forRemoval = false)
-  protected AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
+  @Deprecated
+  public AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, /* descriptor= */ null, annotationVisitor, remapper);
   }
 
@@ -110,7 +110,7 @@ public class RecordComponentRemapper extends RecordComponentVisitor {
    * @param annotationVisitor the AnnotationVisitor the remapper must delegate to.
    * @return the newly created remapper.
    */
-  protected AnnotationVisitor createAnnotationRemapper(
+  public AnnotationVisitor createAnnotationRemapper(
       final String descriptor, final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, descriptor, annotationVisitor, remapper)
         .orDeprecatedValue(createAnnotationRemapper(annotationVisitor));

@@ -42,13 +42,13 @@ import java.util.Set;
 final class SmallSet<T> extends AbstractSet<T> {
 
   /** The first element of this set, maybe {@literal null}. */
-  private final T element1;
+  public final T element1;
 
   /**
    * The second element of this set, maybe {@literal null}. If {@link #element1} is {@literal null}
    * then this field must be {@literal null}, otherwise it must be different from {@link #element1}.
    */
-  private final T element2;
+  public final T element2;
 
   // -----------------------------------------------------------------------------------------------
   // Constructors
@@ -76,7 +76,7 @@ final class SmallSet<T> extends AbstractSet<T> {
    * @param element1 see {@link #element1}.
    * @param element2 see {@link #element2}.
    */
-  private SmallSet(final T element1, final T element2) {
+  public SmallSet(final T element1, final T element2) {
     this.element1 = element1;
     this.element2 = element2;
   }
@@ -160,14 +160,14 @@ final class SmallSet<T> extends AbstractSet<T> {
   static class IteratorImpl<T> implements Iterator<T> {
 
     /** The next element to return in {@link #next}. Maybe {@literal null}. */
-    private T firstElement;
+    public T firstElement;
 
     /**
      * The element to return in {@link #next}, after {@link #firstElement} is returned. If {@link
      * #firstElement} is {@literal null} then this field must be {@literal null}, otherwise it must
      * be different from {@link #firstElement}.
      */
-    private T secondElement;
+    public T secondElement;
 
     IteratorImpl(final T firstElement, final T secondElement) {
       this.firstElement = firstElement;

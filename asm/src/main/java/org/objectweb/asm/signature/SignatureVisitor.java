@@ -63,7 +63,7 @@ public abstract class SignatureVisitor {
    * The ASM API version implemented by this visitor. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
 
   /**
    * Constructs a new {@link SignatureVisitor}.
@@ -71,7 +71,7 @@ public abstract class SignatureVisitor {
    * @param api the ASM API version implemented by this visitor. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected SignatureVisitor(final int api) {
+  public SignatureVisitor(final int api) {
     if (api != Opcodes.ASM9
         && api != Opcodes.ASM8
         && api != Opcodes.ASM7

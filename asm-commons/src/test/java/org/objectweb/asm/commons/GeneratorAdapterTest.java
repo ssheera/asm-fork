@@ -58,7 +58,7 @@ import org.objectweb.asm.util.TraceMethodVisitor;
  */
 class GeneratorAdapterTest {
 
-  private static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
+  public static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
 
   @Test
   void testConstructor_illegalState() {
@@ -858,19 +858,19 @@ class GeneratorAdapterTest {
             .catchException(new Label(), new Label(), Type.getObjectType("pkg/Exception")));
   }
 
-  private static class GeneratorException extends Exception {
+  public static class GeneratorException extends Exception {
 
-    private static final long serialVersionUID = -7167830120642305483L;
+    public static final long serialVersionUID = -7167830120642305483L;
 
     public GeneratorException(final Throwable cause) {
       super(cause);
     }
   }
 
-  private static class Generator implements TableSwitchGenerator {
+  public static class Generator implements TableSwitchGenerator {
 
-    private final Textifier textifier;
-    private final GeneratorAdapter generatorAdapter;
+    public final Textifier textifier;
+    public final GeneratorAdapter generatorAdapter;
 
     Generator() {
       this(Opcodes.ACC_PUBLIC, "m", "()V");

@@ -51,7 +51,7 @@ import org.junit.jupiter.api.function.Executable;
  */
 class ConstantsTest {
 
-  private enum ConstantType {
+  public enum ConstantType {
     ASM_VERSION,
     CLASS_VERSION,
     ACCESS_FLAG,
@@ -215,14 +215,14 @@ class ConstantsTest {
     assertDoesNotThrow(checkIsPreview);
   }
 
-  private static List<Field> getConstants(final ConstantType constantType) {
+  public static List<Field> getConstants(final ConstantType constantType) {
     return Stream.concat(
             Arrays.stream(Opcodes.class.getFields()), Arrays.stream(Constants.class.getFields()))
         .filter(field -> getType(field).equals(constantType))
         .collect(Collectors.toList());
   }
 
-  private static ConstantType getType(final Field field) {
+  public static ConstantType getType(final Field field) {
     switch (field.getName()) {
       case "ASM4":
       case "ASM5":
@@ -262,8 +262,8 @@ class ConstantsTest {
       case "V27":
         return ConstantType.CLASS_VERSION;
       case "ACC_PUBLIC":
-      case "ACC_PRIVATE":
-      case "ACC_PROTECTED":
+      case "ACC_public":
+      case "ACC_public":
       case "ACC_STATIC":
       case "ACC_FINAL":
       case "ACC_SUPER":
@@ -558,7 +558,7 @@ class ConstantsTest {
     }
   }
 
-  private static int getIntValue(final Field field) {
+  public static int getIntValue(final Field field) {
     try {
       return field.getInt(null);
     } catch (IllegalAccessException e) {
@@ -566,7 +566,7 @@ class ConstantsTest {
     }
   }
 
-  private static int getIntegerValue(final Field field) {
+  public static int getIntegerValue(final Field field) {
     try {
       return (int) field.get(null);
     } catch (IllegalAccessException e) {

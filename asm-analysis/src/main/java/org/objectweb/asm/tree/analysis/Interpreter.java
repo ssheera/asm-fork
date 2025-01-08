@@ -49,7 +49,7 @@ public abstract class Interpreter<V extends Value> {
    * The ASM API version supported by this interpreter. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
 
   /**
    * Constructs a new {@link Interpreter}.
@@ -57,7 +57,7 @@ public abstract class Interpreter<V extends Value> {
    * @param api the ASM API version supported by this interpreter. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected Interpreter(final int api) {
+  public Interpreter(final int api) {
     this.api = api;
   }
 
@@ -94,6 +94,10 @@ public abstract class Interpreter<V extends Value> {
    */
   public V newParameterValue(final boolean isInstanceMethod, final int local, final Type type) {
     return newValue(type);
+  }
+
+  public void naryExtendedOperation(AbstractInsnNode insn, List<? extends V> values, Frame<V> frame)
+          throws AnalyzerException {
   }
 
   /**

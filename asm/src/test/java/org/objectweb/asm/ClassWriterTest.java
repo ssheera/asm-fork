@@ -818,32 +818,32 @@ class ClassWriterTest extends AsmTest {
         new ClassFile(transformedClassWithoutCode.toByteArray()));
   }
 
-  private static boolean hasJsrOrRetInstructions(final PrecompiledClass classParameter) {
+  public static boolean hasJsrOrRetInstructions(final PrecompiledClass classParameter) {
     return classParameter == PrecompiledClass.JDK3_ALL_INSTRUCTIONS
         || classParameter == PrecompiledClass.JDK3_LARGE_METHOD;
   }
 
-  private static ClassWriter newEmptyClassWriter() {
+  public static ClassWriter newEmptyClassWriter() {
     ClassWriter classWriter = new ClassWriter(0);
     classWriter.visit(Opcodes.V1_1, Opcodes.ACC_PUBLIC, "C", null, "java/lang/Object", null);
     return classWriter;
   }
 
-  private static String getConstantPoolDump(final ClassWriter classWriter) {
+  public static String getConstantPoolDump(final ClassWriter classWriter) {
     return new ClassFile(classWriter.toByteArray()).getConstantPoolDump();
   }
 
-  private static String getDump(final ClassWriter classWriter) {
+  public static String getDump(final ClassWriter classWriter) {
     return new ClassFile(classWriter.toByteArray()).toString();
   }
 
-  private static Attribute[] attributes() {
+  public static Attribute[] attributes() {
     return new Attribute[] {new Comment(), new CodeComment()};
   }
 
-  private static class DeadCodeInserter extends ClassVisitor {
+  public static class DeadCodeInserter extends ClassVisitor {
 
-    private String className;
+    public String className;
 
     DeadCodeInserter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);
@@ -881,10 +881,10 @@ class ClassWriterTest extends AsmTest {
     }
   }
 
-  private static class MethodDeadCodeInserter extends MethodVisitor implements Opcodes {
+  public static class MethodDeadCodeInserter extends MethodVisitor implements Opcodes {
 
-    private Random random;
-    private boolean inserted;
+    public Random random;
+    public boolean inserted;
 
     MethodDeadCodeInserter(final int api, final int seed, final MethodVisitor methodVisitor) {
       super(api, methodVisitor);
@@ -1006,14 +1006,14 @@ class ClassWriterTest extends AsmTest {
       super.visitMaxs(maxStack, maxLocals);
     }
 
-    private void maybeInsertDeadCode() {
+    public void maybeInsertDeadCode() {
       // Inserts dead code once every 50 instructions in average.
       if (!inserted && random.nextFloat() < 1.0 / 50.0) {
         insertDeadCode();
       }
     }
 
-    private void insertDeadCode() {
+    public void insertDeadCode() {
       Label end = new Label();
       visitJumpInsn(Opcodes.GOTO, end);
       visitLdcInsn("DEAD CODE");
@@ -1023,7 +1023,7 @@ class ClassWriterTest extends AsmTest {
   }
 
   /** Inserts NOP instructions after the first forward jump found, to get a wide jump. */
-  private static class ForwardJumpNopInserter extends ClassVisitor {
+  public static class ForwardJumpNopInserter extends ClassVisitor {
 
     boolean transformed;
 
@@ -1040,7 +1040,7 @@ class ClassWriterTest extends AsmTest {
         final String[] exceptions) {
       return new MethodVisitor(
           api, super.visitMethod(access, name, descriptor, signature, exceptions)) {
-        private final HashSet<Label> labels = new HashSet<>();
+        public final HashSet<Label> labels = new HashSet<>();
 
         @Override
         public void visitLabel(final Label label) {
@@ -1063,10 +1063,10 @@ class ClassWriterTest extends AsmTest {
   }
 
   /** Inserts a wide forward jump in the first non-abstract method that is found. */
-  private static class WideForwardJumpInserter extends ClassVisitor {
+  public static class WideForwardJumpInserter extends ClassVisitor {
 
-    private boolean needFrames;
-    private boolean transformed;
+    public boolean needFrames;
+    public boolean transformed;
 
     WideForwardJumpInserter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);
@@ -1122,14 +1122,14 @@ class ClassWriterTest extends AsmTest {
   /**
    * A ClassWriter whose {@link ClassWriter#getCommonSuperClass} method always throws an exception.
    */
-  private static class ClassWriterWithoutGetCommonSuperClass extends ClassWriter {
+  public static class ClassWriterWithoutGetCommonSuperClass extends ClassWriter {
 
     public ClassWriterWithoutGetCommonSuperClass() {
       super(0);
     }
 
     @Override
-    protected String getCommonSuperClass(final String type1, final String type2) {
+    public String getCommonSuperClass(final String type1, final String type2) {
       throw new UnsupportedOperationException();
     }
   }

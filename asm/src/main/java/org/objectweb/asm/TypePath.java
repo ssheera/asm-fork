@@ -57,10 +57,10 @@ public final class TypePath {
    *     href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.20.2">JVMS
    *     4.7.20.2</a>
    */
-  private final byte[] typePathContainer;
+  public final byte[] typePathContainer;
 
   /** The offset of the first byte of the type_path JVMS structure in {@link #typePathContainer}. */
-  private final int typePathOffset;
+  public final int typePathOffset;
 
   /**
    * Constructs a new TypePath.

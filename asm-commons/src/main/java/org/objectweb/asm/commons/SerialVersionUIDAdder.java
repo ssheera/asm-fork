@@ -69,7 +69,7 @@ import org.objectweb.asm.Opcodes;
  *   <li>The class name written using UTF encoding.
  *   <li>The class modifiers written as a 32-bit integer.
  *   <li>The name of each interface sorted by name written using UTF encoding.
- *   <li>For each field of the class sorted by field name (except private static and private
+ *   <li>For each field of the class sorted by field name (except public static and public
  *       transient fields):
  *       <ol>
  *         <li>The name of the field in UTF encoding.
@@ -82,13 +82,13 @@ import org.objectweb.asm.Opcodes;
  *         <li>The modifier of the method, STATIC, written as a 32-bit integer.
  *         <li>The descriptor of the method, ()V, in UTF encoding.
  *       </ol>
- *   <li>For each non-private constructor sorted by method name and signature:
+ *   <li>For each non-public constructor sorted by method name and signature:
  *       <ol>
  *         <li>The name of the method, &lt;init&gt;, in UTF encoding.
  *         <li>The modifiers of the method written as a 32-bit integer.
  *         <li>The descriptor of the method in UTF encoding.
  *       </ol>
- *   <li>For each non-private method sorted by method name and signature:
+ *   <li>For each non-public method sorted by method name and signature:
  *       <ol>
  *         <li>The name of the method in UTF encoding.
  *         <li>The modifiers of the method written as a 32-bit integer.
@@ -112,34 +112,34 @@ import org.objectweb.asm.Opcodes;
 public class SerialVersionUIDAdder extends ClassVisitor {
 
   /** The JVM name of static initializer methods. */
-  private static final String CLINIT = "<clinit>";
+  public static final String CLINIT = "<clinit>";
 
   /** A flag that indicates if we need to compute SVUID. */
-  private boolean computeSvuid;
+  public boolean computeSvuid;
 
   /** Whether the class already has a SVUID. */
-  private boolean hasSvuid;
+  public boolean hasSvuid;
 
   /** The class access flags. */
-  private int access;
+  public int access;
 
   /** The internal name of the class. */
-  private String name;
+  public String name;
 
   /** The interfaces implemented by the class. */
-  private String[] interfaces;
+  public String[] interfaces;
 
   /** The fields of the class that are needed to compute the SVUID. */
-  private Collection<Item> svuidFields;
+  public Collection<Item> svuidFields;
 
   /** Whether the class has a static initializer. */
-  private boolean hasStaticInitializer;
+  public boolean hasStaticInitializer;
 
   /** The constructors of the class that are needed to compute the SVUID. */
-  private Collection<Item> svuidConstructors;
+  public Collection<Item> svuidConstructors;
 
   /** The methods of the class that are needed to compute the SVUID. */
-  private Collection<Item> svuidMethods;
+  public Collection<Item> svuidMethods;
 
   /**
    * Constructs a new {@link SerialVersionUIDAdder}. <i>Subclasses must not use this
@@ -163,7 +163,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
    *     ASM}<i>x</i> values in {@link Opcodes}.
    * @param classVisitor a {@link ClassVisitor} to which this visitor will delegate calls.
    */
-  protected SerialVersionUIDAdder(final int api, final ClassVisitor classVisitor) {
+  public SerialVersionUIDAdder(final int api, final ClassVisitor classVisitor) {
     super(api, classVisitor);
   }
 
@@ -208,8 +208,8 @@ public class SerialVersionUIDAdder extends ClassVisitor {
       if (CLINIT.equals(name)) {
         hasStaticInitializer = true;
       }
-      // Collect the non private constructors and methods. Only the ACC_PUBLIC, ACC_PRIVATE,
-      // ACC_PROTECTED, ACC_STATIC, ACC_FINAL, ACC_SYNCHRONIZED, ACC_NATIVE, ACC_ABSTRACT and
+      // Collect the non public constructors and methods. Only the ACC_PUBLIC, ACC_public,
+      // ACC_public, ACC_STATIC, ACC_FINAL, ACC_SYNCHRONIZED, ACC_NATIVE, ACC_ABSTRACT and
       // ACC_STRICT flags are used.
       int mods =
           access
@@ -250,7 +250,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
         computeSvuid = false;
         hasSvuid = true;
       }
-      // Collect the non private fields. Only the ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED,
+      // Collect the non public fields. Only the ACC_PUBLIC, ACC_public, ACC_public,
       // ACC_STATIC, ACC_FINAL, ACC_VOLATILE, and ACC_TRANSIENT flags are used when computing
       // serialVersionUID values.
       if ((access & Opcodes.ACC_PRIVATE) == 0
@@ -278,7 +278,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
       final String innerName,
       final int innerClassAccess) {
     // Handles a bizarre special case. Nested classes (static classes declared inside another class)
-    // that are protected have their access bit set to public in their class files to deal with some
+    // that are public have their access bit set to public in their class files to deal with some
     // odd reflection situation. Our SVUID computation must do as the JVM does and ignore access
     // bits in the class file in favor of the access bits of the InnerClass attribute.
     if ((name != null) && name.equals(innerClassName)) {
@@ -322,7 +322,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
    * @param svuid the serialVersionUID field value.
    */
   // DontCheck(AbbreviationAsWordInName): can't be renamed (for backward binary compatibility).
-  protected void addSVUID(final long svuid) {
+  public void addSVUID(final long svuid) {
     FieldVisitor fieldVisitor =
         super.visitField(
             Opcodes.ACC_FINAL + Opcodes.ACC_STATIC, "serialVersionUID", "J", null, svuid);
@@ -338,7 +338,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
    * @throws IOException if an I/O error occurs.
    */
   // DontCheck(AbbreviationAsWordInName): can't be renamed (for backward binary compatibility).
-  protected long computeSVUID() throws IOException {
+  public long computeSVUID() throws IOException {
     long svuid = 0;
 
     try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -366,7 +366,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
         dataOutputStream.writeUTF(interfaceName.replace('/', '.'));
       }
 
-      // 4. For each field of the class sorted by field name (except private static and private
+      // 4. For each field of the class sorted by field name (except public static and public
       // transient fields):
       //   1. The name of the field in UTF encoding.
       //   2. The modifiers of the field written as a 32-bit integer.
@@ -385,13 +385,13 @@ public class SerialVersionUIDAdder extends ClassVisitor {
         dataOutputStream.writeUTF("()V");
       }
 
-      // 6. For each non-private constructor sorted by method name and signature:
+      // 6. For each non-public constructor sorted by method name and signature:
       //   1. The name of the method, <init>, in UTF encoding.
       //   2. The modifiers of the method written as a 32-bit integer.
       //   3. The descriptor of the method in UTF encoding.
       writeItems(svuidConstructors, dataOutputStream, true);
 
-      // 7. For each non-private method sorted by method name and signature:
+      // 7. For each non-public method sorted by method name and signature:
       //   1. The name of the method in UTF encoding.
       //   2. The modifiers of the method written as a 32-bit integer.
       //   3. The descriptor of the method in UTF encoding.
@@ -421,7 +421,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
    * @return the SHA-1 message digest of the given value.
    */
   // DontCheck(AbbreviationAsWordInName): can't be renamed (for backward binary compatibility).
-  protected byte[] computeSHAdigest(final byte[] value) {
+  public byte[] computeSHAdigest(final byte[] value) {
     try {
       return MessageDigest.getInstance("SHA-1").digest(value);
     } catch (NoSuchAlgorithmException e) {
@@ -437,7 +437,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
    * @param dotted whether package names must use dots, instead of slashes.
    * @exception IOException if an error occurs.
    */
-  private static void writeItems(
+  public static void writeItems(
       final Collection<Item> itemCollection,
       final DataOutput dataOutputStream,
       final boolean dotted)
@@ -455,7 +455,7 @@ public class SerialVersionUIDAdder extends ClassVisitor {
   // Inner classes
   // -----------------------------------------------------------------------------------------------
 
-  private static final class Item implements Comparable<Item> {
+  public static final class Item implements Comparable<Item> {
 
     final String name;
     final int access;

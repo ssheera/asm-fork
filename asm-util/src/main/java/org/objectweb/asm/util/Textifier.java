@@ -322,7 +322,7 @@ public class Textifier extends Printer {
       final String name, final String outerName, final String innerName, final int access) {
     stringBuilder.setLength(0);
     stringBuilder.append(tab);
-    appendRawAccess(access);
+    appendRawAccess(access & ~Opcodes.ACC_SUPER);
     stringBuilder.append(tab);
     appendAccess(access);
     stringBuilder.append("INNERCLASS ");
@@ -1443,13 +1443,7 @@ public class Textifier extends Printer {
     stringBuilder.append(name);
   }
 
-  /**
-   * Appends a string representation of the given handle to {@link #stringBuilder}.
-   *
-   * @param handle a handle.
-   * @deprecated use {@link #appendHandle(Handle, String)} instead.
-   */
-  @Deprecated(forRemoval = false)
+  @Deprecated
   protected void appendHandle(final Handle handle) {
     appendHandle(handle, tab3);
   }

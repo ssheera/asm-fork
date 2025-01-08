@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
  */
 final class Util {
 
-  private Util() {}
+  public Util() {}
 
   static int getMajorJavaVersion() {
     String javaVersion = System.getProperty("java.version");

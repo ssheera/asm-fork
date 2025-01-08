@@ -44,7 +44,7 @@ import org.apache.bcel.generic.Type;
  */
 public class BcelGenerator extends Generator {
 
-  private static final Type PRINT_STREAM_TYPE = Type.getType("Ljava/io/PrintStream;");
+  public static final Type PRINT_STREAM_TYPE = Type.getType("Ljava/io/PrintStream;");
 
   @Override
   public byte[] generateClass() {

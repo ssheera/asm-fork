@@ -85,7 +85,7 @@ class CodeSizeEvaluatorTest extends AsmTest {
     }
   }
 
-  private static Attribute[] attributes() {
+  public static Attribute[] attributes() {
     return new Attribute[] {new Comment(), new CodeComment()};
   }
 
@@ -104,7 +104,7 @@ class CodeSizeEvaluatorTest extends AsmTest {
 
   static class CodeSizesEvaluator extends ClassVisitor {
 
-    private final ArrayList<CodeSizeEvaluation> evaluations;
+    public final ArrayList<CodeSizeEvaluation> evaluations;
 
     CodeSizesEvaluator(
         final int api,

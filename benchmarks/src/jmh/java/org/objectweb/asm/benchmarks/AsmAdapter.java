@@ -47,7 +47,7 @@ import org.objectweb.asm.tree.ClassNode;
  */
 public class AsmAdapter extends Adapter {
 
-  private int asmApi;
+  public int asmApi;
 
   @Override
   public String getVersion() {
@@ -124,7 +124,7 @@ public class AsmAdapter extends Adapter {
     return classWriter.toByteArray();
   }
 
-  private static class CountingVisitor extends ClassVisitor {
+  public static class CountingVisitor extends ClassVisitor {
 
     int count;
 

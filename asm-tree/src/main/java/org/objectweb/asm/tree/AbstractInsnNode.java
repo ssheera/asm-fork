@@ -92,7 +92,7 @@ public abstract class AbstractInsnNode {
    * The opcode of this instruction, or -1 if this is not a JVM instruction (e.g. a label or a line
    * number).
    */
-  protected int opcode;
+  public int opcode;
 
   /**
    * The runtime visible type annotations of this instruction. This field is only used for real
@@ -109,24 +109,24 @@ public abstract class AbstractInsnNode {
   public List<TypeAnnotationNode> invisibleTypeAnnotations;
 
   /** The previous instruction in the list to which this instruction belongs. */
-  AbstractInsnNode previousInsn;
+  public AbstractInsnNode previousInsn;
 
   /** The next instruction in the list to which this instruction belongs. */
-  AbstractInsnNode nextInsn;
+  public AbstractInsnNode nextInsn;
 
   /**
    * The index of this instruction in the list to which it belongs. The value of this field is
    * correct only when {@link InsnList#cache} is not null. A value of -1 indicates that this
    * instruction does not belong to any {@link InsnList}.
    */
-  int index;
+  public int index;
 
   /**
    * Constructs a new {@link AbstractInsnNode}.
    *
    * @param opcode the opcode of the instruction to be constructed.
    */
-  protected AbstractInsnNode(final int opcode) {
+  public AbstractInsnNode(final int opcode) {
     this.opcode = opcode;
     this.index = -1;
   }
@@ -180,7 +180,7 @@ public abstract class AbstractInsnNode {
    *
    * @param methodVisitor a method visitor.
    */
-  protected final void acceptAnnotations(final MethodVisitor methodVisitor) {
+  public final void acceptAnnotations(final MethodVisitor methodVisitor) {
     if (visibleTypeAnnotations != null) {
       for (int i = 0, n = visibleTypeAnnotations.size(); i < n; ++i) {
         TypeAnnotationNode typeAnnotation = visibleTypeAnnotations.get(i);
@@ -215,7 +215,7 @@ public abstract class AbstractInsnNode {
    * @param clonedLabels a map from LabelNodes to cloned LabelNodes.
    * @return the clone of the given label.
    */
-  static LabelNode clone(final LabelNode label, final Map<LabelNode, LabelNode> clonedLabels) {
+  public static LabelNode clone(final LabelNode label, final Map<LabelNode, LabelNode> clonedLabels) {
     return clonedLabels.get(label);
   }
 
@@ -226,7 +226,7 @@ public abstract class AbstractInsnNode {
    * @param clonedLabels a map from LabelNodes to cloned LabelNodes.
    * @return the clones of the given labels.
    */
-  static LabelNode[] clone(
+  public static LabelNode[] clone(
       final List<LabelNode> labels, final Map<LabelNode, LabelNode> clonedLabels) {
     LabelNode[] clones = new LabelNode[labels.size()];
     for (int i = 0, n = clones.length; i < n; ++i) {
@@ -241,7 +241,7 @@ public abstract class AbstractInsnNode {
    * @param insnNode the source instruction.
    * @return this instruction.
    */
-  protected final AbstractInsnNode cloneAnnotations(final AbstractInsnNode insnNode) {
+  public final AbstractInsnNode cloneAnnotations(final AbstractInsnNode insnNode) {
     if (insnNode.visibleTypeAnnotations != null) {
       this.visibleTypeAnnotations = new ArrayList<>();
       for (int i = 0, n = insnNode.visibleTypeAnnotations.size(); i < n; ++i) {

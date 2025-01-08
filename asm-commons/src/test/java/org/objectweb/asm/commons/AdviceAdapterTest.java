@@ -634,7 +634,7 @@ class AdviceAdapterTest extends AsmTest {
   @ParameterizedTest
   @MethodSource(ALL_CLASSES_AND_ALL_APIS)
   void testAllMethods_precompiledClass(
-      final PrecompiledClass classParameter, final Api apiParameter) {
+      final PrecompiledClass classParameter, final Api apiParameter) throws Exception {
     ClassReader classReader = new ClassReader(classParameter.getBytes());
     ClassWriter classWriter = new ClassWriter(0);
     ClassVisitor adviceClassAdapter =
@@ -668,7 +668,7 @@ class AdviceAdapterTest extends AsmTest {
             "<init>",
             "()V") {
           @Override
-          protected void onMethodEnter() {
+          public void onMethodEnter() {
             Label label = new Label();
             visitLabel(label);
             // Generate ICONST_1 with the delegate visitor. The advice adapter does not 'see' this
@@ -678,6 +678,9 @@ class AdviceAdapterTest extends AsmTest {
             // pop from an empty stack because the previous ICONST_1 was not simulated.
             visitJumpInsn(IFEQ, label);
           }
+
+          @Override
+          public void onMethodExit(final int opcode) {}
         };
 
     adviceAdapter.visitCode();
@@ -748,12 +751,12 @@ class AdviceAdapterTest extends AsmTest {
     }
 
     @Override
-    protected void onMethodEnter() {
+    public void onMethodEnter() {
       newBasicAdvice(/* isAfterAdvice= */ false).accept(this);
     }
 
     @Override
-    protected void onMethodExit(final int opcode) {
+    public void onMethodExit(final int opcode) {
       newBasicAdvice(/* isAfterAdvice= */ true).accept(this);
     }
   }

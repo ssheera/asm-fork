@@ -43,7 +43,7 @@ import org.objectweb.asm.TypePath;
 public class MethodRemapper extends MethodVisitor {
 
   /** The remapper used to remap the types in the visited field. */
-  protected final Remapper remapper;
+  public Remapper remapper;
 
   /**
    * Constructs a new {@link MethodRemapper}. <i>Subclasses must not use this constructor</i>.
@@ -64,7 +64,7 @@ public class MethodRemapper extends MethodVisitor {
    * @param methodVisitor the method visitor this remapper must delegate to.
    * @param remapper the remapper to use to remap the types in the visited method.
    */
-  protected MethodRemapper(
+  public MethodRemapper(
       final int api, final MethodVisitor methodVisitor, final Remapper remapper) {
     super(api, methodVisitor);
     this.remapper = remapper;
@@ -122,7 +122,7 @@ public class MethodRemapper extends MethodVisitor {
         remapFrameTypes(numStack, stack));
   }
 
-  private Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
+  public Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
     if (frameTypes == null) {
       return frameTypes;
     }
@@ -170,26 +170,17 @@ public class MethodRemapper extends MethodVisitor {
   }
 
   @Override
-  @SuppressWarnings("deprecation")
   public void visitInvokeDynamicInsn(
       final String name,
       final String descriptor,
       final Handle bootstrapMethodHandle,
       final Object... bootstrapMethodArguments) {
-    String remappedName;
-    if (remapper.api == 0) {
-      remappedName = remapper.mapInvokeDynamicMethodName(name, descriptor);
-    } else {
-      remappedName =
-          remapper.mapInvokeDynamicMethodName(
-              name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
-    }
     Object[] remappedBootstrapMethodArguments = new Object[bootstrapMethodArguments.length];
     for (int i = 0; i < bootstrapMethodArguments.length; ++i) {
       remappedBootstrapMethodArguments[i] = remapper.mapValue(bootstrapMethodArguments[i]);
     }
     super.visitInvokeDynamicInsn(
-        remappedName,
+        remapper.mapInvokeDynamicMethodName(name, descriptor),
         remapper.mapMethodDesc(descriptor),
         (Handle) remapper.mapValue(bootstrapMethodHandle),
         remappedBootstrapMethodArguments);
@@ -278,8 +269,8 @@ public class MethodRemapper extends MethodVisitor {
    * @return the newly created remapper.
    * @deprecated use {@link #createAnnotationRemapper(String, AnnotationVisitor)} instead.
    */
-  @Deprecated(forRemoval = false)
-  protected AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
+  @Deprecated
+  public AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, /* descriptor= */ null, annotationVisitor, remapper);
   }
 
@@ -291,7 +282,7 @@ public class MethodRemapper extends MethodVisitor {
    * @param annotationVisitor the AnnotationVisitor the remapper must delegate to.
    * @return the newly created remapper.
    */
-  protected AnnotationVisitor createAnnotationRemapper(
+  public AnnotationVisitor createAnnotationRemapper(
       final String descriptor, final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, descriptor, annotationVisitor, remapper)
         .orDeprecatedValue(createAnnotationRemapper(annotationVisitor));

@@ -35,13 +35,13 @@ import java.io.Serializable;
  */
 abstract class AllStructures implements Runnable, Cloneable, Serializable {
 
-  private static final String UTF8 = "\u0008\u0080\u0800\u8000";
-  private static final long serialVersionUID = 123456L;
+  public static final String UTF8 = "\u0008\u0080\u0800\u8000";
+  public static final long serialVersionUID = 123456L;
 
   public int f0;
-  protected float f1;
+  public float f1;
   long f2;
-  private double f3;
+  public double f3;
   static AllStructures f4;
   final byte f5 = 1;
   transient char f6;
@@ -56,7 +56,7 @@ abstract class AllStructures implements Runnable, Cloneable, Serializable {
     return f0;
   }
 
-  protected float m1() {
+  public float m1() {
     return f1;
   }
 
@@ -64,7 +64,7 @@ abstract class AllStructures implements Runnable, Cloneable, Serializable {
     return f2;
   }
 
-  private double m3() {
+  public double m3() {
     return f3;
   }
 
@@ -94,9 +94,9 @@ abstract class AllStructures implements Runnable, Cloneable, Serializable {
     return this;
   }
 
-  private native void nativeMethod();
+  public native void nativeMethod();
 
-  private Runnable anonymousInnerClass() throws Exception {
+  public Runnable anonymousInnerClass() throws Exception {
     if (f0 > 0) {
       throw new Exception();
     }
@@ -107,10 +107,10 @@ abstract class AllStructures implements Runnable, Cloneable, Serializable {
     };
   }
 
-  private class InnerClass {
-    private final double f0;
+  public class InnerClass {
+    public final double f0;
 
-    private InnerClass(double f0) {
+    public InnerClass(double f0) {
       this.f0 = f0;
     }
   }

@@ -40,12 +40,12 @@ public abstract class ModuleVisitor {
    * The ASM API version implemented by this visitor. The value of this field must be one of {@link
    * Opcodes#ASM6} or {@link Opcodes#ASM7}.
    */
-  protected final int api;
+  public final int api;
 
   /**
    * The module visitor to which this visitor must delegate method calls. May be {@literal null}.
    */
-  protected ModuleVisitor mv;
+  public ModuleVisitor mv;
 
   /**
    * Constructs a new {@link ModuleVisitor}.
@@ -53,7 +53,7 @@ public abstract class ModuleVisitor {
    * @param api the ASM API version implemented by this visitor. Must be one of {@link Opcodes#ASM6}
    *     or {@link Opcodes#ASM7}.
    */
-  protected ModuleVisitor(final int api) {
+  public ModuleVisitor(final int api) {
     this(api, null);
   }
 
@@ -65,7 +65,7 @@ public abstract class ModuleVisitor {
    * @param moduleVisitor the module visitor to which this visitor must delegate method calls. May
    *     be null.
    */
-  protected ModuleVisitor(final int api, final ModuleVisitor moduleVisitor) {
+  public ModuleVisitor(final int api, final ModuleVisitor moduleVisitor) {
     if (api != Opcodes.ASM9
         && api != Opcodes.ASM8
         && api != Opcodes.ASM7

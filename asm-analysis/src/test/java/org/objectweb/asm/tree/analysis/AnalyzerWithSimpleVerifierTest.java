@@ -52,7 +52,7 @@ import org.objectweb.asm.tree.MethodNode;
  */
 class AnalyzerWithSimpleVerifierTest extends AsmTest {
 
-  private static final String CLASS_NAME = "C";
+  public static final String CLASS_NAME = "C";
 
   @Test
   void testAnalyze_differentDimensions() {
@@ -343,7 +343,7 @@ class AnalyzerWithSimpleVerifierTest extends AsmTest {
     assertDoesNotThrow(() -> MethodNodeBuilder.buildClassWithMethod(methodNode).newInstance());
   }
 
-  private static Analyzer<BasicValue> newAnalyzer() {
+  public static Analyzer<BasicValue> newAnalyzer() {
     return new Analyzer<>(
         new SimpleVerifier(Type.getType("LC;"), Type.getType("Ljava/lang/Number;"), false));
   }

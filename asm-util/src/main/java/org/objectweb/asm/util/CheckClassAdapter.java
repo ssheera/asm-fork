@@ -112,44 +112,44 @@ import org.objectweb.asm.tree.analysis.SimpleVerifier;
 public class CheckClassAdapter extends ClassVisitor {
 
   /** The help message shown when command line arguments are incorrect. */
-  private static final String USAGE =
+  public static final String USAGE =
       "Verifies the given class.\n"
           + "Usage: CheckClassAdapter <fully qualified class name or class file name>";
 
-  private static final String ERROR_AT = ": error at index ";
+  public static final String ERROR_AT = ": error at index ";
 
   /** Whether the bytecode must be checked with a BasicVerifier. */
-  private boolean checkDataFlow;
+  public boolean checkDataFlow;
 
   /** The class version number. */
-  private int version;
+  public int version;
 
   /** Whether the {@link #visit} method has been called. */
-  private boolean visitCalled;
+  public boolean visitCalled;
 
   /** Whether the {@link #visitModule} method has been called. */
-  private boolean visitModuleCalled;
+  public boolean visitModuleCalled;
 
   /** Whether the {@link #visitSource} method has been called. */
-  private boolean visitSourceCalled;
+  public boolean visitSourceCalled;
 
   /** Whether the {@link #visitOuterClass} method has been called. */
-  private boolean visitOuterClassCalled;
+  public boolean visitOuterClassCalled;
 
   /** Whether the {@link #visitNestHost} method has been called. */
-  private boolean visitNestHostCalled;
+  public boolean visitNestHostCalled;
 
   /**
    * The common package of all the nest members. Not {@literal null} if the visitNestMember method
    * has been called.
    */
-  private String nestMemberPackageName;
+  public String nestMemberPackageName;
 
   /** Whether the {@link #visitEnd} method has been called. */
-  private boolean visitEndCalled;
+  public boolean visitEndCalled;
 
   /** The index of the instruction designated by each visited label so far. */
-  private Map<Label, Integer> labelInsnIndices;
+  public Map<Label, Integer> labelInsnIndices;
 
   // -----------------------------------------------------------------------------------------------
   // Constructors
@@ -189,7 +189,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param checkDataFlow {@literal true} to perform basic data flow checks, or {@literal false} to
    *     not perform any data flow check (see {@link CheckMethodAdapter}).
    */
-  protected CheckClassAdapter(
+  public CheckClassAdapter(
       final int api, final ClassVisitor classVisitor, final boolean checkDataFlow) {
     super(api, classVisitor);
     this.labelInsnIndices = new HashMap<>();
@@ -521,7 +521,7 @@ public class CheckClassAdapter extends ClassVisitor {
   // -----------------------------------------------------------------------------------------------
 
   /** Checks that the visit method has been called and that visitEnd has not been called. */
-  private void checkState() {
+  public void checkState() {
     if (!visitCalled) {
       throw new IllegalStateException("Cannot visit member before visit has been called.");
     }
@@ -541,10 +541,10 @@ public class CheckClassAdapter extends ClassVisitor {
     if ((access & ~possibleAccess) != 0) {
       throw new IllegalArgumentException("Invalid access flags: " + access);
     }
-    int publicProtectedPrivate = Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED | Opcodes.ACC_PRIVATE;
-    if (Integer.bitCount(access & publicProtectedPrivate) > 1) {
+    int publicpublicpublic = Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED | Opcodes.ACC_PRIVATE;
+    if (Integer.bitCount(access & publicpublicpublic) > 1) {
       throw new IllegalArgumentException(
-          "public, protected and private are mutually exclusive: " + access);
+          "public, public and public are mutually exclusive: " + access);
     }
     if (Integer.bitCount(access & (Opcodes.ACC_FINAL | Opcodes.ACC_ABSTRACT)) > 1) {
       throw new IllegalArgumentException("final and abstract are mutually exclusive: " + access);
@@ -559,7 +559,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param access the method access flags to be checked.
    * @param possibleAccess the valid access flags.
    */
-  private static void checkMethodAccess(
+  public static void checkMethodAccess(
       final int version, final int access, final int possibleAccess) {
     checkAccess(access, possibleAccess);
     if ((version & 0xFFFF) < Opcodes.V17
@@ -680,7 +680,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkTypeParameters(final String signature, final int startPos) {
+  public static int checkTypeParameters(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // TypeParameters:
     //   < TypeParameter TypeParameter* >
@@ -700,7 +700,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkTypeParameter(final String signature, final int startPos) {
+  public static int checkTypeParameter(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // TypeParameter:
     //   Identifier ClassBound InterfaceBound*
@@ -727,7 +727,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param pos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkReferenceTypeSignature(final String signature, final int pos) {
+  public static int checkReferenceTypeSignature(final String signature, final int pos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // ReferenceTypeSignature:
     //   ClassTypeSignature
@@ -752,7 +752,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkClassTypeSignature(final String signature, final int startPos) {
+  public static int checkClassTypeSignature(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // ClassTypeSignature:
     //   L [PackageSpecifier] SimpleClassTypeSignature ClassTypeSignatureSuffix* ;
@@ -787,7 +787,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkTypeArguments(final String signature, final int startPos) {
+  public static int checkTypeArguments(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // TypeArguments:
     //   < TypeArgument TypeArgument* >
@@ -807,7 +807,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkTypeArgument(final String signature, final int startPos) {
+  public static int checkTypeArgument(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // TypeArgument:
     //   [WildcardIndicator] ReferenceTypeSignature
@@ -832,7 +832,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkTypeVariableSignature(final String signature, final int startPos) {
+  public static int checkTypeVariableSignature(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // TypeVariableSignature:
     //  T Identifier ;
@@ -849,7 +849,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkJavaTypeSignature(final String signature, final int startPos) {
+  public static int checkJavaTypeSignature(final String signature, final int startPos) {
     // From https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9.1:
     // JavaTypeSignature:
     //   ReferenceTypeSignature
@@ -880,7 +880,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param startPos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkSignatureIdentifier(final String signature, final int startPos) {
+  public static int checkSignatureIdentifier(final String signature, final int startPos) {
     int pos = startPos;
     while (pos < signature.length() && ".;[/<>:".indexOf(signature.codePointAt(pos)) == -1) {
       pos = signature.offsetByCodePoints(pos, 1);
@@ -899,7 +899,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param pos index of first character to be checked.
    * @return the index of the first character after the checked part.
    */
-  private static int checkChar(final char c, final String signature, final int pos) {
+  public static int checkChar(final char c, final String signature, final int pos) {
     if (getChar(signature, pos) == c) {
       return pos + 1;
     }
@@ -913,7 +913,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param pos an index in 'string'.
    * @return the character at the given index, or 0 if there is no such character.
    */
-  private static char getChar(final String string, final int pos) {
+  public static char getChar(final String string, final int pos) {
     return pos < string.length() ? string.charAt(pos) : (char) 0;
   }
 
@@ -970,7 +970,7 @@ public class CheckClassAdapter extends ClassVisitor {
    * @param name an internal name.
    * @return the package name or "" if there is no package.
    */
-  private static String packageName(final String name) {
+  public static String packageName(final String name) {
     int index = name.lastIndexOf('/');
     if (index == -1) {
       return "";
@@ -1118,7 +1118,7 @@ public class CheckClassAdapter extends ClassVisitor {
     printWriter.println();
   }
 
-  private static String getUnqualifiedName(final String name) {
+  public static String getUnqualifiedName(final String name) {
     int lastSlashIndex = name.lastIndexOf('/');
     if (lastSlashIndex == -1) {
       return name;

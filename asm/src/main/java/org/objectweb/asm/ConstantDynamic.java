@@ -37,19 +37,19 @@ import java.util.Arrays;
 public final class ConstantDynamic {
 
   /** The constant name (can be arbitrary). */
-  private final String name;
+  public final String name;
 
   /** The constant type (must be a field descriptor). */
-  private final String descriptor;
+  public final String descriptor;
 
   /** The bootstrap method to use to compute the constant value at runtime. */
-  private final Handle bootstrapMethod;
+  public final Handle bootstrapMethod;
 
   /**
    * The arguments to pass to the bootstrap method, in order to compute the constant value at
    * runtime.
    */
-  private final Object[] bootstrapMethodArguments;
+  public final Object[] bootstrapMethodArguments;
 
   /**
    * Constructs a new {@link ConstantDynamic}.

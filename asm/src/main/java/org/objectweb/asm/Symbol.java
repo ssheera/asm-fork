@@ -37,7 +37,7 @@ package org.objectweb.asm;
  *     4.7.23</a>
  * @author Eric Bruneton
  */
-abstract class Symbol {
+public abstract class Symbol {
 
   // Tag values for the constant pool entries (using the same order as in the JVMS).
 
@@ -129,20 +129,20 @@ abstract class Symbol {
    * The index of this symbol in the constant pool, in the BootstrapMethods attribute, or in the
    * (ASM specific) type table of a class (depending on the {@link #tag} value).
    */
-  final int index;
+  public  int index;
 
   /**
    * A tag indicating the type of this symbol. Must be one of the static tag values defined in this
    * class.
    */
-  final int tag;
+  public  int tag;
 
   /**
    * The internal name of the owner class of this symbol. Only used for {@link
    * #CONSTANT_FIELDREF_TAG}, {@link #CONSTANT_METHODREF_TAG}, {@link
    * #CONSTANT_INTERFACE_METHODREF_TAG}, and {@link #CONSTANT_METHOD_HANDLE_TAG} symbols.
    */
-  final String owner;
+  public  String owner;
 
   /**
    * The name of the class field or method corresponding to this symbol. Only used for {@link
@@ -151,7 +151,7 @@ abstract class Symbol {
    * #CONSTANT_METHOD_HANDLE_TAG}, {@link #CONSTANT_DYNAMIC_TAG} and {@link
    * #CONSTANT_INVOKE_DYNAMIC_TAG} symbols.
    */
-  final String name;
+  public  String name;
 
   /**
    * The string value of this symbol. This is:
@@ -169,7 +169,7 @@ abstract class Symbol {
    *   <li>{@literal null} for the other types of symbol.
    * </ul>
    */
-  final String value;
+  public  String value;
 
   /**
    * The numeric value of this symbol. This is:
@@ -195,7 +195,7 @@ abstract class Symbol {
    *   <li>0 for the other types of symbol.
    * </ul>
    */
-  final long data;
+  public  long data;
 
   /**
    * Additional information about this symbol, generally computed lazily. <i>Warning: the value of
@@ -214,7 +214,7 @@ abstract class Symbol {
    *   <li>0 for the other types of symbol, or if this field has not been computed yet.
    * </ul>
    */
-  int info;
+  public int info;
 
   /**
    * Constructs a new Symbol. This constructor can't be used directly because the Symbol class is
@@ -229,7 +229,7 @@ abstract class Symbol {
    * @param value The string value of this symbol. Maybe {@literal null}.
    * @param data The numeric value of this symbol.
    */
-  Symbol(
+  public Symbol(
       final int index,
       final int tag,
       final String owner,
@@ -252,7 +252,7 @@ abstract class Symbol {
    *     #CONSTANT_METHODREF_TAG}, {@link #CONSTANT_INTERFACE_METHODREF_TAG} and {@link
    *     #CONSTANT_INVOKE_DYNAMIC_TAG} symbols.
    */
-  int getArgumentsAndReturnSizes() {
+  public int getArgumentsAndReturnSizes() {
     if (info == 0) {
       info = Type.getArgumentsAndReturnSizes(value);
     }

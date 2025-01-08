@@ -29,16 +29,8 @@ package org.objectweb.asm.tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Attribute;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ConstantDynamic;
-import org.objectweb.asm.Handle;
-import org.objectweb.asm.Label;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.TypePath;
+
+import org.objectweb.asm.*;
 
 /**
  * A node that represents a method.
@@ -146,7 +138,7 @@ public class MethodNode extends MethodVisitor {
   public List<LocalVariableAnnotationNode> invisibleLocalVariableAnnotations;
 
   /** Whether the accept method has been called on this object. */
-  private boolean visited;
+  public boolean visited;
 
   /**
    * Constructs an uninitialized {@link MethodNode}. <i>Subclasses must not use this
@@ -529,14 +521,14 @@ public class MethodNode extends MethodVisitor {
    * @param label a Label.
    * @return the LabelNode corresponding to label.
    */
-  protected LabelNode getLabelNode(final Label label) {
+  public LabelNode getLabelNode(final Label label) {
     if (!(label.info instanceof LabelNode)) {
       label.info = new LabelNode();
     }
     return (LabelNode) label.info;
   }
 
-  private LabelNode[] getLabelNodes(final Label[] labels) {
+  public LabelNode[] getLabelNodes(final Label[] labels) {
     LabelNode[] labelNodes = new LabelNode[labels.length];
     for (int i = 0, n = labels.length; i < n; ++i) {
       labelNodes[i] = getLabelNode(labels[i]);
@@ -544,7 +536,7 @@ public class MethodNode extends MethodVisitor {
     return labelNodes;
   }
 
-  private Object[] getLabelNodes(final Object[] objects) {
+  public Object[] getLabelNodes(final Object[] objects) {
     Object[] labelNodes = new Object[objects.length];
     for (int i = 0, n = objects.length; i < n; ++i) {
       Object o = objects[i];
@@ -643,8 +635,14 @@ public class MethodNode extends MethodVisitor {
    */
   public void accept(final ClassVisitor classVisitor) {
     String[] exceptionsArray = exceptions == null ? null : exceptions.toArray(new String[0]);
-    MethodVisitor methodVisitor =
-        classVisitor.visitMethod(access, name, desc, signature, exceptionsArray);
+    MethodVisitor methodVisitor;
+    if (classVisitor instanceof ClassWriter) {
+      methodVisitor =
+              ((ClassWriter) classVisitor).visitMethod(access, name, desc, signature, exceptionsArray, noverify);
+    } else {
+      methodVisitor =
+              classVisitor.visitMethod(access, name, desc, signature, exceptionsArray);
+    }
     if (methodVisitor != null) {
       accept(methodVisitor);
     }

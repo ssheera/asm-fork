@@ -48,20 +48,20 @@ import org.openjdk.jmh.annotations.Warmup;
 @State(Scope.Thread)
 public class GeneratorBenchmark extends AbstractBenchmark {
 
-  private Generator asm5dot0;
-  private Generator asm6dot0;
-  private Generator asm7dot0;
-  private Generator asm8dot0;
-  private Generator asm9dot0;
-  private Generator asmCurrent;
-  private Generator aspectJBcel;
-  private Generator bcel;
-  private Generator cojen;
-  private Generator csgBytecode;
-  private Generator gnuByteCode;
-  private Generator jclassLib;
-  private Generator jiapi;
-  private Generator mozillaClassFile;
+  public Generator asm5dot0;
+  public Generator asm6dot0;
+  public Generator asm7dot0;
+  public Generator asm8dot0;
+  public Generator asm9dot0;
+  public Generator asmCurrent;
+  public Generator aspectJBcel;
+  public Generator bcel;
+  public Generator cojen;
+  public Generator csgBytecode;
+  public Generator gnuByteCode;
+  public Generator jclassLib;
+  public Generator jiapi;
+  public Generator mozillaClassFile;
 
   public GeneratorBenchmark() {
     super("org.objectweb.asm.benchmarks.AsmGenerator");

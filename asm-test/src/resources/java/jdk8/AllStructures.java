@@ -118,15 +118,15 @@ public abstract class AllStructures<
     return new @VTUA(v = 86) @ITUA(v = 87) HashMap<@VTUA(v = 88) V0, @ITUA(v = 89) V1>();
   }
   
-  private static <U, V> void m() {}
+  public static <U, V> void m() {}
 
-  private double g;
+  public double g;
 
-  private double n() {
+  public double n() {
     return g;
   }
 
-  private Runnable anonymousInnerClass() throws Exception {
+  public Runnable anonymousInnerClass() throws Exception {
     return new Runnable() {
       public void run() {
         @VTUA(v = 0)
@@ -137,16 +137,16 @@ public abstract class AllStructures<
     };
   }
 
-  private class InnerClass {
+  public class InnerClass {
 
     @VTUA(v = 0)
     @ITUA(v = 1)
-    private final double f;
+    public final double f;
 
-    private InnerClass(double f) {
+    public InnerClass(double f) {
       this.f = f;
     }
   }
 
-  private class 𝔻 {}
+  public class 𝔻 {}
 }

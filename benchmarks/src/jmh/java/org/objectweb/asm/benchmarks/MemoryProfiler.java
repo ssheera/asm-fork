@@ -51,13 +51,13 @@ import org.openjdk.jmh.results.ScalarResult;
  */
 public class MemoryProfiler implements InternalProfiler {
 
-  private static final Logger LOGGER = Logger.getLogger(MemoryProfiler.class.getName());
+  public static final Logger LOGGER = Logger.getLogger(MemoryProfiler.class.getName());
 
-  private static Object[] references; // NOPMD(UnusedPrivateField): false positive.
-  private static int referenceCount;
+  public static Object[] references; // NOPMD(UnusedpublicField): false positive.
+  public static int referenceCount;
 
-  private static final MemoryProbe memoryProbe = new MemoryProbe();
-  private static long usedMemoryBeforeIteration;
+  public static final MemoryProbe memoryProbe = new MemoryProbe();
+  public static long usedMemoryBeforeIteration;
 
   public static void keepReference(final Object reference) {
     references[referenceCount++] = reference;
@@ -98,17 +98,17 @@ public class MemoryProfiler implements InternalProfiler {
     return results;
   }
 
-  private static boolean appliesToBenchmark(final BenchmarkParams benchmarkParams) {
+  public static boolean appliesToBenchmark(final BenchmarkParams benchmarkParams) {
     return benchmarkParams.getBenchmark().contains("MemoryBenchmark");
   }
 
   static class MemoryProbe {
 
-    private static final int MAX_WAIT_MILLIS = 20 * 1000;
+    public static final int MAX_WAIT_MILLIS = 20 * 1000;
 
-    private final Object lock = new Object();
+    public final Object lock = new Object();
 
-    private int gcCount;
+    public int gcCount;
 
     public MemoryProbe() {
       for (GarbageCollectorMXBean gcBean : ManagementFactory.getGarbageCollectorMXBeans()) {
@@ -127,14 +127,14 @@ public class MemoryProfiler implements InternalProfiler {
       return ManagementFactory.getMemoryMXBean().getHeapMemoryUsage().getUsed();
     }
 
-    private void notifyGc() {
+    public void notifyGc() {
       synchronized (lock) {
         gcCount++;
         lock.notifyAll();
       }
     }
 
-    private void systemGc(final long deadline) throws InterruptedException {
+    public void systemGc(final long deadline) throws InterruptedException {
       synchronized (lock) {
         System.gc(); // NOPMD(DoNotCallGarbageCollectionExplicitly): needed to measure used memory.
         int previousGcCount = gcCount;

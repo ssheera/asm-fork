@@ -42,10 +42,10 @@ public class CheckAnnotationAdapter extends AnnotationVisitor {
    * Whether the values of the visited annotation are named. AnnotationVisitor instances used for
    * annotation default and annotation arrays use unnamed values.
    */
-  private final boolean useNamedValue;
+  public final boolean useNamedValue;
 
   /** Whether the {@link #visitEnd} method has been called. */
-  private boolean visitEndCalled;
+  public boolean visitEndCalled;
 
   public CheckAnnotationAdapter(final AnnotationVisitor annotationVisitor) {
     this(annotationVisitor, true);
@@ -121,13 +121,13 @@ public class CheckAnnotationAdapter extends AnnotationVisitor {
     super.visitEnd();
   }
 
-  private void checkName(final String name) {
+  public void checkName(final String name) {
     if (useNamedValue && name == null) {
       throw new IllegalArgumentException("Annotation value name must not be null");
     }
   }
 
-  private void checkVisitEndNotCalled() {
+  public void checkVisitEndNotCalled() {
     if (visitEndCalled) {
       throw new IllegalStateException("Cannot call a visit method after visitEnd has been called");
     }

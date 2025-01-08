@@ -152,12 +152,12 @@ class ClassNodeTest extends AsmTest {
         new ClassFile(expectedClassWriter.toByteArray()), new ClassFile(classWriter.toByteArray()));
   }
 
-  private static Attribute[] attributes() {
+  public static Attribute[] attributes() {
     return new Attribute[] {new Comment(), new CodeComment()};
   }
 
   @SuppressWarnings("serial")
-  private static void cloneInstructions(final MethodNode methodNode) {
+  public static void cloneInstructions(final MethodNode methodNode) {
     Map<LabelNode, LabelNode> labelCloneMap =
         new HashMap<LabelNode, LabelNode>() {
           @Override
@@ -172,7 +172,7 @@ class ClassNodeTest extends AsmTest {
     }
   }
 
-  private static class RemoveMembersClassVisitor extends ClassVisitor {
+  public static class RemoveMembersClassVisitor extends ClassVisitor {
 
     RemoveMembersClassVisitor(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);

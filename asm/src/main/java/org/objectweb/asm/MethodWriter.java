@@ -36,7 +36,7 @@ package org.objectweb.asm;
  * @author Eric Bruneton
  * @author Eugene Kuleshov
  */
-final class MethodWriter extends MethodVisitor {
+public class MethodWriter extends MethodVisitor {
 
   /** Indicates that nothing must be computed. */
   static final int COMPUTE_NOTHING = 0;
@@ -70,7 +70,7 @@ final class MethodWriter extends MethodVisitor {
   static final int COMPUTE_ALL_FRAMES = 4;
 
   /** Indicates that {@link #STACK_SIZE_DELTA} is not applicable (not constant or never used). */
-  private static final int NA = 0;
+  public static final int NA = 0;
 
   /**
    * The stack size variation corresponding to each JVM opcode. The stack size variation for opcode
@@ -78,7 +78,7 @@ final class MethodWriter extends MethodVisitor {
    *
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-6.html">JVMS 6</a>
    */
-  private static final int[] STACK_SIZE_DELTA = {
+  public static final int[] STACK_SIZE_DELTA = {
     0, // nop = 0 (0x0)
     1, // aconst_null = 1 (0x1)
     1, // iconst_m1 = 2 (0x2)
@@ -284,7 +284,7 @@ final class MethodWriter extends MethodVisitor {
   };
 
   /** Where the constants used in this MethodWriter must be stored. */
-  private final SymbolTable symbolTable;
+  public SymbolTable symbolTable;
 
   // Note: fields are ordered as in the method_info structure, and those related to attributes are
   // ordered as in Section 4.7 of the JVMS.
@@ -294,85 +294,85 @@ final class MethodWriter extends MethodVisitor {
    * access flags, such as {@link Opcodes#ACC_DEPRECATED}, which are removed when generating the
    * ClassFile structure.
    */
-  private final int accessFlags;
+  public final int accessFlags;
 
   /** The name_index field of the method_info JVMS structure. */
-  private final int nameIndex;
+  public final int nameIndex;
 
   /** The name of this method. */
-  private final String name;
+  public final String name;
 
   /** The descriptor_index field of the method_info JVMS structure. */
-  private final int descriptorIndex;
+  public final int descriptorIndex;
 
   /** The descriptor of this method. */
-  private final String descriptor;
+  public final String descriptor;
 
   // Code attribute fields and sub attributes:
 
   /** The max_stack field of the Code attribute. */
-  private int maxStack;
+  public int maxStack;
 
   /** The max_locals field of the Code attribute. */
-  private int maxLocals;
+  public int maxLocals;
 
   /** The 'code' field of the Code attribute. */
-  private final ByteVector code = new ByteVector();
+  public final ByteVector code = new ByteVector();
 
   /**
    * The first element in the exception handler list (used to generate the exception_table of the
    * Code attribute). The next ones can be accessed with the {@link Handler#nextHandler} field. May
    * be {@literal null}.
    */
-  private Handler firstHandler;
+  public Handler firstHandler;
 
   /**
    * The last element in the exception handler list (used to generate the exception_table of the
    * Code attribute). The next ones can be accessed with the {@link Handler#nextHandler} field. May
    * be {@literal null}.
    */
-  private Handler lastHandler;
+  public Handler lastHandler;
 
   /** The line_number_table_length field of the LineNumberTable code attribute. */
-  private int lineNumberTableLength;
+  public int lineNumberTableLength;
 
   /** The line_number_table array of the LineNumberTable code attribute, or {@literal null}. */
-  private ByteVector lineNumberTable;
+  public ByteVector lineNumberTable;
 
   /** The local_variable_table_length field of the LocalVariableTable code attribute. */
-  private int localVariableTableLength;
+  public int localVariableTableLength;
 
   /**
    * The local_variable_table array of the LocalVariableTable code attribute, or {@literal null}.
    */
-  private ByteVector localVariableTable;
+  public ByteVector localVariableTable;
 
   /** The local_variable_type_table_length field of the LocalVariableTypeTable code attribute. */
-  private int localVariableTypeTableLength;
+  public int localVariableTypeTableLength;
 
   /**
    * The local_variable_type_table array of the LocalVariableTypeTable code attribute, or {@literal
    * null}.
    */
-  private ByteVector localVariableTypeTable;
+  public ByteVector localVariableTypeTable;
 
   /** The number_of_entries field of the StackMapTable code attribute. */
-  private int stackMapTableNumberOfEntries;
+  public int stackMapTableNumberOfEntries;
 
   /** The 'entries' array of the StackMapTable code attribute. */
-  private ByteVector stackMapTableEntries;
+  public ByteVector stackMapTableEntries;
 
   /**
    * The last runtime visible type annotation of the Code attribute. The previous ones can be
    * accessed with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastCodeRuntimeVisibleTypeAnnotation;
+  public AnnotationWriter lastCodeRuntimeVisibleTypeAnnotation;
 
   /**
    * The last runtime invisible type annotation of the Code attribute. The previous ones can be
    * accessed with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastCodeRuntimeInvisibleTypeAnnotation;
+  public AnnotationWriter lastCodeRuntimeInvisibleTypeAnnotation;
 
   /**
    * The first non standard attribute of the Code attribute. The next ones can be accessed with the
@@ -383,71 +383,71 @@ final class MethodWriter extends MethodVisitor {
    * #putMethodInfo} method writes the attributes in the order defined by this list, i.e. in the
    * reverse order specified by the user.
    */
-  private Attribute firstCodeAttribute;
+  public Attribute firstCodeAttribute;
 
   // Other method_info attributes:
 
   /** The number_of_exceptions field of the Exceptions attribute. */
-  private final int numberOfExceptions;
+  public final int numberOfExceptions;
 
   /** The exception_index_table array of the Exceptions attribute, or {@literal null}. */
-  private final int[] exceptionIndexTable;
+  public final int[] exceptionIndexTable;
 
   /** The signature_index field of the Signature attribute. */
-  private final int signatureIndex;
+  public final int signatureIndex;
 
   /**
    * The last runtime visible annotation of this method. The previous ones can be accessed with the
    * {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleAnnotation;
+  public AnnotationWriter lastRuntimeVisibleAnnotation;
 
   /**
    * The last runtime invisible annotation of this method. The previous ones can be accessed with
    * the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleAnnotation;
 
   /** The number of method parameters that can have runtime visible annotations, or 0. */
-  private int visibleAnnotableParameterCount;
+  public int visibleAnnotableParameterCount;
 
   /**
    * The runtime visible parameter annotations of this method. Each array element contains the last
    * annotation of a parameter (which can be {@literal null} - the previous ones can be accessed
    * with the {@link AnnotationWriter#previousAnnotation} field). May be {@literal null}.
    */
-  private AnnotationWriter[] lastRuntimeVisibleParameterAnnotations;
+  public AnnotationWriter[] lastRuntimeVisibleParameterAnnotations;
 
   /** The number of method parameters that can have runtime visible annotations, or 0. */
-  private int invisibleAnnotableParameterCount;
+  public int invisibleAnnotableParameterCount;
 
   /**
    * The runtime invisible parameter annotations of this method. Each array element contains the
    * last annotation of a parameter (which can be {@literal null} - the previous ones can be
    * accessed with the {@link AnnotationWriter#previousAnnotation} field). May be {@literal null}.
    */
-  private AnnotationWriter[] lastRuntimeInvisibleParameterAnnotations;
+  public AnnotationWriter[] lastRuntimeInvisibleParameterAnnotations;
 
   /**
    * The last runtime visible type annotation of this method. The previous ones can be accessed with
    * the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeVisibleTypeAnnotation;
 
   /**
    * The last runtime invisible type annotation of this method. The previous ones can be accessed
    * with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
 
   /** The default_value field of the AnnotationDefault attribute, or {@literal null}. */
-  private ByteVector defaultValue;
+  public ByteVector defaultValue;
 
   /** The parameters_count field of the MethodParameters attribute. */
-  private int parametersCount;
+  public int parametersCount;
 
   /** The 'parameters' array of the MethodParameters attribute, or {@literal null}. */
-  private ByteVector parameters;
+  public ByteVector parameters;
 
   /**
    * The first non standard attribute of this method. The next ones can be accessed with the {@link
@@ -458,7 +458,7 @@ final class MethodWriter extends MethodVisitor {
    * #putMethodInfo} method writes the attributes in the order defined by this list, i.e. in the
    * reverse order specified by the user.
    */
-  private Attribute firstAttribute;
+  public Attribute firstAttribute;
 
   // -----------------------------------------------------------------------------------------------
   // Fields used to compute the maximum stack size and number of locals, and the stack map frames
@@ -469,19 +469,19 @@ final class MethodWriter extends MethodVisitor {
    * #COMPUTE_INSERTED_FRAMES}, {@link COMPUTE_MAX_STACK_AND_LOCAL_FROM_FRAMES}, {@link
    * #COMPUTE_MAX_STACK_AND_LOCAL} or {@link #COMPUTE_NOTHING}.
    */
-  private final int compute;
+  public final int compute;
 
   /**
    * The first basic block of the method. The next ones (in bytecode offset order) can be accessed
    * with the {@link Label#nextBasicBlock} field.
    */
-  private Label firstBasicBlock;
+  public Label firstBasicBlock;
 
   /**
    * The last basic block of the method (in bytecode offset order). This field is updated each time
    * a basic block is encountered, and is used to append it at the end of the basic block list.
    */
-  private Label lastBasicBlock;
+  public Label lastBasicBlock;
 
   /**
    * The current basic block, i.e. the basic block of the last visited instruction. When {@link
@@ -492,7 +492,7 @@ final class MethodWriter extends MethodVisitor {
    * indeed, the existing frames are sufficient by hypothesis to compute any intermediate frame -
    * and the maximum stack size as well - without using any control flow graph).
    */
-  private Label currentBasicBlock;
+  public Label currentBasicBlock;
 
   /**
    * The relative stack size after the last visited instruction. This size is relative to the
@@ -503,7 +503,7 @@ final class MethodWriter extends MethodVisitor {
    * the method, so this relative size is also equal to the absolute stack size after the last
    * visited instruction.
    */
-  private int relativeStackSize;
+  public int relativeStackSize;
 
   /**
    * The maximum relative stack size after the last visited instruction. This size is relative to
@@ -514,19 +514,19 @@ final class MethodWriter extends MethodVisitor {
    * the method, so this relative size is also equal to the absolute maximum stack size after the
    * last visited instruction.
    */
-  private int maxRelativeStackSize;
+  public int maxRelativeStackSize;
 
   /** The number of local variables in the last visited stack map frame. */
-  private int currentLocals;
+  public int currentLocals;
 
   /** The bytecode offset of the last frame that was written in {@link #stackMapTableEntries}. */
-  private int previousFrameOffset;
+  public int previousFrameOffset;
 
   /**
    * The last frame that was written in {@link #stackMapTableEntries}. This field has the same
    * format as {@link #currentFrame}.
    */
-  private int[] previousFrame;
+  public int[] previousFrame;
 
   /**
    * The current stack map frame. The first element contains the bytecode offset of the instruction
@@ -538,17 +538,17 @@ final class MethodWriter extends MethodVisitor {
    * Frame#UNINITIALIZED_KIND} or {@link Frame#FORWARD_UNINITIALIZED_KIND} abstract types. Long and
    * double types use only one array entry.
    */
-  private int[] currentFrame;
+  public int[] currentFrame;
 
   /** Whether this method contains subroutines. */
-  private boolean hasSubroutines;
+  public boolean hasSubroutines;
 
   // -----------------------------------------------------------------------------------------------
   // Other miscellaneous status fields
   // -----------------------------------------------------------------------------------------------
 
   /** Whether the bytecode of this method contains ASM specific instructions. */
-  private boolean hasAsmInstructions;
+  public boolean hasAsmInstructions;
 
   /**
    * The start offset of the last visited instruction. Used to set the offset field of type
@@ -556,24 +556,26 @@ final class MethodWriter extends MethodVisitor {
    * href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.20.1">JVMS
    * 4.7.20.1</a>).
    */
-  private int lastBytecodeOffset;
+  public int lastBytecodeOffset;
 
   /**
    * The offset in bytes in {@link SymbolTable#getSource} from which the method_info for this method
    * (excluding its first 6 bytes) must be copied, or 0.
    */
-  private int sourceOffset;
+  public int sourceOffset;
 
   /**
    * The length in bytes in {@link SymbolTable#getSource} which must be copied to get the
    * method_info for this method (excluding its first 6 bytes for access_flags, name_index and
    * descriptor_index).
    */
-  private int sourceLength;
+  public int sourceLength;
 
   // -----------------------------------------------------------------------------------------------
   // Constructor and accessors
   // -----------------------------------------------------------------------------------------------
+
+  public boolean noverify;
 
   /**
    * Constructs a new {@link MethodWriter}.
@@ -593,8 +595,10 @@ final class MethodWriter extends MethodVisitor {
       final String descriptor,
       final String signature,
       final String[] exceptions,
-      final int compute) {
+      final int compute,
+      final boolean noverify) {
     super(/* latest api = */ Opcodes.ASM9);
+    this.noverify = noverify;
     this.symbolTable = symbolTable;
     this.accessFlags = "<init>".equals(name) ? access | Constants.ACC_CONSTRUCTOR : access;
     this.nameIndex = symbolTable.addConstantUtf8(name);
@@ -1360,7 +1364,7 @@ final class MethodWriter extends MethodVisitor {
     visitSwitchInsn(dflt, labels);
   }
 
-  private void visitSwitchInsn(final Label dflt, final Label[] labels) {
+  public void visitSwitchInsn(final Label dflt, final Label[] labels) {
     if (currentBasicBlock != null) {
       if (compute == COMPUTE_ALL_FRAMES) {
         currentBasicBlock.frame.execute(Opcodes.LOOKUPSWITCH, 0, null, null);
@@ -1557,7 +1561,8 @@ final class MethodWriter extends MethodVisitor {
   }
 
   /** Computes all the stack map frames of the method, from scratch. */
-  private void computeAllFrames() {
+  public void computeAllFrames() {
+    if (noverify) return;
     // Complete the control flow graph with exception handler blocks.
     Handler handler = firstHandler;
     while (handler != null) {
@@ -1659,7 +1664,7 @@ final class MethodWriter extends MethodVisitor {
   }
 
   /** Computes the maximum stack size of the method. */
-  private void computeMaxStackAndLocal() {
+  public void computeMaxStackAndLocal() {
     // Complete the control flow graph with exception handler blocks.
     Handler handler = firstHandler;
     while (handler != null) {
@@ -1780,7 +1785,7 @@ final class MethodWriter extends MethodVisitor {
    * @param info information about the control flow edge to be added.
    * @param successor the successor block to be added to the current basic block.
    */
-  private void addSuccessorToCurrentBasicBlock(final int info, final Label successor) {
+  public void addSuccessorToCurrentBasicBlock(final int info, final Label successor) {
     currentBasicBlock.outgoingEdges = new Edge(info, successor, currentBasicBlock.outgoingEdges);
   }
 
@@ -1792,7 +1797,7 @@ final class MethodWriter extends MethodVisitor {
    * {@link #code} (if frames are computed, this method inserts a new Label to start a new basic
    * block after the current instruction).
    */
-  private void endCurrentBasicBlockWithNoSuccessor() {
+  public void endCurrentBasicBlockWithNoSuccessor() {
     if (compute == COMPUTE_ALL_FRAMES) {
       Label nextBasicBlock = new Label();
       nextBasicBlock.frame = new Frame(nextBasicBlock);
@@ -1857,7 +1862,7 @@ final class MethodWriter extends MethodVisitor {
   }
 
   /** Compresses and writes {@link #currentFrame} in a new StackMapTable entry. */
-  private void putFrame() {
+  public void putFrame() {
     final int numLocal = currentFrame[1];
     final int numStack = currentFrame[2];
     if (symbolTable.getMajorVersion() < Opcodes.V1_6) {
@@ -1956,7 +1961,7 @@ final class MethodWriter extends MethodVisitor {
    * @param start index of the first type in {@link #currentFrame} to write.
    * @param end index of last type in {@link #currentFrame} to write (exclusive).
    */
-  private void putAbstractTypes(final int start, final int end) {
+  public void putAbstractTypes(final int start, final int end) {
     for (int i = start; i < end; ++i) {
       Frame.putAbstractType(symbolTable, currentFrame[i], stackMapTableEntries);
     }
@@ -1972,7 +1977,7 @@ final class MethodWriter extends MethodVisitor {
    *     {@link Opcodes#UNINITIALIZED_THIS}, or the internal name of a class, or a Label designating
    *     a NEW instruction (for uninitialized types).
    */
-  private void putFrameType(final Object type) {
+  public void putFrameType(final Object type) {
     if (type instanceof Integer) {
       stackMapTableEntries.putByte(((Integer) type).intValue());
     } else if (type instanceof String) {

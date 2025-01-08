@@ -59,10 +59,10 @@ import org.objectweb.asm.tree.analysis.Frame;
  */
 class CheckFrameAnalyzerTest extends AsmTest {
 
-  private static final String CLASS_NAME = "C";
+  public static final String CLASS_NAME = "C";
 
   // Labels used to generate test cases.
-  private final Label label0 = new Label();
+  public final Label label0 = new Label();
 
   @Test
   void testAnalyze_validBytecode() {
@@ -334,12 +334,12 @@ class CheckFrameAnalyzerTest extends AsmTest {
     }
   }
 
-  private static boolean hasJsrOrRetInstructions(final PrecompiledClass classParameter) {
+  public static boolean hasJsrOrRetInstructions(final PrecompiledClass classParameter) {
     return classParameter == PrecompiledClass.JDK3_ALL_INSTRUCTIONS
         || classParameter == PrecompiledClass.JDK3_LARGE_METHOD;
   }
 
-  private static ClassNode computeFrames(final PrecompiledClass classParameter) {
+  public static ClassNode computeFrames(final PrecompiledClass classParameter) {
     byte[] classFile = classParameter.getBytes();
     ClassReader classReader = new ClassReader(classFile);
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -350,11 +350,11 @@ class CheckFrameAnalyzerTest extends AsmTest {
     return classNode;
   }
 
-  private static Analyzer<BasicValue> newAnalyzer() {
+  public static Analyzer<BasicValue> newAnalyzer() {
     return new CheckFrameAnalyzer<>(new BasicVerifier());
   }
 
-  private static int lastJvmInsnIndex(final MethodNode method) {
+  public static int lastJvmInsnIndex(final MethodNode method) {
     for (int i = method.instructions.size() - 1; i >= 0; --i) {
       if (method.instructions.get(i).getOpcode() >= 0) {
         return i;
@@ -363,7 +363,7 @@ class CheckFrameAnalyzerTest extends AsmTest {
     return -1;
   }
 
-  private static class MethodMaxs {
+  public static class MethodMaxs {
 
     final int maxStack;
     final int maxLocals;

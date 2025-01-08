@@ -56,7 +56,7 @@ public class CodeComment extends Attribute implements ASMifierSupport, Textifier
   }
 
   @Override
-  protected Attribute read(
+  public Attribute read(
       final ClassReader classReader,
       final int offset,
       final int length,
@@ -67,7 +67,7 @@ public class CodeComment extends Attribute implements ASMifierSupport, Textifier
   }
 
   @Override
-  protected ByteVector write(
+  public ByteVector write(
       final ClassWriter classWriter,
       final byte[] code,
       final int codeLength,

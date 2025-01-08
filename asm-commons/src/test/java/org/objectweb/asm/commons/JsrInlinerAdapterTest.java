@@ -55,57 +55,57 @@ import org.objectweb.asm.tree.MethodNode;
 class JsrInlinerAdapterTest extends AsmTest {
 
   // Some local variable numbers used in tests.
-  private static final int LOCAL1 = 1;
-  private static final int LOCAL2 = 2;
-  private static final int LOCAL3 = 3;
-  private static final int LOCAL4 = 4;
-  private static final int LOCAL5 = 5;
+  public static final int LOCAL1 = 1;
+  public static final int LOCAL2 = 2;
+  public static final int LOCAL3 = 3;
+  public static final int LOCAL4 = 4;
+  public static final int LOCAL5 = 5;
 
   // Labels used to generate test cases.
-  private final Label label0 = new Label();
-  private final Label label1 = new Label();
-  private final Label label2 = new Label();
-  private final Label label3 = new Label();
-  private final Label label4 = new Label();
-  private final Label label5 = new Label();
-  private final Label label6 = new Label();
-  private final Label label7 = new Label();
-  private final Label label8 = new Label();
-  private final Label label9 = new Label();
-  private final Label label10 = new Label();
-  private final Label label11 = new Label();
-  private final Label label12 = new Label();
+  public final Label label0 = new Label();
+  public final Label label1 = new Label();
+  public final Label label2 = new Label();
+  public final Label label3 = new Label();
+  public final Label label4 = new Label();
+  public final Label label5 = new Label();
+  public final Label label6 = new Label();
+  public final Label label7 = new Label();
+  public final Label label8 = new Label();
+  public final Label label9 = new Label();
+  public final Label label10 = new Label();
+  public final Label label11 = new Label();
+  public final Label label12 = new Label();
 
   // Labels used to generate expected results.
-  private final Label expectedLabel0 = new Label();
-  private final Label expectedLabel1 = new Label();
-  private final Label expectedLabel2 = new Label();
-  private final Label expectedLabel3 = new Label();
-  private final Label expectedLabel4 = new Label();
-  private final Label expectedLabel5 = new Label();
-  private final Label expectedLabel6 = new Label();
-  private final Label expectedLabel7 = new Label();
-  private final Label expectedLabel8 = new Label();
-  private final Label expectedLabel9 = new Label();
-  private final Label expectedLabel10 = new Label();
-  private final Label expectedLabel11 = new Label();
-  private final Label expectedLabel12 = new Label();
-  private final Label expectedLabel13 = new Label();
-  private final Label expectedLabel14 = new Label();
-  private final Label expectedLabel15 = new Label();
-  private final Label expectedLabel16 = new Label();
-  private final Label expectedLabel17 = new Label();
-  private final Label expectedLabel18 = new Label();
-  private final Label expectedLabel19 = new Label();
-  private final Label expectedLabel20 = new Label();
-  private final Label expectedLabel21 = new Label();
-  private final Label expectedLabel22 = new Label();
-  private final Label expectedLabel23 = new Label();
-  private final Label expectedLabel24 = new Label();
-  private final Label expectedLabel25 = new Label();
-  private final Label expectedLabel26 = new Label();
-  private final Label expectedLabel27 = new Label();
-  private final Label expectedLabel28 = new Label();
+  public final Label expectedLabel0 = new Label();
+  public final Label expectedLabel1 = new Label();
+  public final Label expectedLabel2 = new Label();
+  public final Label expectedLabel3 = new Label();
+  public final Label expectedLabel4 = new Label();
+  public final Label expectedLabel5 = new Label();
+  public final Label expectedLabel6 = new Label();
+  public final Label expectedLabel7 = new Label();
+  public final Label expectedLabel8 = new Label();
+  public final Label expectedLabel9 = new Label();
+  public final Label expectedLabel10 = new Label();
+  public final Label expectedLabel11 = new Label();
+  public final Label expectedLabel12 = new Label();
+  public final Label expectedLabel13 = new Label();
+  public final Label expectedLabel14 = new Label();
+  public final Label expectedLabel15 = new Label();
+  public final Label expectedLabel16 = new Label();
+  public final Label expectedLabel17 = new Label();
+  public final Label expectedLabel18 = new Label();
+  public final Label expectedLabel19 = new Label();
+  public final Label expectedLabel20 = new Label();
+  public final Label expectedLabel21 = new Label();
+  public final Label expectedLabel22 = new Label();
+  public final Label expectedLabel23 = new Label();
+  public final Label expectedLabel24 = new Label();
+  public final Label expectedLabel25 = new Label();
+  public final Label expectedLabel26 = new Label();
+  public final Label expectedLabel27 = new Label();
+  public final Label expectedLabel28 = new Label();
 
   @Test
   void testConstructor() {

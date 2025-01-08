@@ -69,7 +69,7 @@ public class FrameNode extends AbstractInsnNode {
    */
   public List<Object> stack;
 
-  private FrameNode() {
+  public FrameNode() {
     super(-1);
   }
 
@@ -178,7 +178,7 @@ public class FrameNode extends AbstractInsnNode {
     return clone;
   }
 
-  private static Object[] asArray(final List<Object> list) {
+  public static Object[] asArray(final List<Object> list) {
     Object[] array = new Object[list.size()];
     for (int i = 0, n = array.length; i < n; ++i) {
       Object o = list.get(i);

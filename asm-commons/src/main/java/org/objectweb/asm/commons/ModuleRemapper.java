@@ -39,7 +39,7 @@ import org.objectweb.asm.Opcodes;
 public class ModuleRemapper extends ModuleVisitor {
 
   /** The remapper used to remap the types in the visited module. */
-  protected final Remapper remapper;
+  public final Remapper remapper;
 
   /**
    * Constructs a new {@link ModuleRemapper}. <i>Subclasses must not use this constructor</i>.
@@ -60,7 +60,7 @@ public class ModuleRemapper extends ModuleVisitor {
    * @param moduleVisitor the module visitor this remapper must delegate to.
    * @param remapper the remapper to use to remap the types in the visited module.
    */
-  protected ModuleRemapper(
+  public ModuleRemapper(
       final int api, final ModuleVisitor moduleVisitor, final Remapper remapper) {
     super(api, moduleVisitor);
     this.remapper = remapper;

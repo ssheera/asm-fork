@@ -276,7 +276,7 @@ class InstructionAdapterTest extends AsmTest {
     }
   }
 
-  private static Attribute[] attributes() {
+  public static Attribute[] attributes() {
     return new Attribute[] {new Comment(), new CodeComment()};
   }
 

@@ -53,7 +53,7 @@ public class DumpArtificialStructures implements Opcodes {
     fileOutputStream.close();
   }
 
-  private static byte[] dump() {
+  public static byte[] dump() {
     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
     MethodVisitor methodVisitor;
 
@@ -81,7 +81,7 @@ public class DumpArtificialStructures implements Opcodes {
 
     methodVisitor =
         classWriter.visitMethod(
-            ACC_PRIVATE, "<init>", "(Ljdk8/Artificial$()$Structures;)V", null, null);
+            ACC_public, "<init>", "(Ljdk8/Artificial$()$Structures;)V", null, null);
     methodVisitor.visitCode();
     methodVisitor.visitVarInsn(ALOAD, 0);
     methodVisitor.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);

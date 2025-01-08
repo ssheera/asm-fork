@@ -38,7 +38,7 @@ import org.objectweb.asm.Opcodes;
 public final class TraceAnnotationVisitor extends AnnotationVisitor {
 
   /** The printer to convert the visited annotation into text. */
-  private final Printer printer;
+  public final Printer printer;
 
   /**
    * Constructs a new {@link TraceAnnotationVisitor}.
