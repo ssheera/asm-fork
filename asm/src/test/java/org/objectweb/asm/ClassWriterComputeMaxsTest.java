@@ -50,26 +50,26 @@ import org.objectweb.asm.test.ClassFile;
 class ClassWriterComputeMaxsTest {
 
   // Some local variable numbers used in tests.
-  private static final int LOCAL1 = 1;
-  private static final int LOCAL2 = 2;
-  private static final int LOCAL3 = 3;
-  private static final int LOCAL4 = 4;
-  private static final int LOCAL5 = 5;
+  public static final int LOCAL1 = 1;
+  public static final int LOCAL2 = 2;
+  public static final int LOCAL3 = 3;
+  public static final int LOCAL4 = 4;
+  public static final int LOCAL5 = 5;
 
   // Labels used to generate test cases.
-  private final Label label0 = new Label();
-  private final Label label1 = new Label();
-  private final Label label2 = new Label();
-  private final Label label3 = new Label();
-  private final Label label4 = new Label();
-  private final Label label5 = new Label();
-  private final Label label6 = new Label();
-  private final Label label7 = new Label();
-  private final Label label8 = new Label();
-  private final Label label9 = new Label();
-  private final Label label10 = new Label();
-  private final Label label11 = new Label();
-  private final Label label12 = new Label();
+  public final Label label0 = new Label();
+  public final Label label1 = new Label();
+  public final Label label2 = new Label();
+  public final Label label3 = new Label();
+  public final Label label4 = new Label();
+  public final Label label5 = new Label();
+  public final Label label6 = new Label();
+  public final Label label7 = new Label();
+  public final Label label8 = new Label();
+  public final Label label9 = new Label();
+  public final Label label10 = new Label();
+  public final Label label11 = new Label();
+  public final Label label12 = new Label();
 
   /**
    * Tests a method which has the most basic <code>try{}finally{}</code> form imaginable. That is,
@@ -955,7 +955,7 @@ class ClassWriterComputeMaxsTest {
     assertEquals(1, methodInfo.maxLocals);
   }
 
-  private static MethodInfo readMaxStackAndLocals(final byte[] classFile) {
+  public static MethodInfo readMaxStackAndLocals(final byte[] classFile) {
     AtomicReference<MethodInfo> methodInfo = new AtomicReference<>();
     ClassReader classReader = new ClassReader(classFile);
     classReader.accept(
@@ -983,7 +983,7 @@ class ClassWriterComputeMaxsTest {
     return methodInfo.get();
   }
 
-  private static Map<String, Set<String>> controlFlowGraph(final String... nodes) {
+  public static Map<String, Set<String>> controlFlowGraph(final String... nodes) {
     Map<String, Set<String>> graph = new HashMap<>();
     for (String node : nodes) {
       StringTokenizer stringTokenizer = new StringTokenizer(node, "=,");
@@ -997,7 +997,7 @@ class ClassWriterComputeMaxsTest {
     return graph;
   }
 
-  private static class MethodInfo {
+  public static class MethodInfo {
 
     public final int maxStack;
     public final int maxLocals;
@@ -1008,11 +1008,11 @@ class ClassWriterComputeMaxsTest {
     }
   }
 
-  private static final class TestCaseBuilder { // NOPMD(TestClassWithoutTestCases)
+  public static final class TestCaseBuilder { // NOPMD(TestClassWithoutTestCases)
 
-    private final ClassWriter classWriter;
-    private final MethodVisitor methodVisitor;
-    private final Label start;
+    public final ClassWriter classWriter;
+    public final MethodVisitor methodVisitor;
+    public final Label start;
 
     TestCaseBuilder() {
       this(Opcodes.V1_1);

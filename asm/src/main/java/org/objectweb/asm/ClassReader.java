@@ -89,10 +89,10 @@ public class ClassReader {
   static final int EXPAND_ASM_INSNS = 256;
 
   /** The maximum size of array to allocate. */
-  private static final int MAX_BUFFER_SIZE = 1024 * 1024;
+  public static final int MAX_BUFFER_SIZE = 1024 * 1024;
 
   /** The size of the temporary byte array used to read class input streams chunk by chunk. */
-  private static final int INPUT_STREAM_DATA_CHUNK_SIZE = 4096;
+  public static final int INPUT_STREAM_DATA_CHUNK_SIZE = 4096;
 
   /**
    * A byte array containing the JVMS ClassFile structure to be parsed.
@@ -124,19 +124,19 @@ public class ClassReader {
    * given by cpInfoOffsets[i] - 1, i.e. its cp_info's tag field is given by b[cpInfoOffsets[i] -
    * 1].
    */
-  private final int[] cpInfoOffsets;
+  public final int[] cpInfoOffsets;
 
   /**
    * The String objects corresponding to the CONSTANT_Utf8 constant pool items. This cache avoids
    * multiple parsing of a given CONSTANT_Utf8 constant pool item.
    */
-  private final String[] constantUtf8Values;
+  public final String[] constantUtf8Values;
 
   /**
    * The ConstantDynamic objects corresponding to the CONSTANT_Dynamic constant pool items. This
    * cache avoids multiple parsing of a given CONSTANT_Dynamic constant pool item.
    */
-  private final ConstantDynamic[] constantDynamicValues;
+  public final ConstantDynamic[] constantDynamicValues;
 
   /**
    * The start offsets in {@link #classFileBuffer} of each element of the bootstrap_methods array
@@ -145,13 +145,13 @@ public class ClassReader {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.23">JVMS
    *     4.7.23</a>
    */
-  private final int[] bootstrapMethodOffsets;
+  public final int[] bootstrapMethodOffsets;
 
   /**
    * A conservative estimate of the maximum length of the strings contained in the constant pool of
    * the class.
    */
-  private final int maxStringLength;
+  public final int maxStringLength;
 
   // -----------------------------------------------------------------------------------------------
   // Constructors
@@ -310,7 +310,7 @@ public class ClassReader {
    * @throws IOException if a problem occurs during reading.
    */
   @SuppressWarnings("PMD.UseTryWithResources")
-  private static byte[] readStream(final InputStream inputStream, final boolean close)
+  public static byte[] readStream(final InputStream inputStream, final boolean close)
       throws IOException {
     if (inputStream == null) {
       throw new IOException("Class not found");
@@ -336,7 +336,7 @@ public class ClassReader {
     }
   }
 
-  private static int computeBufferSize(final InputStream inputStream) throws IOException {
+  public static int computeBufferSize(final InputStream inputStream) throws IOException {
     int expectedLength = inputStream.available();
     /*
      * Some implementations can return 0 while holding available data (e.g. new
@@ -514,7 +514,7 @@ public class ClassReader {
       } else if (Constants.ENCLOSING_METHOD.equals(attributeName)) {
         enclosingMethodOffset = currentAttributeOffset;
       } else if (Constants.NEST_HOST.equals(attributeName)) {
-        nestHostClass = readClass(currentAttributeOffset, charBuffer);
+        nestHostClass = tryReadClass(currentAttributeOffset, charBuffer);
       } else if (Constants.NEST_MEMBERS.equals(attributeName)) {
         nestMembersOffset = currentAttributeOffset;
       } else if (Constants.PERMITTED_SUBCLASSES.equals(attributeName)) {
@@ -545,7 +545,7 @@ public class ClassReader {
       } else if (Constants.MODULE.equals(attributeName)) {
         moduleOffset = currentAttributeOffset;
       } else if (Constants.MODULE_MAIN_CLASS.equals(attributeName)) {
-        moduleMainClass = readClass(currentAttributeOffset, charBuffer);
+        moduleMainClass = tryReadClass(currentAttributeOffset, charBuffer);
       } else if (Constants.MODULE_PACKAGES.equals(attributeName)) {
         modulePackagesOffset = currentAttributeOffset;
       } else if (!Constants.BOOTSTRAP_METHODS.equals(attributeName)) {
@@ -765,7 +765,7 @@ public class ClassReader {
    * @param moduleMainClass the string corresponding to the ModuleMainClass attribute, or {@literal
    *     null}.
    */
-  private void readModuleAttributes(
+  public void readModuleAttributes(
       final ClassVisitor classVisitor,
       final Context context,
       final int moduleOffset,
@@ -888,7 +888,7 @@ public class ClassReader {
    * @param recordComponentOffset the offset of the current record component.
    * @return the offset of the first byte following the record component.
    */
-  private int readRecordComponent(
+  public int readRecordComponent(
       final ClassVisitor classVisitor, final Context context, final int recordComponentOffset) {
     char[] charBuffer = context.charBuffer;
 
@@ -1062,7 +1062,7 @@ public class ClassReader {
    * @param fieldInfoOffset the start offset of the field_info structure.
    * @return the offset of the first byte following the field_info structure.
    */
-  private int readField(
+  public int readField(
       final ClassVisitor classVisitor, final Context context, final int fieldInfoOffset) {
     char[] charBuffer = context.charBuffer;
 
@@ -1246,7 +1246,7 @@ public class ClassReader {
    * @param methodInfoOffset the start offset of the method_info structure.
    * @return the offset of the first byte following the method_info structure.
    */
-  private int readMethod(
+  public int readMethod(
       final ClassVisitor classVisitor, final Context context, final int methodInfoOffset) {
     char[] charBuffer = context.charBuffer;
 
@@ -1529,7 +1529,7 @@ public class ClassReader {
    * @param codeOffset the start offset in {@link #classFileBuffer} of the Code attribute, excluding
    *     its attribute_name_index and attribute_length fields.
    */
-  private void readCode(
+  public void readCode(
       final MethodVisitor methodVisitor, final Context context, final int codeOffset) {
     int currentOffset = codeOffset;
 
@@ -1719,7 +1719,7 @@ public class ClassReader {
         case Opcodes.JSR:
         case Opcodes.IFNULL:
         case Opcodes.IFNONNULL:
-          createLabel(bytecodeOffset + readShort(currentOffset + 1), labels);
+          tryCreateLabel(bytecodeOffset + readShort(currentOffset + 1), labels);
           currentOffset += 3;
           break;
         case Constants.ASM_IFEQ:
@@ -1740,13 +1740,13 @@ public class ClassReader {
         case Constants.ASM_JSR:
         case Constants.ASM_IFNULL:
         case Constants.ASM_IFNONNULL:
-          createLabel(bytecodeOffset + readUnsignedShort(currentOffset + 1), labels);
+          tryCreateLabel(bytecodeOffset + readUnsignedShort(currentOffset + 1), labels);
           currentOffset += 3;
           break;
         case Constants.GOTO_W:
         case Constants.JSR_W:
         case Constants.ASM_GOTO_W:
-          createLabel(bytecodeOffset + readInt(currentOffset + 1), labels);
+          tryCreateLabel(bytecodeOffset + readInt(currentOffset + 1), labels);
           currentOffset += 5;
           break;
         case Constants.WIDE:
@@ -2098,7 +2098,7 @@ public class ClassReader {
         }
         insertFrame = false;
       }
-
+      Label lbl;
       // Visit the instruction at this bytecode offset.
       int opcode = classBuffer[currentOffset] & 0xFF;
       switch (opcode) {
@@ -2278,15 +2278,27 @@ public class ClassReader {
         case Opcodes.JSR:
         case Opcodes.IFNULL:
         case Opcodes.IFNONNULL:
+          lbl = tryGetLabel(labels, currentBytecodeOffset + readShort(currentOffset + 1));
+          if (lbl == null) {
+            methodVisitor.visitInsn(0);
+            currentOffset += 1;
+            break;
+          }
           methodVisitor.visitJumpInsn(
-              opcode, labels[currentBytecodeOffset + readShort(currentOffset + 1)]);
+              opcode, lbl);
           currentOffset += 3;
           break;
         case Constants.GOTO_W:
         case Constants.JSR_W:
+          lbl = tryGetLabel(labels, currentBytecodeOffset + readInt(currentOffset + 1));
+          if (lbl == null) {
+              methodVisitor.visitInsn(0);
+              currentOffset += 5;
+              break;
+          }
           methodVisitor.visitJumpInsn(
               opcode - wideJumpOpcodeDelta,
-              labels[currentBytecodeOffset + readInt(currentOffset + 1)]);
+                  lbl);
           currentOffset += 5;
           break;
         case Constants.ASM_IFEQ:
@@ -2339,8 +2351,13 @@ public class ClassReader {
           }
         case Constants.ASM_GOTO_W:
           // Replace ASM_GOTO_W with GOTO_W.
+          lbl = tryGetLabel(labels, currentBytecodeOffset + readInt(currentOffset + 1));
+          if (lbl == null) {
+            currentOffset += 5;
+            methodVisitor.visitInsn(0);
+          }
           methodVisitor.visitJumpInsn(
-              Constants.GOTO_W, labels[currentBytecodeOffset + readInt(currentOffset + 1)]);
+              Constants.GOTO_W, lbl);
           // The instruction just after is a jump target (because ASM_GOTO_W is used in patterns
           // IFNOTxxx <L> ASM_GOTO_W <l> L:..., see MethodWriter), so we need to insert a frame
           // here.
@@ -2664,6 +2681,17 @@ public class ClassReader {
     methodVisitor.visitMaxs(maxStack, maxLocals);
   }
 
+  private Label tryGetLabel(Label[] labels, int i) {
+    try {
+      if (i < 0 || i >= labels.length) {
+        return null;
+      }
+      return labels[i];
+    } catch (Exception ex) {
+      return null;
+    }
+  }
+
   /**
    * Handles the bytecode offset of the next instruction to be visited in {@link
    * #accept(ClassVisitor,int)}. This method is called just before the instruction and before its
@@ -2674,7 +2702,7 @@ public class ClassReader {
    *
    * @param bytecodeOffset the bytecode offset of the next instruction to be visited.
    */
-  protected void readBytecodeInstructionOffset(final int bytecodeOffset) {
+  public void readBytecodeInstructionOffset(final int bytecodeOffset) {
     // Do nothing by default.
   }
 
@@ -2688,7 +2716,7 @@ public class ClassReader {
    *     label in this array.
    * @return a non null Label, which must be equal to labels[bytecodeOffset].
    */
-  protected Label readLabel(final int bytecodeOffset, final Label[] labels) {
+  public Label readLabel(final int bytecodeOffset, final Label[] labels) {
     if (labels[bytecodeOffset] == null) {
       labels[bytecodeOffset] = new Label();
     }
@@ -2704,10 +2732,20 @@ public class ClassReader {
    * @param labels the already created labels, indexed by their offset.
    * @return a Label without the {@link Label#FLAG_DEBUG_ONLY} flag set.
    */
-  private Label createLabel(final int bytecodeOffset, final Label[] labels) {
+  public Label createLabel(final int bytecodeOffset, final Label[] labels) {
     Label label = readLabel(bytecodeOffset, labels);
     label.flags &= ~Label.FLAG_DEBUG_ONLY;
     return label;
+  }
+
+  public Label tryCreateLabel(final int bytecodeOffset, final Label[] labels) {
+    try {
+      Label label = readLabel(bytecodeOffset, labels);
+      label.flags &= ~Label.FLAG_DEBUG_ONLY;
+      return label;
+    } catch (Exception ex) {
+        return null;
+    }
   }
 
   /**
@@ -2718,7 +2756,7 @@ public class ClassReader {
    * @param bytecodeOffset a bytecode offset in a method.
    * @param labels the already created labels, indexed by their offset.
    */
-  private void createDebugLabel(final int bytecodeOffset, final Label[] labels) {
+  public void createDebugLabel(final int bytecodeOffset, final Label[] labels) {
     if (labels[bytecodeOffset] == null) {
       readLabel(bytecodeOffset, labels).flags |= Label.FLAG_DEBUG_ONLY;
     }
@@ -2742,7 +2780,7 @@ public class ClassReader {
    * @return the start offset of each entry of the Runtime[In]VisibleTypeAnnotations_attribute's
    *     'annotations' array field.
    */
-  private int[] readTypeAnnotations(
+  public int[] readTypeAnnotations(
       final MethodVisitor methodVisitor,
       final Context context,
       final int runtimeTypeAnnotationsOffset,
@@ -2845,7 +2883,7 @@ public class ClassReader {
    * @return bytecode offset corresponding to the specified JVMS 'type_annotation' structure, or -1
    *     if there is no such type_annotation of if it does not have a bytecode offset.
    */
-  private int getTypeAnnotationBytecodeOffset(
+  public int getTypeAnnotationBytecodeOffset(
       final int[] typeAnnotationOffsets, final int typeAnnotationIndex) {
     if (typeAnnotationOffsets == null
         || typeAnnotationIndex >= typeAnnotationOffsets.length
@@ -2865,7 +2903,7 @@ public class ClassReader {
    * @param typeAnnotationOffset the start offset of a type_annotation structure.
    * @return the start offset of the rest of the type_annotation structure.
    */
-  private int readTypeAnnotationTarget(final Context context, final int typeAnnotationOffset) {
+  public int readTypeAnnotationTarget(final Context context, final int typeAnnotationOffset) {
     int currentOffset = typeAnnotationOffset;
     // Parse and store the target_type structure.
     int targetType = readInt(typeAnnotationOffset);
@@ -2948,7 +2986,7 @@ public class ClassReader {
    * @param visible true if the attribute to parse is a RuntimeVisibleParameterAnnotations
    *     attribute, false it is a RuntimeInvisibleParameterAnnotations attribute.
    */
-  private void readParameterAnnotations(
+  public void readParameterAnnotations(
       final MethodVisitor methodVisitor,
       final Context context,
       final int runtimeParameterAnnotationsOffset,
@@ -2989,7 +3027,7 @@ public class ClassReader {
    * @param charBuffer the buffer used to read strings in the constant pool.
    * @return the end offset of the JVMS 'annotation' or 'array_value' structure.
    */
-  private int readElementValues(
+  public int readElementValues(
       final AnnotationVisitor annotationVisitor,
       final int annotationOffset,
       final boolean named,
@@ -3028,7 +3066,7 @@ public class ClassReader {
    * @param charBuffer the buffer used to read strings in the constant pool.
    * @return the end offset of the JVMS 'element_value' structure.
    */
-  private int readElementValue(
+  public int readElementValue(
       final AnnotationVisitor annotationVisitor,
       final int elementValueOffset,
       final String elementName,
@@ -3207,7 +3245,7 @@ public class ClassReader {
    *
    * @param context information about the class being parsed.
    */
-  private void computeImplicitFrame(final Context context) {
+  public void computeImplicitFrame(final Context context) {
     String methodDescriptor = context.currentMethodDescriptor;
     Object[] locals = context.currentFrameLocalTypes;
     int numLocal = 0;
@@ -3283,7 +3321,7 @@ public class ClassReader {
    * @param context where the parsed stack map frame must be stored.
    * @return the end offset of the JVMS 'stack_map_frame' or 'full_frame' structure.
    */
-  private int readStackMapFrame(
+  public int readStackMapFrame(
       final int stackMapFrameOffset,
       final boolean compressed,
       final boolean expand,
@@ -3382,7 +3420,7 @@ public class ClassReader {
    *     stored in this array if it does not already exist.
    * @return the end offset of the JVMS 'verification_type_info' structure.
    */
-  private int readVerificationTypeInfo(
+  public int readVerificationTypeInfo(
       final int verificationTypeInfoOffset,
       final Object[] frame,
       final int index,
@@ -3484,7 +3522,7 @@ public class ClassReader {
    *     in the constant pool of the class.
    * @return the offsets of the bootstrap methods.
    */
-  private int[] readBootstrapMethodsAttribute(final int maxStringLength) {
+  public int[] readBootstrapMethodsAttribute(final int maxStringLength) {
     char[] charBuffer = new char[maxStringLength];
     int currentAttributeOffset = getFirstAttributeOffset();
     for (int i = readUnsignedShort(currentAttributeOffset - 2); i > 0; --i) {
@@ -3531,7 +3569,7 @@ public class ClassReader {
    *     is not a code attribute.
    * @return the attribute that has been read.
    */
-  private Attribute readAttribute(
+  public Attribute readAttribute(
       final Attribute[] attributePrototypes,
       final String type,
       final int offset,
@@ -3711,7 +3749,7 @@ public class ClassReader {
    *     large. It is not automatically resized.
    * @return the String corresponding to the specified UTF8 string.
    */
-  private String readUtf(final int utfOffset, final int utfLength, final char[] charBuffer) {
+  public String readUtf(final int utfOffset, final int utfLength, final char[] charBuffer) {
     int currentOffset = utfOffset;
     int endOffset = currentOffset + utfLength;
     int strLength = 0;
@@ -3747,7 +3785,7 @@ public class ClassReader {
    *     large. It is not automatically resized.
    * @return the String corresponding to the specified constant pool entry.
    */
-  private String readStringish(final int offset, final char[] charBuffer) {
+  public String readStringish(final int offset, final char[] charBuffer) {
     // Get the start offset of the cp_info structure (plus one), and read the CONSTANT_Utf8 entry
     // designated by the first two bytes of this cp_info.
     return readUTF8(cpInfoOffsets[readUnsignedShort(offset)], charBuffer);
@@ -3766,6 +3804,14 @@ public class ClassReader {
    */
   public String readClass(final int offset, final char[] charBuffer) {
     return readStringish(offset, charBuffer);
+  }
+
+  public String tryReadClass(final int offset, final char[] charBuffer) {
+    try {
+      return readClass(offset, charBuffer);
+    } catch (Exception ex) {
+      return null;
+    }
   }
 
   /**
@@ -3807,7 +3853,7 @@ public class ClassReader {
    *     large. It is not automatically resized.
    * @return the ConstantDynamic corresponding to the specified CONSTANT_Dynamic entry.
    */
-  private ConstantDynamic readConstantDynamic(
+  public ConstantDynamic readConstantDynamic(
       final int constantPoolEntryIndex, final char[] charBuffer) {
     ConstantDynamic constantDynamic = constantDynamicValues[constantPoolEntryIndex];
     if (constantDynamic != null) {

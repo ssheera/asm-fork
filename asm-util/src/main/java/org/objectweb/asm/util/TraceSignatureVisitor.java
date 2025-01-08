@@ -42,11 +42,11 @@ import org.objectweb.asm.signature.SignatureVisitor;
  */
 public final class TraceSignatureVisitor extends SignatureVisitor {
 
-  private static final String COMMA_SEPARATOR = ", ";
-  private static final String EXTENDS_SEPARATOR = " extends ";
-  private static final String IMPLEMENTS_SEPARATOR = " implements ";
+  public static final String COMMA_SEPARATOR = ", ";
+  public static final String EXTENDS_SEPARATOR = " extends ";
+  public static final String IMPLEMENTS_SEPARATOR = " implements ";
 
-  private static final Map<Character, String> BASE_TYPES;
+  public static final Map<Character, String> BASE_TYPES;
 
   static {
     HashMap<Character, String> baseTypes = new HashMap<>();
@@ -63,45 +63,45 @@ public final class TraceSignatureVisitor extends SignatureVisitor {
   }
 
   /** Whether the visited signature is a class signature of a Java interface. */
-  private final boolean isInterface;
+  public final boolean isInterface;
 
   /** The Java generic type declaration corresponding to the visited signature. */
-  private final StringBuilder declaration;
+  public final StringBuilder declaration;
 
   /** The Java generic method return type declaration corresponding to the visited signature. */
-  private StringBuilder returnType;
+  public StringBuilder returnType;
 
   /** The Java generic exception types declaration corresponding to the visited signature. */
-  private StringBuilder exceptions;
+  public StringBuilder exceptions;
 
   /** Whether {@link #visitFormalTypeParameter} has been called. */
-  private boolean formalTypeParameterVisited;
+  public boolean formalTypeParameterVisited;
 
   /** Whether {@link #visitInterfaceBound} has been called. */
-  private boolean interfaceBoundVisited;
+  public boolean interfaceBoundVisited;
 
   /** Whether {@link #visitParameterType} has been called. */
-  private boolean parameterTypeVisited;
+  public boolean parameterTypeVisited;
 
   /** Whether {@link #visitInterface} has been called. */
-  private boolean interfaceVisited;
+  public boolean interfaceVisited;
 
   /**
    * The stack used to keep track of class types that have arguments. Each element of this stack is
    * a boolean encoded in one bit. The top of the stack is the least significant bit. Pushing false
    * = *2, pushing true = *2+1, popping = /2.
    */
-  private int argumentStack;
+  public int argumentStack;
 
   /**
    * The stack used to keep track of array class types. Each element of this stack is a boolean
    * encoded in one bit. The top of the stack is the lowest order bit. Pushing false = *2, pushing
    * true = *2+1, popping = /2.
    */
-  private int arrayStack;
+  public int arrayStack;
 
   /** The separator to append before the next visited class or inner class type. */
-  private String separator = "";
+  public String separator = "";
 
   /**
    * Constructs a new {@link TraceSignatureVisitor}.
@@ -114,7 +114,7 @@ public final class TraceSignatureVisitor extends SignatureVisitor {
     this.declaration = new StringBuilder();
   }
 
-  private TraceSignatureVisitor(final StringBuilder stringBuilder) {
+  public TraceSignatureVisitor(final StringBuilder stringBuilder) {
     super(/* latest api = */ Opcodes.ASM9);
     this.isInterface = false;
     this.declaration = stringBuilder;
@@ -320,18 +320,18 @@ public final class TraceSignatureVisitor extends SignatureVisitor {
 
   // -----------------------------------------------------------------------------------------------
 
-  private void endFormals() {
+  public void endFormals() {
     if (formalTypeParameterVisited) {
       declaration.append('>');
       formalTypeParameterVisited = false;
     }
   }
 
-  private void startType() {
+  public void startType() {
     arrayStack *= 2;
   }
 
-  private void endType() {
+  public void endType() {
     if (arrayStack % 2 == 0) {
       arrayStack /= 2;
     } else {

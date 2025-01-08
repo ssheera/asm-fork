@@ -36,10 +36,10 @@ package org.objectweb.asm;
 public class ByteVector {
 
   /** The content of this vector. Only the first {@link #length} bytes contain real data. */
-  byte[] data;
+  public byte[] data;
 
   /** The actual number of bytes in this vector. */
-  int length;
+  public int length;
 
   /** Constructs a new {@link ByteVector} with a default initial capacity. */
   public ByteVector() {
@@ -60,7 +60,7 @@ public class ByteVector {
    *
    * @param data the initial data of the new byte vector.
    */
-  ByteVector(final byte[] data) {
+  public ByteVector(final byte[] data) {
     this.data = data;
     this.length = data.length;
   }
@@ -97,7 +97,7 @@ public class ByteVector {
    * @param byteValue2 another byte.
    * @return this byte vector.
    */
-  final ByteVector put11(final int byteValue1, final int byteValue2) {
+  public ByteVector put11(final int byteValue1, final int byteValue2) {
     int currentLength = length;
     if (currentLength + 2 > data.length) {
       enlarge(2);
@@ -135,7 +135,7 @@ public class ByteVector {
    * @param shortValue a short.
    * @return this byte vector.
    */
-  final ByteVector put12(final int byteValue, final int shortValue) {
+  public ByteVector put12(final int byteValue, final int shortValue) {
     int currentLength = length;
     if (currentLength + 3 > data.length) {
       enlarge(3);
@@ -157,7 +157,7 @@ public class ByteVector {
    * @param shortValue a short.
    * @return this byte vector.
    */
-  final ByteVector put112(final int byteValue1, final int byteValue2, final int shortValue) {
+  public ByteVector put112(final int byteValue1, final int byteValue2, final int shortValue) {
     int currentLength = length;
     if (currentLength + 4 > data.length) {
       enlarge(4);
@@ -200,7 +200,7 @@ public class ByteVector {
    * @param shortValue2 another short.
    * @return this byte vector.
    */
-  final ByteVector put122(final int byteValue, final int shortValue1, final int shortValue2) {
+  public ByteVector put122(final int byteValue, final int shortValue1, final int shortValue2) {
     int currentLength = length;
     if (currentLength + 5 > data.length) {
       enlarge(5);
@@ -290,7 +290,7 @@ public class ByteVector {
    *     encoded characters.
    * @return this byte vector.
    */
-  final ByteVector encodeUtf8(final String stringValue, final int offset, final int maxByteLength) {
+  public ByteVector encodeUtf8(final String stringValue, final int offset, final int maxByteLength) {
     int charLength = stringValue.length();
     int byteLength = offset;
     for (int i = offset; i < charLength; ++i) {
@@ -360,7 +360,7 @@ public class ByteVector {
    *
    * @param size number of additional bytes that this byte vector should be able to receive.
    */
-  private void enlarge(final int size) {
+  public void enlarge(final int size) {
     if (length > data.length) {
       throw new AssertionError("Internal error");
     }

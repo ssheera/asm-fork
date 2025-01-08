@@ -42,10 +42,10 @@ public class AnnotationRemapper extends AnnotationVisitor {
    * The descriptor of the visited annotation. May be {@literal null}, for instance for
    * AnnotationDefault.
    */
-  protected final String descriptor;
+  public final String descriptor;
 
   /** The remapper used to remap the types in the visited annotation. */
-  protected final Remapper remapper;
+  public final Remapper remapper;
 
   /**
    * Constructs a new {@link AnnotationRemapper}. <i>Subclasses must not use this constructor</i>.
@@ -84,7 +84,7 @@ public class AnnotationRemapper extends AnnotationVisitor {
    * @deprecated use {@link #AnnotationRemapper(int, String, AnnotationVisitor, Remapper)} instead.
    */
   @Deprecated
-  protected AnnotationRemapper(
+  public AnnotationRemapper(
       final int api, final AnnotationVisitor annotationVisitor, final Remapper remapper) {
     this(api, /* descriptor= */ null, annotationVisitor, remapper);
   }
@@ -98,7 +98,7 @@ public class AnnotationRemapper extends AnnotationVisitor {
    * @param annotationVisitor the annotation visitor this remapper must delegate to.
    * @param remapper the remapper to use to remap the types in the visited annotation.
    */
-  protected AnnotationRemapper(
+  public AnnotationRemapper(
       final int api,
       final String descriptor,
       final AnnotationVisitor annotationVisitor,
@@ -152,7 +152,7 @@ public class AnnotationRemapper extends AnnotationVisitor {
    * @deprecated use {@link #createAnnotationRemapper(String, AnnotationVisitor)} instead.
    */
   @Deprecated
-  protected AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
+  public AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, /* descriptor= */ null, annotationVisitor, remapper);
   }
 
@@ -164,7 +164,7 @@ public class AnnotationRemapper extends AnnotationVisitor {
    * @param annotationVisitor the AnnotationVisitor the remapper must delegate to.
    * @return the newly created remapper.
    */
-  protected AnnotationVisitor createAnnotationRemapper(
+  public AnnotationVisitor createAnnotationRemapper(
       final String descriptor, final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, descriptor, annotationVisitor, remapper)
         .orDeprecatedValue(createAnnotationRemapper(annotationVisitor));
@@ -201,7 +201,7 @@ public class AnnotationRemapper extends AnnotationVisitor {
    * @param name the name of the annotation attribute.
    * @return the new name of the annotation attribute.
    */
-  private String mapAnnotationAttributeName(final String name) {
+  public String mapAnnotationAttributeName(final String name) {
     if (descriptor == null) {
       return name;
     }

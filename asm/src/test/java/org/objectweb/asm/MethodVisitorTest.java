@@ -421,7 +421,7 @@ class MethodVisitorTest extends AsmTest {
   }
 
   /** An ASM4 {@link MethodVisitor} which does not override the ASM4 visitMethodInsn method. */
-  private static class MethodVisitor4 extends MethodVisitor {
+  public static class MethodVisitor4 extends MethodVisitor {
     MethodVisitor4(final MethodVisitor methodVisitor) {
       super(Opcodes.ASM4, methodVisitor);
     }
@@ -431,9 +431,9 @@ class MethodVisitorTest extends AsmTest {
    * An ASM4 {@link MethodVisitor} which overrides the ASM4 visitMethodInsn method, by adding "v4"
    * at the end of method names and by duplicating the instruction.
    */
-  private static class MethodVisitor4Override extends MethodVisitor {
+  public static class MethodVisitor4Override extends MethodVisitor {
 
-    private final StringWriter log;
+    public final StringWriter log;
 
     MethodVisitor4Override(final MethodVisitor methodVisitor, final StringWriter log) {
       super(Opcodes.ASM4, methodVisitor);
@@ -450,16 +450,16 @@ class MethodVisitorTest extends AsmTest {
   }
 
   /** An ASM5 {@link MethodVisitor} which does not override the ASM5 visitMethodInsn method. */
-  private static class MethodVisitor5 extends MethodVisitor {
+  public static class MethodVisitor5 extends MethodVisitor {
     MethodVisitor5(final MethodVisitor methodVisitor) {
       super(Opcodes.ASM5, methodVisitor);
     }
   }
 
   /** An ASM5 {@link MethodVisitor} which overrides the ASM5 visitMethodInsn method. */
-  private static class MethodVisitor5Override extends MethodVisitor {
+  public static class MethodVisitor5Override extends MethodVisitor {
 
-    private final StringWriter log;
+    public final StringWriter log;
 
     MethodVisitor5Override(final MethodVisitor methodVisitor, final StringWriter log) {
       super(Opcodes.ASM5, methodVisitor);
@@ -482,9 +482,9 @@ class MethodVisitorTest extends AsmTest {
    * An ASM-like {@link MethodVisitor} subclass, which overrides the ASM5 visitMethodInsn method,
    * but can be used with any API version.
    */
-  private static class TraceMethodVisitor extends MethodVisitor {
+  public static class TraceMethodVisitor extends MethodVisitor {
 
-    protected final StringWriter log;
+    public final StringWriter log;
 
     TraceMethodVisitor(final int api, final MethodVisitor methodVisitor, final StringWriter log) {
       super(api, methodVisitor);
@@ -510,7 +510,7 @@ class MethodVisitorTest extends AsmTest {
   }
 
   /** A user subclass of {@link TraceMethodVisitor}, implemented for ASM4. */
-  private static class UserTraceMethodVisitor4 extends TraceMethodVisitor {
+  public static class UserTraceMethodVisitor4 extends TraceMethodVisitor {
 
     UserTraceMethodVisitor4(final MethodVisitor methodVisitor, final StringWriter log) {
       super(Opcodes.ASM4, methodVisitor, log);
@@ -526,7 +526,7 @@ class MethodVisitorTest extends AsmTest {
   }
 
   /** A user subclass of {@link TraceMethodVisitor}, implemented for ASM5. */
-  private static class UserTraceMethodVisitor5 extends TraceMethodVisitor {
+  public static class UserTraceMethodVisitor5 extends TraceMethodVisitor {
 
     UserTraceMethodVisitor5(final MethodVisitor methodVisitor, final StringWriter log) {
       super(Opcodes.ASM5, methodVisitor, log);
@@ -545,9 +545,9 @@ class MethodVisitorTest extends AsmTest {
   }
 
   /** A {@link MethodVisitor} that logs the calls to its visitMethodInsn method. */
-  private static class LogMethodVisitor extends MethodVisitor {
+  public static class LogMethodVisitor extends MethodVisitor {
 
-    private final StringWriter log;
+    public final StringWriter log;
 
     LogMethodVisitor(final StringWriter log) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL);

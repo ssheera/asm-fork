@@ -41,9 +41,9 @@ import gnu.bytecode.Type;
  */
 public class GnuByteCodeGenerator extends Generator {
 
-  private static final Method OBJECT_CONSTRUCTOR = Type.pointer_type.getDeclaredMethod("<init>", 0);
-  private static final Field OUT_FIELD = ClassType.make("java.lang.System").getField("out");
-  private static final Method PRINTLN_METHOD =
+  public static final Method OBJECT_CONSTRUCTOR = Type.pointer_type.getDeclaredMethod("<init>", 0);
+  public static final Field OUT_FIELD = ClassType.make("java.lang.System").getField("out");
+  public static final Method PRINTLN_METHOD =
       ClassType.make("java.io.PrintStream")
           .getDeclaredMethod("println", new Type[] {Type.string_type});
 

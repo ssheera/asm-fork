@@ -65,7 +65,7 @@ public abstract class Remapper {
    *     is) or, of the type is a method type, with its descriptor remapped with {@link
    *     #mapMethodDesc(String)}. See {@link Type#getInternalName()}.
    */
-  private Type mapType(final Type type) {
+  public Type mapType(final Type type) {
     switch (type.getSort()) {
       case Type.ARRAY:
         StringBuilder remappedDescriptor = new StringBuilder();
@@ -226,7 +226,7 @@ public abstract class Remapper {
    * @deprecated use {@link #createSignatureRemapper} instead.
    */
   @Deprecated
-  protected SignatureVisitor createRemappingSignatureAdapter(
+  public SignatureVisitor createRemappingSignatureAdapter(
       final SignatureVisitor signatureVisitor) {
     return createSignatureRemapper(signatureVisitor);
   }
@@ -238,7 +238,7 @@ public abstract class Remapper {
    * @param signatureVisitor the SignatureVisitor the remapper must delegate to.
    * @return the newly created remapper.
    */
-  protected SignatureVisitor createSignatureRemapper(final SignatureVisitor signatureVisitor) {
+  public SignatureVisitor createSignatureRemapper(final SignatureVisitor signatureVisitor) {
     return new SignatureRemapper(signatureVisitor, this);
   }
 

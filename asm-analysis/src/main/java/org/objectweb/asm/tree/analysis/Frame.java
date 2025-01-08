@@ -50,12 +50,12 @@ import org.objectweb.asm.tree.VarInsnNode;
 public class Frame<V extends Value> {
 
   /** The maximum size of the operand stack of any method. */
-  private static final int MAX_STACK_SIZE = 65536;
+  public static final int MAX_STACK_SIZE = 65536;
 
   /**
    * The expected return type of the analyzed method, or {@literal null} if the method returns void.
    */
-  private V returnValue;
+  public V returnValue;
 
   /**
    * The local variables and the operand stack of this frame. The first {@link #numLocals} elements
@@ -63,25 +63,25 @@ public class Frame<V extends Value> {
    * operand stack. Long and double values are represented with two elements in the local variables
    * section, and with one element in the operand stack section.
    */
-  private V[] values;
+  public V[] values;
 
   /**
    * The number of local variables of this frame. Long and double values are represented with two
    * elements.
    */
-  private int numLocals;
+  public int numLocals;
 
   /**
    * The number of elements in the operand stack. Long and double values are represented with a
    * single element.
    */
-  private int numStack;
+  public int numStack;
 
   /**
    * The maximum number of elements in the operand stack. Long and double values are represented
    * with a single element.
    */
-  private int maxStack;
+  public int maxStack;
 
   /**
    * Constructs a new frame with the given size.
@@ -646,7 +646,7 @@ public class Frame<V extends Value> {
     }
   }
 
-  private boolean executeDupX2(
+  public boolean executeDupX2(
       final AbstractInsnNode insn, final V value1, final Interpreter<V> interpreter)
       throws AnalyzerException {
     V value2 = pop();
@@ -668,7 +668,7 @@ public class Frame<V extends Value> {
     return false;
   }
 
-  private void executeInvokeInsn(
+  public void executeInvokeInsn(
       final AbstractInsnNode insn, final String methodDescriptor, final Interpreter<V> interpreter)
       throws AnalyzerException {
     ArrayList<V> valueList = new ArrayList<>();
@@ -683,6 +683,7 @@ public class Frame<V extends Value> {
     } else {
       push(interpreter.naryOperation(insn, valueList));
     }
+    interpreter.naryExtendedOperation(insn, valueList, this);
   }
 
   /**
@@ -708,6 +709,13 @@ public class Frame<V extends Value> {
       }
     }
     return changed;
+  }
+
+  public V peek() {
+    if (numStack == 0) {
+      return null;
+    }
+    return values[numLocals + (numStack - 1)];
   }
 
   /**

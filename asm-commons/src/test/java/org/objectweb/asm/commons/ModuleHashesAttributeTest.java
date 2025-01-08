@@ -45,8 +45,8 @@ import org.objectweb.asm.Opcodes;
  */
 class ModuleHashesAttributeTest {
 
-  private static final byte[] HASH1 = {0x1, 0x2, 0x3};
-  private static final byte[] HASH2 = {0x4, 0x5, 0x6};
+  public static final byte[] HASH1 = {0x1, 0x2, 0x3};
+  public static final byte[] HASH2 = {0x4, 0x5, 0x6};
 
   @Test
   void testWriteAndRead() {

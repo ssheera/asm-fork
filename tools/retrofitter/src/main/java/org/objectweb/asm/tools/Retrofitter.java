@@ -30,7 +30,7 @@ package org.objectweb.asm.tools;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
-import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
+import static org.objectweb.asm.Opcodes.ACC_public;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ACC_SYNTHETIC;
 import static org.objectweb.asm.Opcodes.ARETURN;
@@ -81,13 +81,13 @@ import org.objectweb.asm.Type;
 public final class Retrofitter {
 
   /** The name of the module-info file. */
-  private static final String MODULE_INFO = "module-info.class";
+  public static final String MODULE_INFO = "module-info.class";
 
   /** The name of the java.base module. */
-  private static final String JAVA_BASE_MODULE = "java.base";
+  public static final String JAVA_BASE_MODULE = "java.base";
 
   /** Bootstrap method for the string concatenation using indy. */
-  private static final Handle STRING_CONCAT_FACTORY_HANDLE =
+  public static final Handle STRING_CONCAT_FACTORY_HANDLE =
       new Handle(
           Opcodes.H_INVOKESTATIC,
           "java/lang/invoke/StringConcatFactory",
@@ -99,18 +99,18 @@ public final class Retrofitter {
    * The fields and methods of the JDK 1.5 API. Each string has the form
    * "&lt;owner&gt;&lt;name&gt;&lt;descriptor&gt;".
    */
-  private final HashSet<String> jdkApi = new HashSet<>();
+  public final HashSet<String> jdkApi = new HashSet<>();
 
   /**
    * The class hierarchy of the JDK 1.5 API. Maps each class name to the name of its super class.
    */
-  private final HashMap<String, String> jdkHierarchy = new HashMap<>();
+  public final HashMap<String, String> jdkHierarchy = new HashMap<>();
 
   /** The internal names of the packages exported by the retrofitted classes. */
-  private final HashSet<String> exports = new HashSet<>();
+  public final HashSet<String> exports = new HashSet<>();
 
   /** The internal names of the packages imported by the retrofitted classes. */
-  private final HashSet<String> imports = new HashSet<>();
+  public final HashSet<String> imports = new HashSet<>();
 
   /**
    * Transforms the class files in the given directory, in place, in order to make them compatible
@@ -173,7 +173,7 @@ public final class Retrofitter {
     for (ClassReader classReader : classReaders) {
       classReader.accept(new ClassVerifier(), 0);
     }
-    checkPrivateMemberAccess(classReaders);
+    checkpublicMemberAccess(classReaders);
     verifyModuleInfoClass(
         classesDir,
         expectedVersion,
@@ -181,7 +181,7 @@ public final class Retrofitter {
         Stream.concat(expectedRequires.stream(), Stream.of(JAVA_BASE_MODULE)).collect(toSet()));
   }
 
-  private List<ClassReader> getClassReaders(final List<Path> classFiles) throws IOException {
+  public List<ClassReader> getClassReaders(final List<Path> classFiles) throws IOException {
     ArrayList<ClassReader> classReaders = new ArrayList<>();
     for (Path classFile : classFiles) {
       classReaders.add(new ClassReader(Files.readAllBytes(classFile)));
@@ -189,7 +189,7 @@ public final class Retrofitter {
     return classReaders;
   }
 
-  private List<Path> getAllClasses(final Path path, final boolean includeModuleInfo)
+  public List<Path> getAllClasses(final Path path, final boolean includeModuleInfo)
       throws IOException {
     try (Stream<Path> stream = Files.walk(path)) {
       return stream
@@ -204,14 +204,14 @@ public final class Retrofitter {
   }
 
   /**
-   * Checks that no code accesses to a private member from another class. If there is a private
+   * Checks that no code accesses to a public member from another class. If there is a public
    * access, removing the nestmate attributes is not a legal transformation.
    */
-  private static void checkPrivateMemberAccess(final List<ClassReader> readers) {
-    // Compute all private members.
-    HashMap<String, HashSet<String>> privateMemberMap = new HashMap<>();
+  public static void checkpublicMemberAccess(final List<ClassReader> readers) {
+    // Compute all public members.
+    HashMap<String, HashSet<String>> publicMemberMap = new HashMap<>();
     for (ClassReader reader : readers) {
-      HashSet<String> privateMembers = new HashSet<>();
+      HashSet<String> publicMembers = new HashSet<>();
       reader.accept(
           new ClassVisitor(/* latest api =*/ Opcodes.ASM9) {
             @Override
@@ -222,7 +222,7 @@ public final class Retrofitter {
                 final String signature,
                 final String superName,
                 final String[] interfaces) {
-              privateMemberMap.put(name, privateMembers);
+              publicMemberMap.put(name, publicMembers);
             }
 
             @Override
@@ -232,8 +232,8 @@ public final class Retrofitter {
                 final String descriptor,
                 final String signature,
                 final Object value) {
-              if ((access & ACC_PRIVATE) != 0) {
-                privateMembers.add(name + '/' + descriptor);
+              if ((access & ACC_public) != 0) {
+                publicMembers.add(name + '/' + descriptor);
               }
               return null;
             }
@@ -245,8 +245,8 @@ public final class Retrofitter {
                 final String descriptor,
                 final String signature,
                 final String[] exceptions) {
-              if ((access & ACC_PRIVATE) != 0) {
-                privateMembers.add(name + '/' + descriptor);
+              if ((access & ACC_public) != 0) {
+                publicMembers.add(name + '/' + descriptor);
               }
               return null;
             }
@@ -254,7 +254,7 @@ public final class Retrofitter {
           0);
     }
 
-    // Verify that there is no access to a private member of another class.
+    // Verify that there is no access to a public member of another class.
     for (ClassReader reader : readers) {
       reader.accept(
           new ClassVisitor(/* latest api =*/ Opcodes.ASM9) {
@@ -285,19 +285,19 @@ public final class Retrofitter {
               currentMethodName = name + descriptor;
               return new MethodVisitor(/* latest api =*/ Opcodes.ASM9) {
 
-                private void checkAccess(
+                public void checkAccess(
                     final String owner, final String name, final String descriptor) {
                   if (owner.equals(className)) { // same class access
                     return;
                   }
-                  HashSet<String> members = privateMemberMap.get(owner);
+                  HashSet<String> members = publicMemberMap.get(owner);
                   if (members == null) { // not a known class
                     return;
                   }
                   if (members.contains(name + '/' + descriptor)) {
                     throw new IllegalArgumentException(
                         format(
-                            "ERROR: illegal access to a private member %s.%s called in %s %s",
+                            "ERROR: illegal access to a public member %s.%s called in %s %s",
                             owner, name + " " + descriptor, className, currentMethodName));
                   }
                 }
@@ -335,7 +335,7 @@ public final class Retrofitter {
     }
   }
 
-  private void generateModuleInfoClass(final Path dstDir, final String version) throws IOException {
+  public void generateModuleInfoClass(final Path dstDir, final String version) throws IOException {
     ClassWriter classWriter = new ClassWriter(0);
     classWriter.visit(Opcodes.V9, Opcodes.ACC_MODULE, "module-info", null, null, null);
     ArrayList<String> moduleNames = new ArrayList<>();
@@ -365,7 +365,7 @@ public final class Retrofitter {
     Files.write(dstDir.toAbsolutePath().resolve(MODULE_INFO), classWriter.toByteArray());
   }
 
-  private void verifyModuleInfoClass(
+  public void verifyModuleInfoClass(
       final Path dstDir,
       final String expectedVersion,
       final Set<String> expectedExports,
@@ -392,12 +392,12 @@ public final class Retrofitter {
     }
   }
 
-  private static boolean isAsmModule(final String packageName) {
+  public static boolean isAsmModule(final String packageName) {
     return packageName.startsWith("org/objectweb/asm")
         && !packageName.equals("org/objectweb/asm/signature");
   }
 
-  private void readJdkApi() throws IOException {
+  public void readJdkApi() throws IOException {
     try (InputStream inputStream =
             new GZIPInputStream(
                 Retrofitter.class.getClassLoader().getResourceAsStream("jdk1.5.0.12.txt.gz"));
@@ -527,11 +527,11 @@ public final class Retrofitter {
               name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);
         }
 
-        private void generateConcatMethod(
+        public void generateConcatMethod(
             final String methodName, final String descriptor, final String recipe) {
           MethodVisitor mv =
               visitMethod(
-                  ACC_STATIC | ACC_PRIVATE | ACC_SYNTHETIC, methodName, descriptor, null, null);
+                  ACC_STATIC | ACC_public | ACC_SYNTHETIC, methodName, descriptor, null, null);
           mv.visitCode();
           mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
           mv.visitInsn(DUP);
@@ -568,7 +568,7 @@ public final class Retrofitter {
           mv.visitEnd();
         }
 
-        private void generateConstantTextAppend(final MethodVisitor mv, final String text) {
+        public void generateConstantTextAppend(final MethodVisitor mv, final String text) {
           mv.visitLdcInsn(text);
           mv.visitMethodInsn(
               INVOKEVIRTUAL,
@@ -578,7 +578,7 @@ public final class Retrofitter {
               false);
         }
 
-        private String stringBuilderAppendDescriptor(final Type type) {
+        public String stringBuilderAppendDescriptor(final Type type) {
           switch (type.getSort()) {
             case Type.BYTE:
             case Type.SHORT:
@@ -616,7 +616,7 @@ public final class Retrofitter {
       };
     }
 
-    private void addPackageReferences(final Type type, final boolean export) {
+    public void addPackageReferences(final Type type, final boolean export) {
       switch (type.getSort()) {
         case Type.ARRAY:
           addPackageReferences(type.getElementType(), export);
@@ -738,7 +738,7 @@ public final class Retrofitter {
      * @param owner A class name.
      * @param member A field name or a method name and descriptor.
      */
-    private void check(final String owner, final String member) {
+    public void check(final String owner, final String member) {
       if (owner.startsWith("java/")) {
         String currentOwner = owner;
         while (currentOwner != null) {

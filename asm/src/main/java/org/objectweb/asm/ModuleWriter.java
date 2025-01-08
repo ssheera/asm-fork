@@ -43,55 +43,55 @@ package org.objectweb.asm;
 final class ModuleWriter extends ModuleVisitor {
 
   /** Where the constants used in this AnnotationWriter must be stored. */
-  private final SymbolTable symbolTable;
+  public final SymbolTable symbolTable;
 
   /** The module_name_index field of the JVMS Module attribute. */
-  private final int moduleNameIndex;
+  public final int moduleNameIndex;
 
   /** The module_flags field of the JVMS Module attribute. */
-  private final int moduleFlags;
+  public final int moduleFlags;
 
   /** The module_version_index field of the JVMS Module attribute. */
-  private final int moduleVersionIndex;
+  public final int moduleVersionIndex;
 
   /** The requires_count field of the JVMS Module attribute. */
-  private int requiresCount;
+  public int requiresCount;
 
   /** The binary content of the 'requires' array of the JVMS Module attribute. */
-  private final ByteVector requires;
+  public final ByteVector requires;
 
   /** The exports_count field of the JVMS Module attribute. */
-  private int exportsCount;
+  public int exportsCount;
 
   /** The binary content of the 'exports' array of the JVMS Module attribute. */
-  private final ByteVector exports;
+  public final ByteVector exports;
 
   /** The opens_count field of the JVMS Module attribute. */
-  private int opensCount;
+  public int opensCount;
 
   /** The binary content of the 'opens' array of the JVMS Module attribute. */
-  private final ByteVector opens;
+  public final ByteVector opens;
 
   /** The uses_count field of the JVMS Module attribute. */
-  private int usesCount;
+  public int usesCount;
 
   /** The binary content of the 'uses_index' array of the JVMS Module attribute. */
-  private final ByteVector usesIndex;
+  public final ByteVector usesIndex;
 
   /** The provides_count field of the JVMS Module attribute. */
-  private int providesCount;
+  public int providesCount;
 
   /** The binary content of the 'provides' array of the JVMS Module attribute. */
-  private final ByteVector provides;
+  public final ByteVector provides;
 
   /** The provides_count field of the JVMS ModulePackages attribute. */
-  private int packageCount;
+  public int packageCount;
 
   /** The binary content of the 'package_index' array of the JVMS ModulePackages attribute. */
-  private final ByteVector packageIndex;
+  public final ByteVector packageIndex;
 
   /** The main_class_index field of the JVMS ModuleMainClass attribute, or 0. */
-  private int mainClassIndex;
+  public int mainClassIndex;
 
   ModuleWriter(final SymbolTable symbolTable, final int name, final int access, final int version) {
     super(/* latest api = */ Opcodes.ASM9);

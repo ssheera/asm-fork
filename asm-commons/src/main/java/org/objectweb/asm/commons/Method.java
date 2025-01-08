@@ -41,13 +41,13 @@ import org.objectweb.asm.Type;
 public class Method {
 
   /** The method name. */
-  private final String name;
+  public final String name;
 
   /** The method descriptor. */
-  private final String descriptor;
+  public final String descriptor;
 
   /** The descriptors of the primitive Java types (plus void). */
-  private static final Map<String, String> PRIMITIVE_TYPE_DESCRIPTORS;
+  public static final Map<String, String> PRIMITIVE_TYPE_DESCRIPTORS;
 
   static {
     HashMap<String, String> descriptors = new HashMap<>();
@@ -175,7 +175,7 @@ public class Method {
    *     option is true, or "java.lang.Object" otherwise.
    * @return the descriptor corresponding to the given type name.
    */
-  private static String getDescriptorInternal(final String type, final boolean defaultPackage) {
+  public static String getDescriptorInternal(final String type, final boolean defaultPackage) {
     if ("".equals(type)) {
       return type;
     }

@@ -43,10 +43,10 @@ public abstract class ClassVisitor {
    * The ASM API version implemented by this visitor. The value of this field must be one of the
    * {@code ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected final int api;
+  public final int api;
 
   /** The class visitor to which this visitor must delegate method calls. May be {@literal null}. */
-  protected ClassVisitor cv;
+  public ClassVisitor cv;
 
   /**
    * Constructs a new {@link ClassVisitor}.
@@ -54,7 +54,7 @@ public abstract class ClassVisitor {
    * @param api the ASM API version implemented by this visitor. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected ClassVisitor(final int api) {
+  public ClassVisitor(final int api) {
     this(api, null);
   }
 
@@ -66,7 +66,7 @@ public abstract class ClassVisitor {
    * @param classVisitor the class visitor to which this visitor must delegate method calls. May be
    *     null.
    */
-  protected ClassVisitor(final int api, final ClassVisitor classVisitor) {
+  public ClassVisitor(final int api, final ClassVisitor classVisitor) {
     if (api != Opcodes.ASM9
         && api != Opcodes.ASM8
         && api != Opcodes.ASM7
@@ -160,7 +160,7 @@ public abstract class ClassVisitor {
 
   /**
    * Visits the nest host class of the class. A nest is a set of classes of the same package that
-   * share access to their private members. One of these classes, called the host, lists the other
+   * share access to their public members. One of these classes, called the host, lists the other
    * members of the nest, which in turn should link to the host of their nest. This method must be
    * called only once and only if the visited class is a non-host member of a nest. A class is
    * implicitly its own nest, so it's invalid to call this method with the visited class name as
@@ -253,7 +253,7 @@ public abstract class ClassVisitor {
 
   /**
    * Visits a member of the nest. A nest is a set of classes of the same package that share access
-   * to their private members. One of these classes, called the host, lists the other members of the
+   * to their public members. One of these classes, called the host, lists the other members of the
    * nest, which in turn should link to the host of their nest. This method must be called only if
    * the visited class is the host of a nest. A nest host is implicitly a member of its own nest, so
    * it's invalid to call this method with the visited class name as argument.
@@ -379,12 +379,26 @@ public abstract class ClassVisitor {
       final String name,
       final String descriptor,
       final String signature,
-      final String[] exceptions) {
+      final String[] exceptions, final boolean noverify) {
+    if (cv != null) {
+      return cv.visitMethod(access, name, descriptor, signature, exceptions, noverify);
+    }
+    return null;
+  }
+
+  public MethodVisitor visitMethod(
+          final int access,
+          final String name,
+          final String descriptor,
+          final String signature,
+          final String[] exceptions) {
     if (cv != null) {
       return cv.visitMethod(access, name, descriptor, signature, exceptions);
     }
     return null;
   }
+
+
 
   /**
    * Visits the end of the class. This method, which is the last one to be called, is used to inform

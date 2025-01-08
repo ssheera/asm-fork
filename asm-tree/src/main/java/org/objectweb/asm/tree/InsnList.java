@@ -29,6 +29,8 @@ package org.objectweb.asm.tree;
 
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
+
 import org.objectweb.asm.MethodVisitor;
 
 /**
@@ -38,19 +40,19 @@ import org.objectweb.asm.MethodVisitor;
 public class InsnList implements Iterable<AbstractInsnNode> {
 
   /** The number of instructions in this list. */
-  private int size;
+  public int size;
 
   /** The first instruction in this list. May be {@literal null}. */
-  private AbstractInsnNode firstInsn;
+  public AbstractInsnNode firstInsn;
 
   /** The last instruction in this list. May be {@literal null}. */
-  private AbstractInsnNode lastInsn;
+  public AbstractInsnNode lastInsn;
 
   /**
    * A cache of the instructions of this list. This cache is used to improve the performance of the
    * {@link #get} method.
    */
-  AbstractInsnNode[] cache;
+  public AbstractInsnNode[] cache;
 
   /**
    * Returns the number of instructions in this list.
@@ -78,6 +80,11 @@ public class InsnList implements Iterable<AbstractInsnNode> {
   public AbstractInsnNode getLast() {
     return lastInsn;
   }
+
+  public Stream<AbstractInsnNode> stream() {
+    return Stream.of(toArray());
+  }
+
 
   /**
    * Returns the instruction whose index is given. This method builds a cache of the instructions in
@@ -478,7 +485,7 @@ public class InsnList implements Iterable<AbstractInsnNode> {
 
   // Note: this class is not generified because it would create bridges.
   @SuppressWarnings("rawtypes")
-  private final class InsnListIterator implements ListIterator {
+  public final class InsnListIterator implements ListIterator {
 
     AbstractInsnNode nextInsn;
 

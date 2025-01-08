@@ -54,31 +54,31 @@ import org.objectweb.asm.tree.VarInsnNode;
 public class Analyzer<V extends Value> implements Opcodes {
 
   /** The interpreter to use to symbolically interpret the bytecode instructions. */
-  private final Interpreter<V> interpreter;
+  public final Interpreter<V> interpreter;
 
   /** The instructions of the currently analyzed method. */
-  private InsnList insnList;
+  public InsnList insnList;
 
   /** The size of {@link #insnList}. */
-  private int insnListSize;
+  public int insnListSize;
 
   /** The exception handlers of the currently analyzed method (one list per instruction index). */
-  private List<TryCatchBlockNode>[] handlers;
+  public List<TryCatchBlockNode>[] handlers;
 
   /** The execution stack frames of the currently analyzed method (one per instruction index). */
-  private Frame<V>[] frames;
+  public Frame<V>[] frames;
 
   /** The subroutines of the currently analyzed method (one per instruction index). */
-  private Subroutine[] subroutines;
+  public Subroutine[] subroutines;
 
   /** The instructions that remain to process (one boolean per instruction index). */
-  private boolean[] inInstructionsToProcess;
+  public boolean[] inInstructionsToProcess;
 
   /** The indices of the instructions that remain to process in the currently analyzed method. */
-  private int[] instructionsToProcess;
+  public int[] instructionsToProcess;
 
   /** The number of instructions that remain to process in the currently analyzed method. */
-  private int numInstructionsToProcess;
+  public int numInstructionsToProcess;
 
   /**
    * Constructs a new {@link Analyzer}.
@@ -322,7 +322,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param method a method.
    * @return the maximum number of local variables used in the given method.
    */
-  private static int computeMaxLocals(final MethodNode method) {
+  public static int computeMaxLocals(final MethodNode method) {
     int maxLocals = Type.getArgumentsAndReturnSizes(method.desc) >> 2;
     if ((method.access & Opcodes.ACC_STATIC) != 0) {
       maxLocals -= 1;
@@ -352,7 +352,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param frames the stack map frames of a method.
    * @return the maximum stack size of the given method.
    */
-  private static int computeMaxStack(final Frame<?>[] frames) {
+  public static int computeMaxStack(final Frame<?>[] frames) {
     int maxStack = 0;
     for (Frame<?> frame : frames) {
       if (frame != null) {
@@ -373,7 +373,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    *     and double values count for two variables).
    * @throws AnalyzerException if the control flow graph can fall off the end of the code.
    */
-  private void findSubroutines(final int maxLocals) throws AnalyzerException {
+  public void findSubroutines(final int maxLocals) throws AnalyzerException {
     // For each instruction, compute the subroutine to which it belongs.
     // Follow the main 'subroutine', and collect the jsr instructions to nested subroutines.
     Subroutine main = new Subroutine(null, maxLocals, null);
@@ -413,7 +413,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param jsrInsns where the jsr instructions for nested subroutines must be put.
    * @throws AnalyzerException if the control flow graph can fall off the end of the code.
    */
-  private void findSubroutine(
+  public void findSubroutine(
       final int insnIndex, final Subroutine subroutine, final List<AbstractInsnNode> jsrInsns)
       throws AnalyzerException {
     ArrayList<Integer> instructionIndicesToProcess = new ArrayList<>();
@@ -492,7 +492,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param method the method to be analyzed.
    * @return the initial execution stack frame of the 'method'.
    */
-  private Frame<V> computeInitialFrame(final String owner, final MethodNode method) {
+  public Frame<V> computeInitialFrame(final String owner, final MethodNode method) {
     Frame<V> frame = newFrame(method.maxLocals, method.maxStack);
     int currentLocal = 0;
     boolean isInstanceMethod = (method.access & ACC_STATIC) == 0;
@@ -552,7 +552,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param method the method to be analyzed.
    * @throws AnalyzerException if a problem occurs.
    */
-  protected void init(final String owner, final MethodNode method) throws AnalyzerException {
+  public void init(final String owner, final MethodNode method) throws AnalyzerException {
     // Nothing to do.
   }
 
@@ -563,7 +563,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param numStack the maximum stack size of the frame.
    * @return the created frame.
    */
-  protected Frame<V> newFrame(final int numLocals, final int numStack) {
+  public Frame<V> newFrame(final int numLocals, final int numStack) {
     return new Frame<>(numLocals, numStack);
   }
 
@@ -573,7 +573,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param frame a frame.
    * @return the created frame.
    */
-  protected Frame<V> newFrame(final Frame<? extends V> frame) {
+  public Frame<V> newFrame(final Frame<? extends V> frame) {
     return new Frame<>(frame);
   }
 
@@ -585,7 +585,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param insnIndex an instruction index.
    * @param successorIndex index of a successor instruction.
    */
-  protected void newControlFlowEdge(final int insnIndex, final int successorIndex) {
+  public void newControlFlowEdge(final int insnIndex, final int successorIndex) {
     // Nothing to do.
   }
 
@@ -601,7 +601,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    *     analyzer, or false otherwise. The default implementation of this method always returns
    *     true.
    */
-  protected boolean newControlFlowExceptionEdge(final int insnIndex, final int successorIndex) {
+  public boolean newControlFlowExceptionEdge(final int insnIndex, final int successorIndex) {
     return true;
   }
 
@@ -617,7 +617,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    *     analyzer, or false otherwise. The default implementation of this method delegates to {@link
    *     #newControlFlowExceptionEdge(int, int)}.
    */
-  protected boolean newControlFlowExceptionEdge(
+  public boolean newControlFlowExceptionEdge(
       final int insnIndex, final TryCatchBlockNode tryCatchBlock) {
     return newControlFlowExceptionEdge(insnIndex, insnList.indexOf(tryCatchBlock.handler));
   }
@@ -635,7 +635,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param subroutine a subroutine. This subroutine is left unchanged by this method.
    * @throws AnalyzerException if the frames have incompatible sizes.
    */
-  private void merge(final int insnIndex, final Frame<V> frame, final Subroutine subroutine)
+  public void merge(final int insnIndex, final Frame<V> frame, final Subroutine subroutine)
       throws AnalyzerException {
     boolean changed;
     Frame<V> oldFrame = frames[insnIndex];
@@ -679,7 +679,7 @@ public class Analyzer<V extends Value> implements Opcodes {
    * @param localsUsed the local variables read or written in the subroutine.
    * @throws AnalyzerException if the frames have incompatible sizes.
    */
-  private void merge(
+  public void merge(
       final int insnIndex,
       final Frame<V> frameBeforeJsr,
       final Frame<V> frameAfterRet,

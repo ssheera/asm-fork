@@ -41,16 +41,16 @@ import org.objectweb.asm.Opcodes;
 public class CodeSizeEvaluator extends MethodVisitor implements Opcodes {
 
   /** The minimum size in bytes of the visited method. */
-  private int minSize;
+  public int minSize;
 
   /** The maximum size in bytes of the visited method. */
-  private int maxSize;
+  public int maxSize;
 
   public CodeSizeEvaluator(final MethodVisitor methodVisitor) {
     this(/* latest api = */ Opcodes.ASM9, methodVisitor);
   }
 
-  protected CodeSizeEvaluator(final int api, final MethodVisitor methodVisitor) {
+  public CodeSizeEvaluator(final int api, final MethodVisitor methodVisitor) {
     super(api, methodVisitor);
   }
 

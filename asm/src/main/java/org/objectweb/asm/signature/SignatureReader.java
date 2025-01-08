@@ -39,7 +39,7 @@ package org.objectweb.asm.signature;
 public class SignatureReader {
 
   /** The JVMS signature to be read. */
-  private final String signatureValue;
+  public final String signatureValue;
 
   /**
    * Constructs a {@link SignatureReader} for the given signature.
@@ -148,7 +148,7 @@ public class SignatureReader {
    * @param signatureVisitor the visitor that must visit this signature.
    * @return the index of the first character after the parsed signature.
    */
-  private static int parseType(
+  public static int parseType(
       final String signature, final int startOffset, final SignatureVisitor signatureVisitor) {
     int offset = startOffset; // Current offset in the parsed signature.
     char currentChar = signature.charAt(offset++); // The signature character at 'offset'.

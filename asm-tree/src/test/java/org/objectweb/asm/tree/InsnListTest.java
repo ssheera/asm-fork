@@ -52,8 +52,8 @@ import org.objectweb.asm.Opcodes;
  */
 class InsnListTest {
 
-  private final InsnNode insn1 = new InsnNode(0);
-  private final InsnNode insn2 = new InsnNode(1);
+  public final InsnNode insn1 = new InsnNode(0);
+  public final InsnNode insn2 = new InsnNode(1);
 
   @Test
   void testSize_emptyList() {
@@ -847,11 +847,11 @@ class InsnListTest {
     assertNotSame(label, labelNode.getLabel());
   }
 
-  private static InsnList newInsnList() {
+  public static InsnList newInsnList() {
     return new CheckedInsnList();
   }
 
-  private static InsnList newInsnList(final InsnNode insnNode1, final InsnNode insnNode2) {
+  public static InsnList newInsnList(final InsnNode insnNode1, final InsnNode insnNode2) {
     InsnList insnList = new CheckedInsnList();
     insnList.add(insnNode1);
     insnList.add(insnNode2);

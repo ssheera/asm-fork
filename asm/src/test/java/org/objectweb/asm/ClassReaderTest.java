@@ -629,7 +629,7 @@ class ClassReaderTest extends AsmTest implements Opcodes {
     assertEquals(Opcodes.V_PREVIEW, classVersion.get() & Opcodes.V_PREVIEW);
   }
 
-  private static class EmptyClassVisitor extends ClassVisitor {
+  public static class EmptyClassVisitor extends ClassVisitor {
 
     final AnnotationVisitor annotationVisitor =
         new AnnotationVisitor(api) {

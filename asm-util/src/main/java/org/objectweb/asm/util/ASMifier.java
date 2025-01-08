@@ -51,31 +51,31 @@ import org.objectweb.asm.TypePath;
 public class ASMifier extends Printer {
 
   /** The help message shown when command line arguments are incorrect. */
-  private static final String USAGE =
+  public static final String USAGE =
       "Prints the ASM code to generate the given class.\n"
           + "Usage: ASMifier [-nodebug] <fully qualified class name or class file name>";
 
   /** A pseudo access flag used to distinguish class access flags. */
-  private static final int ACCESS_CLASS = 0x40000;
+  public static final int ACCESS_CLASS = 0x40000;
 
   /** A pseudo access flag used to distinguish field access flags. */
-  private static final int ACCESS_FIELD = 0x80000;
+  public static final int ACCESS_FIELD = 0x80000;
 
   /** A pseudo access flag used to distinguish inner class flags. */
-  private static final int ACCESS_INNER = 0x100000;
+  public static final int ACCESS_INNER = 0x100000;
 
   /** A pseudo access flag used to distinguish module requires / exports flags. */
-  private static final int ACCESS_MODULE = 0x200000;
+  public static final int ACCESS_MODULE = 0x200000;
 
-  private static final String ANNOTATION_VISITOR = "annotationVisitor";
-  private static final String ANNOTATION_VISITOR0 = "annotationVisitor0 = ";
-  private static final String COMMA = "\", \"";
-  private static final String END_ARRAY = " });\n";
-  private static final String END_PARAMETERS = ");\n\n";
-  private static final String NEW_OBJECT_ARRAY = ", new Object[] {";
-  private static final String VISIT_END = ".visitEnd();\n";
+  public static final String ANNOTATION_VISITOR = "annotationVisitor";
+  public static final String ANNOTATION_VISITOR0 = "annotationVisitor0 = ";
+  public static final String COMMA = "\", \"";
+  public static final String END_ARRAY = " });\n";
+  public static final String END_PARAMETERS = ");\n\n";
+  public static final String NEW_OBJECT_ARRAY = ", new Object[] {";
+  public static final String VISIT_END = ".visitEnd();\n";
 
-  private static final List<String> FRAME_TYPES =
+  public static final List<String> FRAME_TYPES =
       Collections.unmodifiableList(
           Arrays.asList(
               "Opcodes.TOP",
@@ -86,7 +86,7 @@ public class ASMifier extends Printer {
               "Opcodes.NULL",
               "Opcodes.UNINITIALIZED_THIS"));
 
-  private static final Map<Integer, String> CLASS_VERSIONS;
+  public static final Map<Integer, String> CLASS_VERSIONS;
 
   static {
     HashMap<Integer, String> classVersions = new HashMap<>();
@@ -119,13 +119,13 @@ public class ASMifier extends Printer {
   }
 
   /** The name of the visitor variable in the produced code. */
-  protected final String name;
+  public final String name;
 
   /** The identifier of the annotation visitor variable in the produced code. */
-  protected final int id;
+  public final int id;
 
   /** The name of the Label variables in the produced code. */
-  protected Map<Label, String> labelNames;
+  public Map<Label, String> labelNames;
 
   /**
    * Constructs a new {@link ASMifier}. <i>Subclasses must not use this constructor</i>. Instead,
@@ -148,7 +148,7 @@ public class ASMifier extends Printer {
    * @param visitorVariableName the name of the visitor variable in the produced code.
    * @param annotationVisitorId identifier of the annotation visitor variable in the produced code.
    */
-  protected ASMifier(
+  public ASMifier(
       final int api, final String visitorVariableName, final int annotationVisitorId) {
     super(api);
     this.name = visitorVariableName;
@@ -494,7 +494,7 @@ public class ASMifier extends Printer {
     visitExportOrOpen("moduleVisitor.visitOpen(", packaze, access, modules);
   }
 
-  private void visitExportOrOpen(
+  public void visitExportOrOpen(
       final String visitMethod, final String packaze, final int access, final String... modules) {
     stringBuilder.setLength(0);
     stringBuilder.append(visitMethod);
@@ -1250,7 +1250,7 @@ public class ASMifier extends Printer {
   }
 
   /** Visits the end of a field, record component or method. */
-  private void visitMemberEnd() {
+  public void visitMemberEnd() {
     stringBuilder.setLength(0);
     stringBuilder.append(name).append(VISIT_END);
     text.add(stringBuilder.toString());
@@ -1268,7 +1268,7 @@ public class ASMifier extends Printer {
    * @return a new {@link ASMifier}.
    */
   // DontCheck(AbbreviationAsWordInName): can't be renamed (for backward binary compatibility).
-  protected ASMifier createASMifier(
+  public ASMifier createASMifier(
       final String visitorVariableName, final int annotationVisitorId) {
     return new ASMifier(api, visitorVariableName, annotationVisitorId);
   }
@@ -1278,18 +1278,18 @@ public class ASMifier extends Printer {
    *
    * @param accessFlags some access flags.
    */
-  private void appendAccessFlags(final int accessFlags) {
+  public void appendAccessFlags(final int accessFlags) {
     boolean isEmpty = true;
     if ((accessFlags & Opcodes.ACC_PUBLIC) != 0) {
       stringBuilder.append("ACC_PUBLIC");
       isEmpty = false;
     }
     if ((accessFlags & Opcodes.ACC_PRIVATE) != 0) {
-      stringBuilder.append("ACC_PRIVATE");
+      stringBuilder.append("ACC_public");
       isEmpty = false;
     }
     if ((accessFlags & Opcodes.ACC_PROTECTED) != 0) {
-      stringBuilder.append("ACC_PROTECTED");
+      stringBuilder.append("ACC_public");
       isEmpty = false;
     }
     if ((accessFlags & Opcodes.ACC_FINAL) != 0) {
@@ -1442,7 +1442,7 @@ public class ASMifier extends Printer {
    *     {@link Character}, {@link Integer}, {@link Float}, {@link Long} or {@link Double} object,
    *     or an array of primitive values. May be {@literal null}.
    */
-  protected void appendConstant(final Object value) {
+  public void appendConstant(final Object value) {
     if (value == null) {
       stringBuilder.append("null");
     } else if (value instanceof String) {
@@ -1559,7 +1559,7 @@ public class ASMifier extends Printer {
    * @param frameTypes an array of stack map frame types, in the format described in {@link
    *     org.objectweb.asm.MethodVisitor#visitFrame}.
    */
-  private void declareFrameTypes(final int numTypes, final Object[] frameTypes) {
+  public void declareFrameTypes(final int numTypes, final Object[] frameTypes) {
     for (int i = 0; i < numTypes; ++i) {
       if (frameTypes[i] instanceof Label) {
         declareLabel((Label) frameTypes[i]);
@@ -1574,7 +1574,7 @@ public class ASMifier extends Printer {
    * @param frameTypes an array of stack map frame types, in the format described in {@link
    *     org.objectweb.asm.MethodVisitor#visitFrame}.
    */
-  private void appendFrameTypes(final int numTypes, final Object[] frameTypes) {
+  public void appendFrameTypes(final int numTypes, final Object[] frameTypes) {
     for (int i = 0; i < numTypes; ++i) {
       if (i > 0) {
         stringBuilder.append(", ");
@@ -1596,7 +1596,7 @@ public class ASMifier extends Printer {
    *
    * @param label a label.
    */
-  protected void declareLabel(final Label label) {
+  public void declareLabel(final Label label) {
     if (labelNames == null) {
       labelNames = new HashMap<>();
     }
@@ -1615,7 +1615,7 @@ public class ASMifier extends Printer {
    *
    * @param label a label.
    */
-  protected void appendLabel(final Label label) {
+  public void appendLabel(final Label label) {
     stringBuilder.append(labelNames.get(label));
   }
 }

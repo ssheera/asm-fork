@@ -49,12 +49,12 @@ import org.openjdk.jmh.infra.Blackhole;
 @State(Scope.Thread)
 public class AdapterBenchmarkJava8 extends AbstractBenchmark {
 
-  private Adapter asm5dot0;
-  private Adapter asm6dot0;
-  private Adapter asm7dot0;
-  private Adapter asm8dot0;
-  private Adapter asm9dot0;
-  private Adapter asmCurrent;
+  public Adapter asm5dot0;
+  public Adapter asm6dot0;
+  public Adapter asm7dot0;
+  public Adapter asm8dot0;
+  public Adapter asm9dot0;
+  public Adapter asmCurrent;
 
   public AdapterBenchmarkJava8() {
     super("org.objectweb.asm.benchmarks.AsmAdapter");

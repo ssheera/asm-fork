@@ -40,7 +40,7 @@ import org.objectweb.asm.tree.MethodNode;
  */
 final class MethodNodeBuilder {
 
-  private final MethodNode methodNode;
+  public final MethodNode methodNode;
 
   MethodNodeBuilder() {
     this(/* maxStack= */ 10, /* maxLocals= */ 10);

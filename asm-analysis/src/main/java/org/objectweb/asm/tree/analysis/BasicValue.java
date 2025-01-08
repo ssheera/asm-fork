@@ -60,7 +60,7 @@ public class BasicValue implements Value {
   public static final BasicValue RETURNADDRESS_VALUE = new BasicValue(Type.VOID_TYPE);
 
   /** The {@link Type} of this value, or {@literal null} for uninitialized values. */
-  private final Type type;
+  public final Type type;
 
   /**
    * Constructs a new {@link BasicValue} of the given type.
@@ -69,6 +69,10 @@ public class BasicValue implements Value {
    */
   public BasicValue(final Type type) {
     this.type = type;
+  }
+
+  public boolean isUninitialized() {
+    return this == UNINITIALIZED_VALUE || type == null;
   }
 
   /**
@@ -116,7 +120,7 @@ public class BasicValue implements Value {
 
   @Override
   public String toString() {
-    if (this == UNINITIALIZED_VALUE) {
+    if (isUninitialized()) {
       return ".";
     } else if (this == RETURNADDRESS_VALUE) {
       return "A";

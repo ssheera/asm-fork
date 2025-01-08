@@ -44,14 +44,14 @@ package org.objectweb.asm;
 final class AnnotationWriter extends AnnotationVisitor {
 
   /** Where the constants used in this AnnotationWriter must be stored. */
-  private final SymbolTable symbolTable;
+  public final SymbolTable symbolTable;
 
   /**
    * Whether values are named or not. AnnotationWriter instances used for annotation default and
    * annotation arrays use unnamed values (i.e. they generate an 'element_value' structure for each
    * value, instead of an element_name_index followed by an element_value).
    */
-  private final boolean useNamedValues;
+  public final boolean useNamedValues;
 
   /**
    * The 'annotation' or 'type_annotation' JVMS structure corresponding to the annotation values
@@ -65,30 +65,30 @@ final class AnnotationWriter extends AnnotationVisitor {
    * single element_value by definition), this ByteVector is initially empty when passed to the
    * constructor, and {@link #numElementValuePairsOffset} is set to -1.
    */
-  private final ByteVector annotation;
+  public final ByteVector annotation;
 
   /**
    * The offset in {@link #annotation} where {@link #numElementValuePairs} must be stored (or -1 for
    * the case of AnnotationDefault attributes).
    */
-  private final int numElementValuePairsOffset;
+  public final int numElementValuePairsOffset;
 
   /** The number of element value pairs visited so far. */
-  private int numElementValuePairs;
+  public int numElementValuePairs;
 
   /**
    * The previous AnnotationWriter. This field is used to store the list of annotations of a
    * Runtime[In]Visible[Type]Annotations attribute. It is unused for nested or array annotations
    * (annotation values of annotation type), or for AnnotationDefault attributes.
    */
-  private final AnnotationWriter previousAnnotation;
+  public final AnnotationWriter previousAnnotation;
 
   /**
    * The next AnnotationWriter. This field is used to store the list of annotations of a
    * Runtime[In]Visible[Type]Annotations attribute. It is unused for nested or array annotations
    * (annotation values of annotation type), or for AnnotationDefault attributes.
    */
-  private AnnotationWriter nextAnnotation;
+  public AnnotationWriter nextAnnotation;
 
   // -----------------------------------------------------------------------------------------------
   // Constructors and factories

@@ -7,7 +7,7 @@ package org.objectweb.asm.test;
  */
 public class ClassFormatException extends RuntimeException {
 
-  private static final long serialVersionUID = -6426141818319882225L;
+  public static final long serialVersionUID = -6426141818319882225L;
 
   /**
    * Constructs a new ClassFormatException instance.

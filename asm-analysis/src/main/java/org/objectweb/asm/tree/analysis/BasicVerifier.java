@@ -60,7 +60,7 @@ public class BasicVerifier extends BasicInterpreter {
    * @param api the ASM API version supported by this interpreter. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected BasicVerifier(final int api) {
+  public BasicVerifier(final int api) {
     super(api);
   }
 
@@ -420,7 +420,7 @@ public class BasicVerifier extends BasicInterpreter {
    * @param value a value.
    * @return whether 'value' corresponds to an array reference.
    */
-  protected boolean isArrayValue(final BasicValue value) {
+  public boolean isArrayValue(final BasicValue value) {
     return value.isReference();
   }
 
@@ -431,7 +431,7 @@ public class BasicVerifier extends BasicInterpreter {
    * @return the value corresponding to the type of the elements of 'objectArrayValue'.
    * @throws AnalyzerException if objectArrayValue does not correspond to an array type.
    */
-  protected BasicValue getElementValue(final BasicValue objectArrayValue) throws AnalyzerException {
+  public BasicValue getElementValue(final BasicValue objectArrayValue) throws AnalyzerException {
     return BasicValue.REFERENCE_VALUE;
   }
 
@@ -444,7 +444,7 @@ public class BasicVerifier extends BasicInterpreter {
    * @return whether the type corresponding to 'value' is a subtype of the type corresponding to
    *     'expected'.
    */
-  protected boolean isSubTypeOf(final BasicValue value, final BasicValue expected) {
+  public boolean isSubTypeOf(final BasicValue value, final BasicValue expected) {
     return value.equals(expected);
   }
 }

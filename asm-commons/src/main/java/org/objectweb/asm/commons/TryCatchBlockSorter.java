@@ -83,7 +83,7 @@ public class TryCatchBlockSorter extends MethodNode {
     }
   }
 
-  protected TryCatchBlockSorter(
+  public TryCatchBlockSorter(
       final int api,
       final MethodVisitor methodVisitor,
       final int access,
@@ -109,7 +109,7 @@ public class TryCatchBlockSorter extends MethodNode {
             return blockLength(tryCatchBlockNode1) - blockLength(tryCatchBlockNode2);
           }
 
-          private int blockLength(final TryCatchBlockNode tryCatchBlockNode) {
+          public int blockLength(final TryCatchBlockNode tryCatchBlockNode) {
             int startIndex = instructions.indexOf(tryCatchBlockNode.start);
             int endIndex = instructions.indexOf(tryCatchBlockNode.end);
             return endIndex - startIndex;

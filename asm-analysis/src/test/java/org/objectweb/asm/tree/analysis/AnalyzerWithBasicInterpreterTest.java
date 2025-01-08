@@ -57,7 +57,7 @@ import org.objectweb.asm.tree.MethodNode;
  */
 class AnalyzerWithBasicInterpreterTest extends AsmTest {
 
-  private static final String CLASS_NAME = "C";
+  public static final String CLASS_NAME = "C";
 
   @Test
   void testConstructor() {
@@ -92,12 +92,12 @@ class AnalyzerWithBasicInterpreterTest extends AsmTest {
     Analyzer<BasicValue> analyzer =
         new Analyzer<BasicValue>(new BasicInterpreter()) {
           @Override
-          protected Frame<BasicValue> newFrame(final int numLocals, final int numStack) {
+          public Frame<BasicValue> newFrame(final int numLocals, final int numStack) {
             return new CustomFrame(numLocals, numStack);
           }
 
           @Override
-          protected Frame<BasicValue> newFrame(final Frame<? extends BasicValue> src) {
+          public Frame<BasicValue> newFrame(final Frame<? extends BasicValue> src) {
             return new CustomFrame(src);
           }
         };
@@ -217,7 +217,7 @@ class AnalyzerWithBasicInterpreterTest extends AsmTest {
     assertEquals("RIR..... ", analyzer.getFrames()[104].toString());
   }
 
-  private static MethodNode getMethod(final ClassNode classNode, final String name) {
+  public static MethodNode getMethod(final ClassNode classNode, final String name) {
     for (MethodNode methodNode : classNode.methods) {
       if (methodNode.name.equals(name)) {
         return methodNode;
@@ -226,7 +226,7 @@ class AnalyzerWithBasicInterpreterTest extends AsmTest {
     return null;
   }
 
-  private static class CustomFrame extends Frame<BasicValue> {
+  public static class CustomFrame extends Frame<BasicValue> {
 
     CustomFrame(final int numLocals, final int numStack) {
       super(numLocals, numStack);
@@ -243,7 +243,7 @@ class AnalyzerWithBasicInterpreterTest extends AsmTest {
     }
   }
 
-  private static class MethodMaxs {
+  public static class MethodMaxs {
 
     public final int maxStack;
     public final int maxLocals;

@@ -34,7 +34,7 @@ import org.objectweb.asm.MethodVisitor;
 /** An {@link AbstractInsnNode} that encapsulates a {@link Label}. */
 public class LabelNode extends AbstractInsnNode {
 
-  private Label value;
+  public Label value;
 
   public LabelNode() {
     super(-1);

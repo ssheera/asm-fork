@@ -73,7 +73,7 @@ public class BasicInterpreter extends Interpreter<BasicValue> implements Opcodes
    * @param api the ASM API version supported by this interpreter. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected BasicInterpreter(final int api) {
+  public BasicInterpreter(final int api) {
     super(api);
   }
 
@@ -99,7 +99,7 @@ public class BasicInterpreter extends Interpreter<BasicValue> implements Opcodes
         return BasicValue.DOUBLE_VALUE;
       case Type.ARRAY:
       case Type.OBJECT:
-        return BasicValue.REFERENCE_VALUE;
+        return new BasicValue(type);
       default:
         throw new AssertionError();
     }

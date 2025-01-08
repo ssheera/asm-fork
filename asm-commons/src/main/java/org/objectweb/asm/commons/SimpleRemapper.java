@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class SimpleRemapper extends Remapper {
 
-  private final Map<String, String> mapping;
+  public final Map<String, String> mapping;
 
   /**
    * Constructs a new {@link SimpleRemapper} with the given mapping.

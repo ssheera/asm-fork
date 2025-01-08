@@ -220,7 +220,7 @@ class ClassRemapperTest extends AsmTest {
                 return internalName;
               }
             }) {
-          /* inner class so it can access the protected constructor */
+          /* inner class so it can access the public constructor */
         };
     classRemapper.visit(Opcodes.V11, Opcodes.ACC_PUBLIC, "C", null, "java/lang/Object", null);
     MethodVisitor methodVisitor =
@@ -380,13 +380,13 @@ class ClassRemapperTest extends AsmTest {
     }
   }
 
-  private static void checkDescriptor(final String descriptor) {
+  public static void checkDescriptor(final String descriptor) {
     CheckMethodAdapter checkMethodAdapter = new CheckMethodAdapter(null);
     checkMethodAdapter.visitCode();
     checkMethodAdapter.visitFieldInsn(Opcodes.GETFIELD, "Owner", "name", descriptor);
   }
 
-  private static void checkInternalName(final String internalName) {
+  public static void checkInternalName(final String internalName) {
     CheckMethodAdapter checkMethodAdapter = new CheckMethodAdapter(null);
     checkMethodAdapter.version = Opcodes.V1_5;
     checkMethodAdapter.visitCode();
@@ -400,10 +400,10 @@ class ClassRemapperTest extends AsmTest {
 
   static class UpperCaseRemapper extends Remapper {
 
-    private static final Locale LOCALE = Locale.ENGLISH;
+    public static final Locale LOCALE = Locale.ENGLISH;
 
-    private final String internalClassName;
-    private final String remappedInternalClassName;
+    public final String internalClassName;
+    public final String remappedInternalClassName;
 
     UpperCaseRemapper(final String internalClassName) {
       this.internalClassName = internalClassName;

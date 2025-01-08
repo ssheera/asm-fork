@@ -37,7 +37,7 @@ package org.objectweb.asm;
  * @see Label
  * @author Eric Bruneton
  */
-final class Edge {
+public class Edge {
 
   /**
    * A control flow graph edge corresponding to a jump or ret instruction. Only used with {@link
@@ -66,15 +66,15 @@ final class Edge {
    *       to an exception handler).
    * </ul>
    */
-  final int info;
+  public int info;
 
   /** The successor block of this control flow graph edge. */
-  final Label successor;
+  public Label successor;
 
   /**
    * The next edge in the list of outgoing edges of a basic block. See {@link Label#outgoingEdges}.
    */
-  Edge nextEdge;
+  public Edge nextEdge;
 
   /**
    * Constructs a new Edge.

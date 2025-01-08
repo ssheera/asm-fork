@@ -48,26 +48,26 @@ import org.objectweb.asm.TypePath;
 public class LocalVariablesSorter extends MethodVisitor {
 
   /** The type of the java.lang.Object class. */
-  private static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
+  public static final Type OBJECT_TYPE = Type.getObjectType("java/lang/Object");
 
   /**
    * The mapping from old to new local variable indices. A local variable at index i of size 1 is
    * remapped to 'mapping[2*i]', while a local variable at index i of size 2 is remapped to
    * 'mapping[2*i+1]'.
    */
-  private int[] remappedVariableIndices = new int[40];
+  public int[] remappedVariableIndices = new int[40];
 
   /**
    * The local variable types after remapping. The format of this array is the same as in {@link
    * MethodVisitor#visitFrame}, except that long and double types use two slots.
    */
-  private Object[] remappedLocalTypes = new Object[20];
+  public Object[] remappedLocalTypes = new Object[20];
 
   /** The index of the first local variable, after formal parameters. */
-  protected final int firstLocal;
+  public final int firstLocal;
 
   /** The index of the next local variable to be created by {@link #newLocal}. */
-  protected int nextLocal;
+  public int nextLocal;
 
   /**
    * Constructs a new {@link LocalVariablesSorter}. <i>Subclasses must not use this constructor</i>.
@@ -96,7 +96,7 @@ public class LocalVariablesSorter extends MethodVisitor {
    * @param descriptor the method's descriptor (see {@link Type}).
    * @param methodVisitor the method visitor to which this adapter delegates calls.
    */
-  protected LocalVariablesSorter(
+  public LocalVariablesSorter(
       final int api, final int access, final String descriptor, final MethodVisitor methodVisitor) {
     super(api, methodVisitor);
     nextLocal = (Opcodes.ACC_STATIC & access) == 0 ? 1 : 0;
@@ -296,7 +296,7 @@ public class LocalVariablesSorter extends MethodVisitor {
    *     {@link MethodVisitor#visitFrame}, except that long and double types use two slots. The
    *     types for the current stack map frame must be updated in place in this array.
    */
-  protected void updateNewLocals(final Object[] newLocals) {
+  public void updateNewLocals(final Object[] newLocals) {
     // The default implementation does nothing.
   }
 
@@ -307,11 +307,11 @@ public class LocalVariablesSorter extends MethodVisitor {
    * @param local a local variable identifier, as returned by {@link #newLocal}.
    * @param type the type of the value being stored in the local variable.
    */
-  protected void setLocalType(final int local, final Type type) {
+  public void setLocalType(final int local, final Type type) {
     // The default implementation does nothing.
   }
 
-  private void setFrameLocal(final int local, final Object type) {
+  public void setFrameLocal(final int local, final Object type) {
     int numLocals = remappedLocalTypes.length;
     if (local >= numLocals) {
       Object[] newRemappedLocalTypes = new Object[Math.max(2 * numLocals, local + 1)];
@@ -321,7 +321,7 @@ public class LocalVariablesSorter extends MethodVisitor {
     remappedLocalTypes[local] = type;
   }
 
-  private int remap(final int varIndex, final Type type) {
+  public int remap(final int varIndex, final Type type) {
     if (varIndex + type.getSize() <= firstLocal) {
       return varIndex;
     }
@@ -343,7 +343,7 @@ public class LocalVariablesSorter extends MethodVisitor {
     return value;
   }
 
-  protected int newLocalMapping(final Type type) {
+  public int newLocalMapping(final Type type) {
     int local = nextLocal;
     nextLocal += type.getSize();
     return local;

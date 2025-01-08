@@ -52,7 +52,7 @@ import org.objectweb.asm.test.AsmTest;
  */
 class CheckMethodAdapterTest extends AsmTest implements Opcodes {
 
-  private final CheckMethodAdapter checkMethodAdapter = new CheckMethodAdapter(null);
+  public final CheckMethodAdapter checkMethodAdapter = new CheckMethodAdapter(null);
 
   @Test
   void testConstructor() {

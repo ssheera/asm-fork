@@ -77,7 +77,7 @@ class AttributeTest {
 
   static class ByteAttribute extends Attribute {
 
-    private byte value;
+    public byte value;
 
     ByteAttribute(final byte value) {
       super("Byte");
@@ -85,7 +85,7 @@ class AttributeTest {
     }
 
     @Override
-    protected ByteVector write(
+    public ByteVector write(
         final ClassWriter classWriter,
         final byte[] code,
         final int codeLength,

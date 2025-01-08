@@ -37,7 +37,7 @@ import java.lang.reflect.Method;
  * @author Eric Bruneton
  * @author Chris Nokleberg
  */
-public final class Type {
+public class Type {
 
   /** The sort of the {@code void} type. See {@link #getSort}. */
   public static final int VOID = 0;
@@ -75,11 +75,11 @@ public final class Type {
   /** The sort of method types. See {@link #getSort}. */
   public static final int METHOD = 11;
 
-  /** The (private) sort of object reference types represented with an internal name. */
-  private static final int INTERNAL = 12;
+  /** The (public) sort of object reference types represented with an internal name. */
+  public static final int INTERNAL = 12;
 
   /** The descriptors of the primitive types. */
-  private static final String PRIMITIVE_DESCRIPTORS = "VZCBSIFJD";
+  public static final String PRIMITIVE_DESCRIPTORS = "VZCBSIFJD";
 
   /** The {@code void} type. */
   public static final Type VOID_TYPE = new Type(VOID, PRIMITIVE_DESCRIPTORS, VOID, VOID + 1);
@@ -119,7 +119,7 @@ public final class Type {
    * {@link #SHORT}, {@link #INT}, {@link #FLOAT}, {@link #LONG}, {@link #DOUBLE}, {@link #ARRAY},
    * {@link #OBJECT}, {@link #METHOD} or {@link #INTERNAL}.
    */
-  private final int sort;
+  public final int sort;
 
   /**
    * A buffer containing the value of this field or method type. This value is an internal name for
@@ -130,21 +130,21 @@ public final class Type {
    * [{@link #valueBegin},{@link #valueEnd}) contain the internal name, and those in [{@link
    * #valueBegin} - 1, {@link #valueEnd} + 1) contain the descriptor.
    */
-  private final String valueBuffer;
+  public final String valueBuffer;
 
   /**
    * The beginning index, inclusive, of the value of this Java field or method type in {@link
    * #valueBuffer}. This value is an internal name for {@link #OBJECT} and {@link #INTERNAL} types,
    * and a field or method descriptor in the other cases.
    */
-  private final int valueBegin;
+  public final int valueBegin;
 
   /**
    * The end index, exclusive, of the value of this Java field or method type in {@link
    * #valueBuffer}. This value is an internal name for {@link #OBJECT} and {@link #INTERNAL} types,
    * and a field or method descriptor in the other cases.
    */
-  private final int valueEnd;
+  public final int valueEnd;
 
   /**
    * Constructs a reference type.
@@ -156,7 +156,7 @@ public final class Type {
    * @param valueEnd the end index, exclusive, of the value of this field or method type in
    *     valueBuffer.
    */
-  private Type(final int sort, final String valueBuffer, final int valueBegin, final int valueEnd) {
+  public Type(final int sort, final String valueBuffer, final int valueBegin, final int valueEnd) {
     this.sort = sort;
     this.valueBuffer = valueBuffer;
     this.valueBegin = valueBegin;
@@ -398,7 +398,7 @@ public final class Type {
    *     descriptorBuffer.
    * @return the {@link Type} corresponding to the given type descriptor.
    */
-  private static Type getTypeInternal(
+  public static Type getTypeInternal(
       final String descriptorBuffer, final int descriptorBegin, final int descriptorEnd) {
     switch (descriptorBuffer.charAt(descriptorBegin)) {
       case 'V':
@@ -580,7 +580,7 @@ public final class Type {
    *
    * @param stringBuilder the string builder to which the descriptor must be appended.
    */
-  private void appendDescriptor(final StringBuilder stringBuilder) {
+  public void appendDescriptor(final StringBuilder stringBuilder) {
     if (sort == OBJECT) {
       stringBuilder.append(valueBuffer, valueBegin - 1, valueEnd + 1);
     } else if (sort == INTERNAL) {
@@ -596,7 +596,7 @@ public final class Type {
    * @param clazz the class whose descriptor must be computed.
    * @param stringBuilder the string builder to which the descriptor must be appended.
    */
-  private static void appendDescriptor(final Class<?> clazz, final StringBuilder stringBuilder) {
+  public static void appendDescriptor(final Class<?> clazz, final StringBuilder stringBuilder) {
     Class<?> currentClass = clazz;
     while (currentClass.isArray()) {
       stringBuilder.append('[');

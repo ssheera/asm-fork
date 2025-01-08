@@ -129,7 +129,7 @@ class AnalyzerAdapterTest extends AsmTest {
    */
   static class ClassAnalyzerAdapter extends ClassVisitor {
 
-    private String owner;
+    public String owner;
 
     ClassAnalyzerAdapter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);
@@ -177,8 +177,8 @@ class AnalyzerAdapterTest extends AsmTest {
    */
   static class AnalyzedFramesInserter extends MethodVisitor {
 
-    private AnalyzerAdapter analyzerAdapter;
-    private boolean hasOriginalFrame;
+    public AnalyzerAdapter analyzerAdapter;
+    public boolean hasOriginalFrame;
 
     AnalyzedFramesInserter(final MethodVisitor methodVisitor) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL, methodVisitor);
@@ -199,7 +199,7 @@ class AnalyzerAdapterTest extends AsmTest {
       hasOriginalFrame = true;
     }
 
-    private void maybeInsertFrame() {
+    public void maybeInsertFrame() {
       // Don't insert a frame if we already have one for this instruction, from the original class.
       if (!hasOriginalFrame) {
         if (analyzerAdapter.locals != null && analyzerAdapter.stack != null) {
@@ -216,7 +216,7 @@ class AnalyzerAdapterTest extends AsmTest {
      * Converts local and stack types from AnalyzerAdapter to visitFrame format (long and double are
      * represented with one element in visitFrame, but with two elements in AnalyzerAdapter).
      */
-    private ArrayList<Object> toFrameTypes(final List<Object> analyzerTypes) {
+    public ArrayList<Object> toFrameTypes(final List<Object> analyzerTypes) {
       ArrayList<Object> frameTypes = new ArrayList<>();
       for (int i = 0; i < analyzerTypes.size(); ++i) {
         if (i > 0

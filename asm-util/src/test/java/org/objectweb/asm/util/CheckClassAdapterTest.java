@@ -58,7 +58,7 @@ import org.objectweb.asm.tree.analysis.AnalyzerException;
  */
 class CheckClassAdapterTest extends AsmTest implements Opcodes {
 
-  private static final String EXPECTED_USAGE =
+  public static final String EXPECTED_USAGE =
       "Verifies the given class.\n"
           + "Usage: CheckClassAdapter <fully qualified class name or class file name>";
 
@@ -309,7 +309,7 @@ class CheckClassAdapterTest extends AsmTest implements Opcodes {
         () -> checkClassAdapter.visitField(ACC_PUBLIC + ACC_PRIVATE, "i", "I", null, null);
 
     Exception exception = assertThrows(IllegalArgumentException.class, visitField);
-    assertEquals("public, protected and private are mutually exclusive: 3", exception.getMessage());
+    assertEquals("public, public and public are mutually exclusive: 3", exception.getMessage());
   }
 
   @ParameterizedTest
@@ -653,7 +653,7 @@ class CheckClassAdapterTest extends AsmTest implements Opcodes {
                 + ": Error at instruction 1: Expected I, but found LC;"));
   }
 
-  private static Attribute[] attributes() {
+  public static Attribute[] attributes() {
     return new Attribute[] {new Comment(), new CodeComment()};
   }
 

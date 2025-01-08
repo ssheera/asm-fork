@@ -122,16 +122,16 @@ public class ClassFile {
   static final String MODULE_INFO = "module-info";
 
   /** The binary content of a Java class file. */
-  private final byte[] classBytes;
+  public final byte[] classBytes;
 
   /** The name of the class contained in this class file, lazily computed. */
-  private String className;
+  public String className;
 
   /** The dump of the constant pool of {@link #classBytes}, lazily computed. */
-  private String constantPoolDump;
+  public String constantPoolDump;
 
   /** The dump of {@link #classBytes}, lazily computed. */
-  private String dump;
+  public String dump;
 
   /**
    * Constructs a new ClassFile instance.
@@ -253,7 +253,7 @@ public class ClassFile {
    *
    * @throws ClassFormatException if the class content can't be parsed.
    */
-  private void computeNameAndDumps() {
+  public void computeNameAndDumps() {
     try {
       Builder builder = new Builder("ClassFile", /* parent= */ null);
       Builder constantPoolBuilder = new Builder("ConstantPool", /* parent= */ null);
@@ -282,7 +282,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.1">JVMS
    *     4.1</a>
    */
-  private static ConstantClassInfo dumpClassFile(
+  public static ConstantClassInfo dumpClassFile(
       final Parser parser, final Builder builder, final Builder constantPoolBuilder)
       throws IOException {
     builder.add("magic: ", parser.u4());
@@ -330,7 +330,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.1">JVMS
    *     4.1</a>
    */
-  private static void dumpAttributeList(final Parser parser, final Builder builder)
+  public static void dumpAttributeList(final Parser parser, final Builder builder)
       throws IOException {
     int attributeCount = builder.add("attributes_count: ", parser.u2());
     SortedBuilder sortedBuilder = builder.addSortedBuilder();
@@ -349,7 +349,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4">JVMS
    *     4.4</a>
    */
-  private static CpInfo parseCpInfo(final Parser parser, final ClassContext classContext)
+  public static CpInfo parseCpInfo(final Parser parser, final ClassContext classContext)
       throws IOException {
     int tag = parser.u1();
     switch (tag) {
@@ -401,7 +401,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.5">JVMS
    *     4.5</a>
    */
-  private static void dumpFieldInfo(final Parser parser, final Builder builder) throws IOException {
+  public static void dumpFieldInfo(final Parser parser, final Builder builder) throws IOException {
     builder.add("access_flags: ", parser.u2());
     builder.addCpInfo("name_index: ", parser.u2());
     builder.addCpInfo("descriptor_index: ", parser.u2());
@@ -417,7 +417,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.6">JVMS
    *     4.6</a>
    */
-  private static void dumpMethodInfo(final Parser parser, final Builder builder)
+  public static void dumpMethodInfo(final Parser parser, final Builder builder)
       throws IOException {
     // method_info has the same top level structure as field_info.
     dumpFieldInfo(parser, builder);
@@ -432,7 +432,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7">JVMS
    *     4.7</a>
    */
-  private static void dumpAttributeInfo(final Parser parser, final SortedBuilder sortedBuilder)
+  public static void dumpAttributeInfo(final Parser parser, final SortedBuilder sortedBuilder)
       throws IOException {
     String attributeName = sortedBuilder.getCpInfo(parser.u2()).toString();
     int attributeLength = parser.u4();
@@ -515,7 +515,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.2">JVMS
    *     4.7.2</a>
    */
-  private static void dumpConstantValueAttribute(final Parser parser, final Builder builder)
+  public static void dumpConstantValueAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("constantvalue_index: ", parser.u2());
   }
@@ -529,7 +529,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.3">JVMS
    *     4.7.3</a>
    */
-  private static void dumpCodeAttribute(final Parser parser, final Builder builder)
+  public static void dumpCodeAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.add("max_stack: ", parser.u2());
     builder.add("max_locals: ", parser.u2());
@@ -555,7 +555,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-6.html#jvms-6.5">JVMS
    *     6.5</a>
    */
-  private static void dumpInstructions(
+  public static void dumpInstructions(
       final int codeLength, final Parser parser, final Builder builder) throws IOException {
     int bytecodeOffset = 0; // Number of bytes parsed so far.
     int insnIndex = 0; // Number of instructions parsed so far.
@@ -1003,7 +1003,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.4">JVMS
    *     4.7.4</a>
    */
-  private static void dumpStackMapTableAttribute(final Parser parser, final Builder builder)
+  public static void dumpStackMapTableAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int entryCount = builder.add("number_of_entries: ", parser.u2());
     int bytecodeOffset = -1;
@@ -1065,7 +1065,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.2">JVMS
    *     4.7.2</a>
    */
-  private static void dumpVerificationTypeInfo(final Parser parser, final Builder builder)
+  public static void dumpVerificationTypeInfo(final Parser parser, final Builder builder)
       throws IOException {
     int tag = builder.add("tag: ", parser.u1());
     if (tag > 8) {
@@ -1087,7 +1087,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.5">JVMS
    *     4.7.5</a>
    */
-  private static void dumpExceptionsAttribute(final Parser parser, final Builder builder)
+  public static void dumpExceptionsAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int exceptionCount = builder.add("number_of_exceptions: ", parser.u2());
     for (int i = 0; i < exceptionCount; ++i) {
@@ -1104,7 +1104,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.6">JVMS
    *     4.7.6</a>
    */
-  private static void dumpInnerClassesAttribute(final Parser parser, final Builder builder)
+  public static void dumpInnerClassesAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int classCount = builder.add("number_of_classes: ", parser.u2());
     for (int i = 0; i < classCount; ++i) {
@@ -1124,7 +1124,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.7">JVMS
    *     4.7.7</a>
    */
-  private static void dumpEnclosingMethodAttribute(final Parser parser, final Builder builder)
+  public static void dumpEnclosingMethodAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("class_index: ", parser.u2());
     builder.addCpInfo("method_index: ", parser.u2());
@@ -1136,7 +1136,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.8">JVMS
    *     4.7.8</a>
    */
-  private static void dumpSyntheticAttribute() {
+  public static void dumpSyntheticAttribute() {
     // Nothing to parse.
   }
 
@@ -1149,7 +1149,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.9">JVMS
    *     4.7.9</a>
    */
-  private static void dumpSignatureAttribute(final Parser parser, final Builder builder)
+  public static void dumpSignatureAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("signature_index: ", parser.u2());
   }
@@ -1163,7 +1163,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.10">JVMS
    *     4.7.10</a>
    */
-  private static void dumpSourceFileAttribute(final Parser parser, final Builder builder)
+  public static void dumpSourceFileAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("sourcefile_index: ", parser.u2());
   }
@@ -1178,7 +1178,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.11">JVMS
    *     4.7.11</a>
    */
-  private static void dumpSourceDebugAttribute(
+  public static void dumpSourceDebugAttribute(
       final int attributeLength, final Parser parser, final Builder builder) throws IOException {
     byte[] attributeData = parser.bytes(attributeLength);
     StringBuilder stringBuilder = new StringBuilder();
@@ -1197,7 +1197,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.12">JVMS
    *     4.7.12</a>
    */
-  private static void dumpLineNumberTableAttribute(final Parser parser, final Builder builder)
+  public static void dumpLineNumberTableAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int lineNumberCount = builder.add("line_number_table_length: ", parser.u2());
     for (int i = 0; i < lineNumberCount; ++i) {
@@ -1215,7 +1215,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.13">JVMS
    *     4.7.13</a>
    */
-  private static void dumpLocalVariableTableAttribute(final Parser parser, final Builder builder)
+  public static void dumpLocalVariableTableAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int localVariableCount = builder.add("local_variable_table_length: ", parser.u2());
     for (int i = 0; i < localVariableCount; ++i) {
@@ -1236,7 +1236,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.14">JVMS
    *     4.7.14</a>
    */
-  private static void dumpLocalVariableTypeTableAttribute(
+  public static void dumpLocalVariableTypeTableAttribute(
       final Parser parser, final Builder builder) throws IOException {
     int localVariableCount = builder.add("local_variable_type_table_length: ", parser.u2());
     for (int i = 0; i < localVariableCount; ++i) {
@@ -1254,7 +1254,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.15">JVMS
    *     4.7.15</a>
    */
-  private static void dumpDeprecatedAttribute() {
+  public static void dumpDeprecatedAttribute() {
     // Nothing to parse.
   }
 
@@ -1267,7 +1267,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.16">JVMS
    *     4.7.16</a>
    */
-  private static void dumpRuntimeVisibleAnnotationsAttribute(
+  public static void dumpRuntimeVisibleAnnotationsAttribute(
       final Parser parser, final Builder builder) throws IOException {
     int annotationCount = builder.add("num_annotations: ", parser.u2());
     for (int i = 0; i < annotationCount; ++i) {
@@ -1284,7 +1284,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.16">JVMS
    *     4.7.16</a>
    */
-  private static void dumpAnnotation(final Parser parser, final Builder builder)
+  public static void dumpAnnotation(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("type_index: ", parser.u2());
     int elementValuePairCount = builder.add("num_element_value_pairs: ", parser.u2());
@@ -1304,7 +1304,7 @@ public class ClassFile {
    *     href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.16.1">JVMS
    *     4.7.16.1</a>
    */
-  private static void dumpElementValue(final Parser parser, final Builder builder)
+  public static void dumpElementValue(final Parser parser, final Builder builder)
       throws IOException {
     int tag = parser.u1();
     switch (tag) {
@@ -1350,7 +1350,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.17">JVMS
    *     4.7.17</a>
    */
-  private static void dumpRuntimeInvisibleAnnotationsAttribute(
+  public static void dumpRuntimeInvisibleAnnotationsAttribute(
       final Parser parser, final Builder builder) throws IOException {
     dumpRuntimeVisibleAnnotationsAttribute(parser, builder);
   }
@@ -1364,7 +1364,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.18">JVMS
    *     4.7.18</a>
    */
-  private static void dumpRuntimeVisibleParameterAnnotationsAttribute(
+  public static void dumpRuntimeVisibleParameterAnnotationsAttribute(
       final Parser parser, final Builder builder) throws IOException {
     int parameterCount = builder.add("num_parameters: ", parser.u1());
     for (int i = 0; i < parameterCount; ++i) {
@@ -1384,7 +1384,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.19">JVMS
    *     4.7.19</a>
    */
-  private static void dumpRuntimeInvisibleParameterAnnotationsAttribute(
+  public static void dumpRuntimeInvisibleParameterAnnotationsAttribute(
       final Parser parser, final Builder builder) throws IOException {
     dumpRuntimeVisibleParameterAnnotationsAttribute(parser, builder);
   }
@@ -1398,7 +1398,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.20">JVMS
    *     4.7.20</a>
    */
-  private static void dumpRuntimeVisibleTypeAnnotationsAttribute(
+  public static void dumpRuntimeVisibleTypeAnnotationsAttribute(
       final Parser parser, final Builder builder) throws IOException {
     int annotationCount = builder.add("num_annotations: ", parser.u2());
     SortedBuilder sortedBuilder = builder.addSortedBuilder();
@@ -1416,7 +1416,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.20">JVMS
    *     4.7.20</a>
    */
-  private static void dumpTypeAnnotation(final Parser parser, final SortedBuilder sortedBuilder)
+  public static void dumpTypeAnnotation(final Parser parser, final SortedBuilder sortedBuilder)
       throws IOException {
     int targetType = parser.u1();
     Builder builder = sortedBuilder.addBuilder(String.valueOf(targetType));
@@ -1501,7 +1501,7 @@ public class ClassFile {
    *     href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.20.2">JVMS
    *     4.7.20.2</a>
    */
-  private static void dumpTypePath(final Parser parser, final Builder builder) throws IOException {
+  public static void dumpTypePath(final Parser parser, final Builder builder) throws IOException {
     int pathLength = builder.add("path_length: ", parser.u1());
     for (int i = 0; i < pathLength; ++i) {
       builder.add("type_path_kind: ", parser.u1());
@@ -1518,7 +1518,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.21">JVMS
    *     4.7.21</a>
    */
-  private static void dumpRuntimeInvisibleTypeAnnotationsAttribute(
+  public static void dumpRuntimeInvisibleTypeAnnotationsAttribute(
       final Parser parser, final Builder builder) throws IOException {
     dumpRuntimeVisibleTypeAnnotationsAttribute(parser, builder);
   }
@@ -1532,7 +1532,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.22">JVMS
    *     4.7.22</a>
    */
-  private static void dumpAnnotationDefaultAttribute(final Parser parser, final Builder builder)
+  public static void dumpAnnotationDefaultAttribute(final Parser parser, final Builder builder)
       throws IOException {
     dumpElementValue(parser, builder);
   }
@@ -1546,7 +1546,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.23">JVMS
    *     4.7.23</a>
    */
-  private static void dumpBootstrapMethodsAttribute(final Parser parser, final Builder builder)
+  public static void dumpBootstrapMethodsAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int bootstrapMethodCount = builder.add("num_bootstrap_methods: ", parser.u2());
     for (int i = 0; i < bootstrapMethodCount; ++i) {
@@ -1567,7 +1567,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.24">JVMS
    *     4.7.24</a>
    */
-  private static void dumpMethodParametersAttribute(final Parser parser, final Builder builder)
+  public static void dumpMethodParametersAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int parameterCount = builder.add("parameters_count: ", parser.u1());
     for (int i = 0; i < parameterCount; ++i) {
@@ -1585,7 +1585,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.25">JVMS
    *     4.7.25</a>
    */
-  private static void dumpModuleAttribute(final Parser parser, final Builder builder)
+  public static void dumpModuleAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("name: ", parser.u2());
     builder.add("access: ", parser.u2());
@@ -1637,7 +1637,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.26">JVMS
    *     4.7.26</a>
    */
-  private static void dumpModulePackagesAttribute(final Parser parser, final Builder builder)
+  public static void dumpModulePackagesAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int packageCount = builder.add("package_count: ", parser.u2());
     for (int i = 0; i < packageCount; ++i) {
@@ -1654,7 +1654,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.7.27">JVMS
    *     4.7.27</a>
    */
-  private static void dumpModuleMainClassAttribute(final Parser parser, final Builder builder)
+  public static void dumpModuleMainClassAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("main_class: ", parser.u2());
   }
@@ -1668,7 +1668,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.28">JVMS
    *     4.7.28</a>
    */
-  private static void dumpNestHostAttribute(final Parser parser, final Builder builder)
+  public static void dumpNestHostAttribute(final Parser parser, final Builder builder)
       throws IOException {
     builder.addCpInfo("host_class: ", parser.u2());
   }
@@ -1682,7 +1682,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-4.html#jvms-4.7.29">JVMS
    *     4.7.29</a>
    */
-  private static void dumpNestMembersAttribute(final Parser parser, final Builder builder)
+  public static void dumpNestMembersAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int numberOfClasses = builder.add("number_of_classes: ", parser.u2());
     for (int i = 0; i < numberOfClasses; ++i) {
@@ -1698,7 +1698,7 @@ public class ClassFile {
    * @throws IOException if the class can't be parsed.
    * @see <a href="https://openjdk.java.net/jeps/360">JEP 360</a>
    */
-  private static void dumpPermittedSubclassesAttribute(final Parser parser, final Builder builder)
+  public static void dumpPermittedSubclassesAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int permittedSubclassesCount = builder.add("permitted_subclasses_count: ", parser.u2());
     for (int i = 0; i < permittedSubclassesCount; ++i) {
@@ -1714,7 +1714,7 @@ public class ClassFile {
    * @throws IOException if the class can't be parsed.
    * @see <a href="https://openjdk.java.net/jeps/360">JEP 360</a>
    */
-  private static void dumpRecordAttribute(final Parser parser, final Builder builder)
+  public static void dumpRecordAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int numberOfComponentRecords = builder.add("number_of_component_records: ", parser.u2());
     for (int i = 0; i < numberOfComponentRecords; ++i) {
@@ -1733,7 +1733,7 @@ public class ClassFile {
    * @see <a
    *     href="http://docs.oracle.com/javame/config/cldc/opt-pkgs/api/cldc/api/Appendix1-verifier.pdf">CLDC</a>
    */
-  private static void dumpStackMapAttribute(final Parser parser, final Builder builder)
+  public static void dumpStackMapAttribute(final Parser parser, final Builder builder)
       throws IOException {
     int entryCount = builder.add("number_of_entries: ", parser.u2());
     for (int i = 0; i < entryCount; ++i) {
@@ -1750,12 +1750,12 @@ public class ClassFile {
   }
 
   /** An abstract constant pool item. */
-  private abstract static class CpInfo {
+  public abstract static class CpInfo {
     /** The dump of this item. */
-    private String dump;
+    public String dump;
 
     /** The context to use to get the referenced constant pool items. */
-    private final ClassContext classContext;
+    public final ClassContext classContext;
 
     /**
      * Constructs a CpInfo for an item without references to other items.
@@ -1821,8 +1821,8 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.1">JVMS
    *     4.4.1</a>
    */
-  private static class ConstantClassInfo extends CpInfo {
-    private final int nameIndex;
+  public static class ConstantClassInfo extends CpInfo {
+    public final int nameIndex;
 
     /**
      * Parses a CONSTANT_Class_info item.
@@ -1848,9 +1848,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.2">JVMS
    *     4.4.2</a>
    */
-  private static class ConstantFieldRefInfo extends CpInfo {
-    private final int classIndex;
-    private final int nameAndTypeIndex;
+  public static class ConstantFieldRefInfo extends CpInfo {
+    public final int classIndex;
+    public final int nameAndTypeIndex;
 
     /**
      * Parses a CONSTANT_Fieldref_info item.
@@ -1879,9 +1879,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.2">JVMS
    *     4.4.2</a>
    */
-  private static class ConstantMethodRefInfo extends CpInfo {
-    private final int classIndex;
-    private final int nameAndTypeIndex;
+  public static class ConstantMethodRefInfo extends CpInfo {
+    public final int classIndex;
+    public final int nameAndTypeIndex;
 
     /**
      * Parses a CONSTANT_Methodref_info item.
@@ -1910,9 +1910,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.2">JVMS
    *     4.4.2</a>
    */
-  private static class ConstantInterfaceMethodRefInfo extends CpInfo {
-    private final int classIndex;
-    private final int nameAndTypeIndex;
+  public static class ConstantInterfaceMethodRefInfo extends CpInfo {
+    public final int classIndex;
+    public final int nameAndTypeIndex;
 
     /**
      * Parses a CONSTANT_InterfaceMethodref_info item.
@@ -1942,7 +1942,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.3">JVMS
    *     4.4.3</a>
    */
-  private static class ConstantStringInfo extends CpInfo {
+  public static class ConstantStringInfo extends CpInfo {
     final int stringIndex;
 
     /**
@@ -1969,7 +1969,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.4">JVMS
    *     4.4.4</a>
    */
-  private static class ConstantIntegerInfo extends CpInfo {
+  public static class ConstantIntegerInfo extends CpInfo {
 
     /**
      * Parses a CONSTANT_Integer_info item.
@@ -1988,7 +1988,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.4">JVMS
    *     4.4.4</a>
    */
-  private static class ConstantFloatInfo extends CpInfo {
+  public static class ConstantFloatInfo extends CpInfo {
 
     /**
      * Parses a CONSTANT_Float_info item.
@@ -2007,7 +2007,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.5">JVMS
    *     4.4.5</a>
    */
-  private static class ConstantLongInfo extends CpInfo {
+  public static class ConstantLongInfo extends CpInfo {
 
     /**
      * Parses a CONSTANT_Long_info item.
@@ -2031,7 +2031,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.5">JVMS
    *     4.4.5</a>
    */
-  private static class ConstantDoubleInfo extends CpInfo {
+  public static class ConstantDoubleInfo extends CpInfo {
 
     /**
      * Parses a CONSTANT_Double_info item.
@@ -2055,9 +2055,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.6">JVMS
    *     4.4.6</a>
    */
-  private static class ConstantNameAndTypeInfo extends CpInfo {
-    private final int nameIndex;
-    private final int descriptorIndex;
+  public static class ConstantNameAndTypeInfo extends CpInfo {
+    public final int nameIndex;
+    public final int descriptorIndex;
 
     /**
      * Parses a CONSTANT_NameAndType_info item.
@@ -2086,7 +2086,7 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.7">JVMS
    *     4.4.7</a>
    */
-  private static class ConstantUtf8Info extends CpInfo {
+  public static class ConstantUtf8Info extends CpInfo {
 
     /**
      * Parses a CONSTANT_Utf8_info item.
@@ -2105,9 +2105,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.8">JVMS
    *     4.4.8</a>
    */
-  private static class ConstantMethodHandleInfo extends CpInfo {
-    private final int referenceKind;
-    private final int referenceIndex;
+  public static class ConstantMethodHandleInfo extends CpInfo {
+    public final int referenceKind;
+    public final int referenceIndex;
 
     /**
      * Parses a CONSTANT_MethodHandle_info item.
@@ -2135,8 +2135,8 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.9">JVMS
    *     4.4.9</a>
    */
-  private static class ConstantMethodTypeInfo extends CpInfo {
-    private final int descriptorIndex;
+  public static class ConstantMethodTypeInfo extends CpInfo {
+    public final int descriptorIndex;
 
     /**
      * Parses a CONSTANT_MethodType_info item.
@@ -2163,9 +2163,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.10">JVMS
    *     4.4.10</a>
    */
-  private static class ConstantInvokeDynamicInfo extends CpInfo {
-    private final int bootstrapMethodAttrIndex;
-    private final int nameAndTypeIndex;
+  public static class ConstantInvokeDynamicInfo extends CpInfo {
+    public final int bootstrapMethodAttrIndex;
+    public final int nameAndTypeIndex;
 
     /**
      * Parses a CONSTANT_InvokeDynamic_info item.
@@ -2195,8 +2195,8 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.11">JVMS
    *     4.4.11</a>
    */
-  private static class ConstantModuleInfo extends CpInfo {
-    private final int descriptorIndex;
+  public static class ConstantModuleInfo extends CpInfo {
+    public final int descriptorIndex;
 
     /**
      * Parses a CONSTANT_Module_info item.
@@ -2222,8 +2222,8 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.12">JVMS
    *     4.4.12</a>
    */
-  private static class ConstantPackageInfo extends CpInfo {
-    private final int descriptorIndex;
+  public static class ConstantPackageInfo extends CpInfo {
+    public final int descriptorIndex;
 
     /**
      * Parses a CONSTANT_Package_info item.
@@ -2249,9 +2249,9 @@ public class ClassFile {
    * @see <a href="https://docs.oracle.com/javase/specs/jvms/se9/html/jvms-4.html#jvms-4.4.13">JVMS
    *     4.4.13</a>
    */
-  private static class ConstantDynamicInfo extends CpInfo {
-    private final int bootstrapMethodAttrIndex;
-    private final int nameAndTypeIndex;
+  public static class ConstantDynamicInfo extends CpInfo {
+    public final int bootstrapMethodAttrIndex;
+    public final int nameAndTypeIndex;
 
     /**
      * Parses a CONSTANT_Dynamic_info item.
@@ -2282,12 +2282,12 @@ public class ClassFile {
    * <p>Dumps use instruction indices instead of bytecode offsets in order to abstract away the low
    * level byte code instruction representation details (e.g. an ldc vs. an ldc_w).
    */
-  private static class InstructionIndex {
+  public static class InstructionIndex {
     /** An offset in bytes from the start of the bytecode of a method. */
-    private final int bytecodeOffset;
+    public final int bytecodeOffset;
 
     /** The context to use to find the index from the bytecode offset. */
-    private final MethodContext methodContext;
+    public final MethodContext methodContext;
 
     InstructionIndex(final int bytecodeOffset, final MethodContext methodContext) {
       this.bytecodeOffset = bytecodeOffset;
@@ -2308,8 +2308,8 @@ public class ClassFile {
    * A simple byte array parser. The method names reflect the type names used in the Java Virtual
    * Machine Specification for ease of reference.
    */
-  private static class Parser {
-    private final DataInputStream dataInputStream;
+  public static class Parser {
+    public final DataInputStream dataInputStream;
 
     Parser(final byte[] data) {
       this.dataInputStream = new DataInputStream(new ByteArrayInputStream(data));
@@ -2356,12 +2356,12 @@ public class ClassFile {
   }
 
   /** A context to lookup constant pool items from their index. */
-  private interface ClassContext {
+  public interface ClassContext {
     <C extends CpInfo> C getCpInfo(int cpIndex, Class<C> cpInfoType);
   }
 
   /** A context to lookup instruction indices from their bytecode offset. */
-  private interface MethodContext {
+  public interface MethodContext {
     int getInsnIndex(int bytecodeOffset);
   }
 
@@ -2377,18 +2377,18 @@ public class ClassFile {
    * resolve references to such objects. Contexts inherit from their parent, i.e. if a lookup fails
    * in some builder, the lookup continues in the parent, and so on until the root is reached.
    */
-  private abstract static class AbstractBuilder<T> implements ClassContext, MethodContext {
+  public abstract static class AbstractBuilder<T> implements ClassContext, MethodContext {
     /** Flag used to distinguish CpInfo keys in {@link #context}. */
-    private static final int CP_INFO_KEY = 0xF0000000;
+    public static final int CP_INFO_KEY = 0xF0000000;
 
     /** The parent node of this node. May be {@literal null}. */
-    private final AbstractBuilder<?> parent;
+    public final AbstractBuilder<?> parent;
 
     /** The children of this builder. */
     final ArrayList<T> children;
 
     /** The map used to implement the Context interfaces. */
-    private final HashMap<Integer, Object> context;
+    public final HashMap<Integer, Object> context;
 
     AbstractBuilder(final AbstractBuilder<?> parent) {
       this.parent = parent;
@@ -2472,7 +2472,7 @@ public class ClassFile {
      * @return the value associated with the given key in this context or, if not found, in the
      *     parent context (recursively).
      */
-    private Object get(final int key) {
+    public Object get(final int key) {
       Object value = context.get(key);
       if (value != null) {
         return value;
@@ -2482,9 +2482,9 @@ public class ClassFile {
   }
 
   /** An {@link AbstractBuilder} with concrete methods to add children. */
-  private static class Builder extends AbstractBuilder<Object> implements Comparable<Builder> {
+  public static class Builder extends AbstractBuilder<Object> implements Comparable<Builder> {
     /** The name of this builder, for sorting in {@link SortedBuilder}. */
-    private String name;
+    public String name;
 
     Builder(final String name, final AbstractBuilder<?> parent) {
       super(parent);
@@ -2589,7 +2589,7 @@ public class ClassFile {
   }
 
   /** An {@link AbstractBuilder} which sorts its children by name before building. */
-  private static class SortedBuilder extends AbstractBuilder<Builder> {
+  public static class SortedBuilder extends AbstractBuilder<Builder> {
     SortedBuilder(final Builder parent) {
       super(parent);
     }
@@ -2614,10 +2614,10 @@ public class ClassFile {
   }
 
   /** A simple ClassLoader to test that a class can be loaded in the JVM. */
-  private static class ByteClassLoader extends ClassLoader {
-    private final String className;
-    private final byte[] classContent;
-    private boolean classLoaded;
+  public static class ByteClassLoader extends ClassLoader {
+    public final String className;
+    public final byte[] classContent;
+    public boolean classLoaded;
 
     ByteClassLoader(final String className, final byte[] classContent) {
       this.className = className;
@@ -2629,7 +2629,7 @@ public class ClassFile {
     }
 
     @Override
-    protected Class<?> loadClass(final String name, final boolean resolve)
+    public Class<?> loadClass(final String name, final boolean resolve)
         throws ClassNotFoundException {
       if (name.equals(className)) {
         classLoaded = true;

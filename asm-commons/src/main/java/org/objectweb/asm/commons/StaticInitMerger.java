@@ -41,16 +41,16 @@ import org.objectweb.asm.Opcodes;
 public class StaticInitMerger extends ClassVisitor {
 
   /** The internal name of the visited class. */
-  private String owner;
+  public String owner;
 
   /** The prefix to use to rename the existing &lt;clinit&gt; methods. */
-  private final String renamedClinitMethodPrefix;
+  public final String renamedClinitMethodPrefix;
 
   /** The number of &lt;clinit&gt; methods visited so far. */
-  private int numClinitMethods;
+  public int numClinitMethods;
 
   /** The MethodVisitor for the merged &lt;clinit&gt; method. */
-  private MethodVisitor mergedClinitVisitor;
+  public MethodVisitor mergedClinitVisitor;
 
   /**
    * Constructs a new {@link StaticInitMerger}. <i>Subclasses must not use this constructor</i>.
@@ -73,7 +73,7 @@ public class StaticInitMerger extends ClassVisitor {
    * @param classVisitor the class visitor to which this visitor must delegate method calls. May be
    *     null.
    */
-  protected StaticInitMerger(final int api, final String prefix, final ClassVisitor classVisitor) {
+  public StaticInitMerger(final int api, final String prefix, final ClassVisitor classVisitor) {
     super(api, classVisitor);
     this.renamedClinitMethodPrefix = prefix;
   }

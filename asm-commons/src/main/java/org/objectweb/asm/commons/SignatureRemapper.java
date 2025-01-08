@@ -39,11 +39,11 @@ import org.objectweb.asm.signature.SignatureVisitor;
  */
 public class SignatureRemapper extends SignatureVisitor {
 
-  private final SignatureVisitor signatureVisitor;
+  public final SignatureVisitor signatureVisitor;
 
-  private final Remapper remapper;
+  public final Remapper remapper;
 
-  private ArrayList<String> classNames = new ArrayList<>();
+  public ArrayList<String> classNames = new ArrayList<>();
 
   /**
    * Constructs a new {@link SignatureRemapper}. <i>Subclasses must not use this constructor</i>.
@@ -64,7 +64,7 @@ public class SignatureRemapper extends SignatureVisitor {
    * @param signatureVisitor the signature visitor this remapper must delegate to.
    * @param remapper the remapper to use to remap the types in the visited signature.
    */
-  protected SignatureRemapper(
+  public SignatureRemapper(
       final int api, final SignatureVisitor signatureVisitor, final Remapper remapper) {
     super(api);
     this.signatureVisitor = signatureVisitor;

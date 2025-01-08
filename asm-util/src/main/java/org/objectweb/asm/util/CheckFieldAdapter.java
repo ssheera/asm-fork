@@ -42,7 +42,7 @@ import org.objectweb.asm.TypeReference;
 public class CheckFieldAdapter extends FieldVisitor {
 
   /** Whether the {@link #visitEnd} method has been called. */
-  private boolean visitEndCalled;
+  public boolean visitEndCalled;
 
   /**
    * Constructs a new {@link CheckFieldAdapter}. <i>Subclasses must not use this constructor</i>.
@@ -65,7 +65,7 @@ public class CheckFieldAdapter extends FieldVisitor {
    *     ASM}<i>x</i> values in {@link Opcodes}.
    * @param fieldVisitor the field visitor to which this adapter must delegate calls.
    */
-  protected CheckFieldAdapter(final int api, final FieldVisitor fieldVisitor) {
+  public CheckFieldAdapter(final int api, final FieldVisitor fieldVisitor) {
     super(api, fieldVisitor);
   }
 
@@ -108,7 +108,7 @@ public class CheckFieldAdapter extends FieldVisitor {
     super.visitEnd();
   }
 
-  private void checkVisitEndNotCalled() {
+  public void checkVisitEndNotCalled() {
     if (visitEndCalled) {
       throw new IllegalStateException("Cannot call a visit method after visitEnd has been called");
     }

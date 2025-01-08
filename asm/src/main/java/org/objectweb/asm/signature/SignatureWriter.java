@@ -41,13 +41,13 @@ import org.objectweb.asm.Opcodes;
 public class SignatureWriter extends SignatureVisitor {
 
   /** The builder used to construct the visited signature. */
-  private final StringBuilder stringBuilder;
+  public final StringBuilder stringBuilder;
 
   /** Whether the visited signature contains formal type parameters. */
-  private boolean hasFormals;
+  public boolean hasFormals;
 
   /** Whether the visited signature contains method parameter types. */
-  private boolean hasParameters;
+  public boolean hasParameters;
 
   /**
    * The stack used to keep track of class types that have arguments. Each element of this stack is
@@ -67,14 +67,14 @@ public class SignatureWriter extends SignatureVisitor {
    * stack for each new visited type, and popped when the visit of this type ends (either in
    * visitEnd, or because visitInnerClassType is called).
    */
-  private int argumentStack = 1;
+  public int argumentStack = 1;
 
   /** Constructs a new {@link SignatureWriter}. */
   public SignatureWriter() {
     this(new StringBuilder());
   }
 
-  private SignatureWriter(final StringBuilder stringBuilder) {
+  public SignatureWriter(final StringBuilder stringBuilder) {
     super(/* latest api =*/ Opcodes.ASM9);
     this.stringBuilder = stringBuilder;
   }
@@ -227,7 +227,7 @@ public class SignatureWriter extends SignatureVisitor {
   // -----------------------------------------------------------------------------------------------
 
   /** Ends the formal type parameters section of the signature. */
-  private void endFormals() {
+  public void endFormals() {
     if (hasFormals) {
       hasFormals = false;
       stringBuilder.append('>');
@@ -235,7 +235,7 @@ public class SignatureWriter extends SignatureVisitor {
   }
 
   /** Ends the type arguments of a class or inner class type. */
-  private void endArguments() {
+  public void endArguments() {
     // If the top of the stack is 'true', this means that some type arguments have been visited for
     // the type whose visit is now ending. We therefore need to append a '>', and to pop one element
     // from the stack.

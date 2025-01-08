@@ -42,9 +42,9 @@ import net.sf.jiapi.reflect.Signature;
  */
 public class JiapiGenerator extends Generator {
 
-  private static final Signature EMPTY_SIGNATURE = new Signature("()V");
-  private static final Signature MAIN_SIGNATURE = new Signature("([Ljava/lang/String;)V");
-  private static final Signature PRINTLN_SIGNATURE = new Signature("(Ljava/lang/String;)V");
+  public static final Signature EMPTY_SIGNATURE = new Signature("()V");
+  public static final Signature MAIN_SIGNATURE = new Signature("([Ljava/lang/String;)V");
+  public static final Signature PRINTLN_SIGNATURE = new Signature("(Ljava/lang/String;)V");
 
   @Override
   public byte[] generateClass() {

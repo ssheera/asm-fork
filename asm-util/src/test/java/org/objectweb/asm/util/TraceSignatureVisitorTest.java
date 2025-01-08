@@ -47,7 +47,7 @@ import org.objectweb.asm.signature.SignatureReader;
  */
 class TraceSignatureVisitorTest {
 
-  private static final String[][] CLASS_SIGNATURES = {
+  public static final String[][] CLASS_SIGNATURES = {
     {
       "false",
       "<E extends java.lang.Enum<E>> implements java.lang.Comparable<E>, java.io.Serializable",
@@ -71,7 +71,7 @@ class TraceSignatureVisitorTest {
     {"false", "<T, R extends T>", "<T:Ljava/lang/Object;R:TT;>Ljava/lang/Object;"}
   };
 
-  private static final String[][] FIELD_SIGNATURES = {
+  public static final String[][] FIELD_SIGNATURES = {
     {"T[]", "[TT;"},
     {"AA<byte[][]>", "LAA<[[B>;"},
     {"java.lang.Class<?>", "Ljava/lang/Class<*>;"},
@@ -91,7 +91,7 @@ class TraceSignatureVisitorTest {
     }
   };
 
-  private static final String[][] METHOD_SIGNATURES = {
+  public static final String[][] METHOD_SIGNATURES = {
     {"void()E, F", "()V^TE;^TF;"},
     {"void(A<E>.B)", "(LA<TE;>.B;)V"},
     {"void(A<E>.B<F>)", "(LA<TE;>.B<TF;>;)V"},

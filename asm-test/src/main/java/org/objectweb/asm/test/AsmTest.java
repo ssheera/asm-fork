@@ -74,7 +74,7 @@ import org.junit.jupiter.params.provider.Arguments;
 public abstract class AsmTest {
 
   /** The size of the temporary byte array used to read class input streams chunk by chunk. */
-  private static final int INPUT_STREAM_DATA_CHUNK_SIZE = 4096;
+  public static final int INPUT_STREAM_DATA_CHUNK_SIZE = 4096;
 
   /**
    * MethodSource name to be used in parameterized tests that must be instantiated for all possible
@@ -103,8 +103,8 @@ public abstract class AsmTest {
     JDK14(14, Api.ASM8),
     JDK15(15, Api.ASM9);
 
-    private final int majorVersion;
-    private final Api minimumApi;
+    public final int majorVersion;
+    public final Api minimumApi;
 
     JdkVersion(final int majorVersion, final Api minimumApi) {
       this.majorVersion = majorVersion;
@@ -164,10 +164,10 @@ public abstract class AsmTest {
     JDK14_ALL_STRUCTURES_EMPTY_RECORD("jdk14.AllStructures$EmptyRecord", JdkVersion.JDK14, true),
     JDK15_ALL_STRUCTURES("jdk15.AllStructures", JdkVersion.JDK15, true);
 
-    private final String name;
-    private final JdkVersion jdkVersion;
-    private final boolean preview;
-    private byte[] bytes;
+    public final String name;
+    public final JdkVersion jdkVersion;
+    public final boolean preview;
+    public byte[] bytes;
 
     PrecompiledClass(final String name, final JdkVersion jdkVersion, final boolean preview) {
       this.name = name;
@@ -269,7 +269,7 @@ public abstract class AsmTest {
     INVALID_VERIFICATION_TYPE_INFO("invalid.InvalidVerificationTypeInfo"),
     INVALID_WIDE_OPCODE("invalid.InvalidWideOpcode");
 
-    private final String name;
+    public final String name;
 
     InvalidClass(final String name) {
       this.name = name;
@@ -309,8 +309,8 @@ public abstract class AsmTest {
     ASM9("ASM9", 9 << 16),
     ;
 
-    private final String name;
-    private final int value;
+    public final String name;
+    public final int value;
 
     Api(final String name, final int value) {
       this.name = name;
@@ -361,14 +361,14 @@ public abstract class AsmTest {
     return classesAndApis(Api.ASM9);
   }
 
-  private static Stream<Arguments> classesAndApis(final Api... apis) {
+  public static Stream<Arguments> classesAndApis(final Api... apis) {
     return Arrays.stream(PrecompiledClass.values())
         .flatMap(
             precompiledClass ->
                 Arrays.stream(apis).map(api -> Arguments.of(precompiledClass, api)));
   }
 
-  private static byte[] getBytes(final String name, final String extension) {
+  public static byte[] getBytes(final String name, final String extension) {
     String resourceName = name.replace('.', '/') + extension;
     try (InputStream inputStream = ClassLoader.getSystemResourceAsStream(resourceName)) {
       if (inputStream == null) {

@@ -43,7 +43,7 @@ import org.objectweb.asm.util.TraceMethodVisitor;
  */
 final class MethodNodeBuilder {
 
-  private final MethodNode methodNode;
+  public final MethodNode methodNode;
 
   MethodNodeBuilder(final int maxStack, final int maxLocals) {
     this("m", "()V", maxStack, maxLocals);

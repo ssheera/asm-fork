@@ -141,11 +141,11 @@ class HandlerTest {
     assertEquals(18, byteVector.length);
   }
 
-  private static Handler newHandler(final int startPc, final int endPc) {
+  public static Handler newHandler(final int startPc, final int endPc) {
     return new Handler(newLabel(startPc), newLabel(endPc), newLabel(0), 0, "");
   }
 
-  private static Label newLabel(final int bytecodeOffset) {
+  public static Label newLabel(final int bytecodeOffset) {
     Label label = new Label();
     label.bytecodeOffset = bytecodeOffset;
     return label;

@@ -38,28 +38,28 @@ import org.objectweb.asm.Opcodes;
  */
 public class CheckModuleAdapter extends ModuleVisitor {
   /** Whether the visited module is open. */
-  private final boolean isOpen;
+  public final boolean isOpen;
 
   /** The fully qualified names of the dependencies of the visited module. */
-  private final NameSet requiredModules = new NameSet("Modules requires");
+  public final NameSet requiredModules = new NameSet("Modules requires");
 
   /** The internal names of the packages exported by the visited module. */
-  private final NameSet exportedPackages = new NameSet("Module exports");
+  public final NameSet exportedPackages = new NameSet("Module exports");
 
   /** The internal names of the packages opened by the visited module. */
-  private final NameSet openedPackages = new NameSet("Module opens");
+  public final NameSet openedPackages = new NameSet("Module opens");
 
   /** The internal names of the services used by the visited module. */
-  private final NameSet usedServices = new NameSet("Module uses");
+  public final NameSet usedServices = new NameSet("Module uses");
 
   /** The internal names of the services provided by the visited module. */
-  private final NameSet providedServices = new NameSet("Module provides");
+  public final NameSet providedServices = new NameSet("Module provides");
 
   /** The class version number. */
   int classVersion;
 
   /** Whether the {@link #visitEnd} method has been called. */
-  private boolean visitEndCalled;
+  public boolean visitEndCalled;
 
   /**
    * Constructs a new {@link CheckModuleAdapter}. <i>Subclasses must not use this constructor</i>.
@@ -86,7 +86,7 @@ public class CheckModuleAdapter extends ModuleVisitor {
    * @param isOpen whether the visited module is open. Open modules have their {@link
    *     Opcodes#ACC_OPEN} access flag set in {@link org.objectweb.asm.ClassVisitor#visitModule}.
    */
-  protected CheckModuleAdapter(
+  public CheckModuleAdapter(
       final int api, final ModuleVisitor moduleVisitor, final boolean isOpen) {
     super(api, moduleVisitor);
     this.isOpen = isOpen;
@@ -187,16 +187,16 @@ public class CheckModuleAdapter extends ModuleVisitor {
     super.visitEnd();
   }
 
-  private void checkVisitEndNotCalled() {
+  public void checkVisitEndNotCalled() {
     if (visitEndCalled) {
       throw new IllegalStateException("Cannot call a visit method after visitEnd has been called");
     }
   }
 
-  private static class NameSet {
+  public static class NameSet {
 
-    private final String type;
-    private final HashSet<String> names;
+    public final String type;
+    public final HashSet<String> names;
 
     NameSet(final String type) {
       this.type = type;

@@ -69,7 +69,7 @@ import org.objectweb.asm.tree.analysis.BasicVerifier;
 public class CheckMethodAdapter extends MethodVisitor {
 
   /** The 'generic' instruction visit methods (i.e. those that take an opcode argument). */
-  private enum Method {
+  public enum Method {
     VISIT_INSN,
     VISIT_INT_INSN,
     VISIT_VAR_INSN,
@@ -80,7 +80,7 @@ public class CheckMethodAdapter extends MethodVisitor {
   }
 
   /** The method to use to visit each instruction. Only generic methods are represented here. */
-  private static final Method[] OPCODE_METHODS = {
+  public static final Method[] OPCODE_METHODS = {
     Method.VISIT_INSN, // NOP
     Method.VISIT_INSN, // ACONST_NULL
     Method.VISIT_INSN, // ICONST_M1
@@ -283,64 +283,64 @@ public class CheckMethodAdapter extends MethodVisitor {
     Method.VISIT_JUMP_INSN // IFNONNULL
   };
 
-  private static final String INVALID = "Invalid ";
-  private static final String INVALID_DESCRIPTOR = "Invalid descriptor: ";
-  private static final String INVALID_TYPE_REFERENCE = "Invalid type reference sort 0x";
-  private static final String INVALID_LOCAL_VARIABLE_INDEX = "Invalid local variable index";
-  private static final String MUST_NOT_BE_NULL_OR_EMPTY = " (must not be null or empty)";
-  private static final String START_LABEL = "start label";
-  private static final String END_LABEL = "end label";
+  public static final String INVALID = "Invalid ";
+  public static final String INVALID_DESCRIPTOR = "Invalid descriptor: ";
+  public static final String INVALID_TYPE_REFERENCE = "Invalid type reference sort 0x";
+  public static final String INVALID_LOCAL_VARIABLE_INDEX = "Invalid local variable index";
+  public static final String MUST_NOT_BE_NULL_OR_EMPTY = " (must not be null or empty)";
+  public static final String START_LABEL = "start label";
+  public static final String END_LABEL = "end label";
 
   /** The class version number. */
   public int version;
 
   /** The access flags of the visited method. */
-  private int access;
+  public int access;
 
   /**
    * The number of method parameters that can have runtime visible annotations. 0 means that all the
    * parameters from the method descriptor can have annotations.
    */
-  private int visibleAnnotableParameterCount;
+  public int visibleAnnotableParameterCount;
 
   /**
    * The number of method parameters that can have runtime invisible annotations. 0 means that all
    * the parameters from the method descriptor can have annotations.
    */
-  private int invisibleAnnotableParameterCount;
+  public int invisibleAnnotableParameterCount;
 
   /** Whether the {@link #visitCode} method has been called. */
-  private boolean visitCodeCalled;
+  public boolean visitCodeCalled;
 
   /** Whether the {@link #visitMaxs} method has been called. */
-  private boolean visitMaxCalled;
+  public boolean visitMaxCalled;
 
   /** Whether the {@link #visitEnd} method has been called. */
-  private boolean visitEndCalled;
+  public boolean visitEndCalled;
 
   /** The number of visited instructions so far. */
-  private int insnCount;
+  public int insnCount;
 
   /** The index of the instruction designated by each visited label. */
-  private final Map<Label, Integer> labelInsnIndices;
+  public final Map<Label, Integer> labelInsnIndices;
 
   /** The labels referenced by the visited method. */
-  private Set<Label> referencedLabels;
+  public Set<Label> referencedLabels;
 
   /** The index of the instruction corresponding to the last visited stack map frame. */
-  private int lastFrameInsnIndex = -1;
+  public int lastFrameInsnIndex = -1;
 
   /** The number of visited frames in expanded form. */
-  private int numExpandedFrames;
+  public int numExpandedFrames;
 
   /** The number of visited frames in compressed form. */
-  private int numCompressedFrames;
+  public int numCompressedFrames;
 
   /**
    * The exception handler ranges. Each pair of list element contains the start and end labels of an
    * exception handler block.
    */
-  private List<Label> handlers;
+  public List<Label> handlers;
 
   /**
    * Constructs a new {@link CheckMethodAdapter} object. This method adapter will not perform any
@@ -383,7 +383,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param labelInsnIndices the index of the instruction designated by each visited label so far
    *     (in other methods). This map is updated with the labels from the visited method.
    */
-  protected CheckMethodAdapter(
+  public CheckMethodAdapter(
       final int api,
       final MethodVisitor methodVisitor,
       final Map<Label, Integer> labelInsnIndices) {
@@ -434,7 +434,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param labelInsnIndices the index of the instruction designated by each visited label so far
    *     (in other methods). This map is updated with the labels from the visited method.
    */
-  protected CheckMethodAdapter(
+  public CheckMethodAdapter(
       final int api,
       final int access,
       final String name,
@@ -481,7 +481,7 @@ public class CheckMethodAdapter extends MethodVisitor {
             }
           }
 
-          private void throwError(final Analyzer<BasicValue> analyzer, final Exception e) {
+          public void throwError(final Analyzer<BasicValue> analyzer, final Exception e) {
             StringWriter stringWriter = new StringWriter();
             PrintWriter printWriter = new PrintWriter(stringWriter, true);
             CheckClassAdapter.printAnalyzerResult(this, analyzer, printWriter);
@@ -1054,7 +1054,7 @@ public class CheckMethodAdapter extends MethodVisitor {
   // -----------------------------------------------------------------------------------------------
 
   /** Checks that the {@link #visitCode} method has been called. */
-  private void checkVisitCodeCalled() {
+  public void checkVisitCodeCalled() {
     if (!visitCodeCalled) {
       throw new IllegalStateException(
           "Cannot visit instructions before visitCode has been called.");
@@ -1062,14 +1062,14 @@ public class CheckMethodAdapter extends MethodVisitor {
   }
 
   /** Checks that the {@link #visitMaxs} method has not been called. */
-  private void checkVisitMaxsNotCalled() {
+  public void checkVisitMaxsNotCalled() {
     if (visitMaxCalled) {
       throw new IllegalStateException("Cannot visit instructions after visitMaxs has been called.");
     }
   }
 
   /** Checks that the {@link #visitEnd} method has not been called. */
-  private void checkVisitEndNotCalled() {
+  public void checkVisitEndNotCalled() {
     if (visitEndCalled) {
       throw new IllegalStateException("Cannot visit elements after visitEnd has been called.");
     }
@@ -1080,7 +1080,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    *
    * @param value the value to be checked.
    */
-  private void checkFrameValue(final Object value) {
+  public void checkFrameValue(final Object value) {
     if (value == Opcodes.TOP
         || value == Opcodes.INTEGER
         || value == Opcodes.FLOAT
@@ -1105,7 +1105,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param opcode the opcode to be checked.
    * @param method the expected visit method.
    */
-  private static void checkOpcodeMethod(final int opcode, final Method method) {
+  public static void checkOpcodeMethod(final int opcode, final Method method) {
     if (opcode < Opcodes.NOP || opcode > Opcodes.IFNONNULL) {
       throw new IllegalArgumentException("Invalid opcode: " + opcode);
     }
@@ -1121,7 +1121,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param value the value to be checked.
    * @param message the message to use in case of error.
    */
-  private static void checkSignedByte(final int value, final String message) {
+  public static void checkSignedByte(final int value, final String message) {
     if (value < Byte.MIN_VALUE || value > Byte.MAX_VALUE) {
       throw new IllegalArgumentException(message + " (must be a signed byte): " + value);
     }
@@ -1133,7 +1133,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param value the value to be checked.
    * @param message the message to use in case of error.
    */
-  private static void checkSignedShort(final int value, final String message) {
+  public static void checkSignedShort(final int value, final String message) {
     if (value < Short.MIN_VALUE || value > Short.MAX_VALUE) {
       throw new IllegalArgumentException(message + " (must be a signed short): " + value);
     }
@@ -1145,7 +1145,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param value the value to be checked.
    * @param message the message to use in case of error.
    */
-  private static void checkUnsignedShort(final int value, final String message) {
+  public static void checkUnsignedShort(final int value, final String message) {
     if (value < 0 || value > 65535) {
       throw new IllegalArgumentException(message + " (must be an unsigned short): " + value);
     }
@@ -1172,7 +1172,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    *
    * @param value the value to be checked.
    */
-  private void checkLdcConstant(final Object value) {
+  public void checkLdcConstant(final Object value) {
     if (value instanceof Type) {
       int sort = ((Type) value).getSort();
       if (sort != Type.OBJECT && sort != Type.ARRAY && sort != Type.METHOD) {
@@ -1328,7 +1328,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param name the string to be checked.
    * @param message the message to use in case of error.
    */
-  private static void checkInternalClassName(
+  public static void checkInternalClassName(
       final int version, final String name, final String message) {
     try {
       int startIndex = 0;
@@ -1367,7 +1367,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param canBeVoid whether {@code V} can be considered valid.
    * @return the index of the last character of the type descriptor, plus one.
    */
-  private static int checkDescriptor(
+  public static int checkDescriptor(
       final int version, final String descriptor, final int startPos, final boolean canBeVoid) {
     if (descriptor == null || startPos >= descriptor.length()) {
       throw new IllegalArgumentException("Invalid type descriptor (must not be null or empty)");
@@ -1450,7 +1450,7 @@ public class CheckMethodAdapter extends MethodVisitor {
    * @param checkVisited whether to check that the label has been visited.
    * @param message the message to use in case of error.
    */
-  private void checkLabel(final Label label, final boolean checkVisited, final String message) {
+  public void checkLabel(final Label label, final boolean checkVisited, final String message) {
     if (label == null) {
       throw new IllegalArgumentException(INVALID + message + " (must not be null)");
     }
@@ -1463,9 +1463,9 @@ public class CheckMethodAdapter extends MethodVisitor {
   static class MethodWriterWrapper extends MethodVisitor {
 
     /** The class version number. */
-    private final int version;
+    public final int version;
 
-    private final ClassWriter owner;
+    public final ClassWriter owner;
 
     MethodWriterWrapper(
         final int api,

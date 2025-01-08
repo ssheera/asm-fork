@@ -66,7 +66,7 @@ public class InstructionAdapter extends MethodVisitor {
    *     ASM}<i>x</i> values in {@link Opcodes}.
    * @param methodVisitor the method visitor to which this adapter delegates calls.
    */
-  protected InstructionAdapter(final int api, final MethodVisitor methodVisitor) {
+  public InstructionAdapter(final int api, final MethodVisitor methodVisitor) {
     super(api, methodVisitor);
   }
 

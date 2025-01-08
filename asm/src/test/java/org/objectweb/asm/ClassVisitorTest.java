@@ -304,7 +304,7 @@ class ClassVisitorTest extends AsmTest {
     return new Attribute[] {new Comment(), new CodeComment()};
   }
 
-  private static class AnnotationAdapter extends AnnotationVisitor {
+  public static class AnnotationAdapter extends AnnotationVisitor {
 
     AnnotationAdapter(final int api, final AnnotationVisitor annotationVisitor) {
       super(api, annotationVisitor);
@@ -321,7 +321,7 @@ class ClassVisitorTest extends AsmTest {
     }
   }
 
-  private static class ClassAdapter extends ClassVisitor {
+  public static class ClassAdapter extends ClassVisitor {
 
     ClassAdapter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);
@@ -369,7 +369,7 @@ class ClassVisitorTest extends AsmTest {
     }
   }
 
-  private static class FieldAdapter extends FieldVisitor {
+  public static class FieldAdapter extends FieldVisitor {
 
     FieldAdapter(final int api, final FieldVisitor fieldVisitor) {
       super(api, fieldVisitor);
@@ -391,7 +391,7 @@ class ClassVisitorTest extends AsmTest {
     }
   }
 
-  private static class MethodAdapter extends MethodVisitor {
+  public static class MethodAdapter extends MethodVisitor {
 
     MethodAdapter(final int api, final MethodVisitor methodVisitor) {
       super(api, methodVisitor);
@@ -460,7 +460,7 @@ class ClassVisitorTest extends AsmTest {
     }
   }
 
-  private static class ChangeExceptionAdapter extends ClassVisitor {
+  public static class ChangeExceptionAdapter extends ClassVisitor {
 
     ChangeExceptionAdapter(final ClassVisitor classVisitor) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL, classVisitor);
@@ -480,9 +480,9 @@ class ClassVisitorTest extends AsmTest {
     }
   }
 
-  private static class ChangeVersionAdapter extends ClassVisitor {
+  public static class ChangeVersionAdapter extends ClassVisitor {
 
-    private final int newVersion;
+    public final int newVersion;
 
     ChangeVersionAdapter(final ClassVisitor classVisitor, final int newVersion) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL, classVisitor);
@@ -501,9 +501,9 @@ class ClassVisitorTest extends AsmTest {
     }
   }
 
-  private static class ChangeAccessAdapter extends ClassVisitor {
+  public static class ChangeAccessAdapter extends ClassVisitor {
 
-    private final int accessFlags;
+    public final int accessFlags;
 
     ChangeAccessAdapter(final ClassVisitor classVisitor, final int accessFlags) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL, classVisitor);
@@ -522,9 +522,9 @@ class ClassVisitorTest extends AsmTest {
   }
 
   /** A class visitor which removes either all visible or all invisible [type] annotations. */
-  private static class RemoveAnnotationAdapter extends ClassVisitor {
+  public static class RemoveAnnotationAdapter extends ClassVisitor {
 
-    private final boolean visibilityValue;
+    public final boolean visibilityValue;
 
     RemoveAnnotationAdapter(final ClassVisitor classVisitor, final boolean visibilityValue) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL, classVisitor);
@@ -665,7 +665,7 @@ class ClassVisitorTest extends AsmTest {
   }
 
   /** A class visitor which adds a parameter to the declared method descriptors. */
-  private static class AddParameterAdapter extends ClassVisitor {
+  public static class AddParameterAdapter extends ClassVisitor {
 
     public AddParameterAdapter(final ClassVisitor classVisitor) {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL, classVisitor);

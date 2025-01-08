@@ -56,7 +56,7 @@ class StaticInitMergerTest {
     assertEquals(5, instance.getClass().getField("counter").getInt(instance));
   }
 
-  private static ClassNode newClassWithStaticInitBlocks(final int numStaticInitBlocks) {
+  public static ClassNode newClassWithStaticInitBlocks(final int numStaticInitBlocks) {
     ClassNode classNode = new ClassNode();
     classNode.visit(Opcodes.V1_1, Opcodes.ACC_PUBLIC, "A", null, "java/lang/Object", null);
     classNode.visitField(Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC, "counter", "I", null, null);

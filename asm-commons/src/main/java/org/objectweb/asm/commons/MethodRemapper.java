@@ -43,7 +43,7 @@ import org.objectweb.asm.TypePath;
 public class MethodRemapper extends MethodVisitor {
 
   /** The remapper used to remap the types in the visited field. */
-  protected final Remapper remapper;
+  public final Remapper remapper;
 
   /**
    * Constructs a new {@link MethodRemapper}. <i>Subclasses must not use this constructor</i>.
@@ -64,7 +64,7 @@ public class MethodRemapper extends MethodVisitor {
    * @param methodVisitor the method visitor this remapper must delegate to.
    * @param remapper the remapper to use to remap the types in the visited method.
    */
-  protected MethodRemapper(
+  public MethodRemapper(
       final int api, final MethodVisitor methodVisitor, final Remapper remapper) {
     super(api, methodVisitor);
     this.remapper = remapper;
@@ -122,7 +122,7 @@ public class MethodRemapper extends MethodVisitor {
         remapFrameTypes(numStack, stack));
   }
 
-  private Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
+  public Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
     if (frameTypes == null) {
       return frameTypes;
     }
@@ -270,7 +270,7 @@ public class MethodRemapper extends MethodVisitor {
    * @deprecated use {@link #createAnnotationRemapper(String, AnnotationVisitor)} instead.
    */
   @Deprecated
-  protected AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
+  public AnnotationVisitor createAnnotationRemapper(final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, /* descriptor= */ null, annotationVisitor, remapper);
   }
 
@@ -282,7 +282,7 @@ public class MethodRemapper extends MethodVisitor {
    * @param annotationVisitor the AnnotationVisitor the remapper must delegate to.
    * @return the newly created remapper.
    */
-  protected AnnotationVisitor createAnnotationRemapper(
+  public AnnotationVisitor createAnnotationRemapper(
       final String descriptor, final AnnotationVisitor annotationVisitor) {
     return new AnnotationRemapper(api, descriptor, annotationVisitor, remapper)
         .orDeprecatedValue(createAnnotationRemapper(annotationVisitor));

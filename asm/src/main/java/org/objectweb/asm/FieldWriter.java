@@ -38,7 +38,7 @@ package org.objectweb.asm;
 final class FieldWriter extends FieldVisitor {
 
   /** Where the constants used in this FieldWriter must be stored. */
-  private final SymbolTable symbolTable;
+  public final SymbolTable symbolTable;
 
   // Note: fields are ordered as in the field_info structure, and those related to attributes are
   // ordered as in Section 4.7 of the JVMS.
@@ -48,49 +48,49 @@ final class FieldWriter extends FieldVisitor {
    * access flags, such as {@link Opcodes#ACC_DEPRECATED}, which are removed when generating the
    * ClassFile structure.
    */
-  private final int accessFlags;
+  public final int accessFlags;
 
   /** The name_index field of the field_info JVMS structure. */
-  private final int nameIndex;
+  public final int nameIndex;
 
   /** The descriptor_index field of the field_info JVMS structure. */
-  private final int descriptorIndex;
+  public final int descriptorIndex;
 
   /**
    * The signature_index field of the Signature attribute of this field_info, or 0 if there is no
    * Signature attribute.
    */
-  private int signatureIndex;
+  public int signatureIndex;
 
   /**
    * The constantvalue_index field of the ConstantValue attribute of this field_info, or 0 if there
    * is no ConstantValue attribute.
    */
-  private int constantValueIndex;
+  public int constantValueIndex;
 
   /**
    * The last runtime visible annotation of this field. The previous ones can be accessed with the
    * {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleAnnotation;
+  public AnnotationWriter lastRuntimeVisibleAnnotation;
 
   /**
    * The last runtime invisible annotation of this field. The previous ones can be accessed with the
    * {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleAnnotation;
 
   /**
    * The last runtime visible type annotation of this field. The previous ones can be accessed with
    * the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeVisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeVisibleTypeAnnotation;
 
   /**
    * The last runtime invisible type annotation of this field. The previous ones can be accessed
    * with the {@link AnnotationWriter#previousAnnotation} field. May be {@literal null}.
    */
-  private AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
+  public AnnotationWriter lastRuntimeInvisibleTypeAnnotation;
 
   /**
    * The first non standard attribute of this field. The next ones can be accessed with the {@link
@@ -101,7 +101,7 @@ final class FieldWriter extends FieldVisitor {
    * #putFieldInfo} method writes the attributes in the order defined by this list, i.e. in the
    * reverse order specified by the user.
    */
-  private Attribute firstAttribute;
+  public Attribute firstAttribute;
 
   // -----------------------------------------------------------------------------------------------
   // Constructor

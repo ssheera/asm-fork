@@ -45,10 +45,10 @@ import org.junit.jupiter.api.function.Executable;
  */
 class SmallSetTest {
 
-  private static final Object ELEMENT1 = new Object();
-  private static final Object ELEMENT2 = new Object();
-  private static final Object ELEMENT3 = new Object();
-  private static final Object ELEMENT4 = new Object();
+  public static final Object ELEMENT1 = new Object();
+  public static final Object ELEMENT2 = new Object();
+  public static final Object ELEMENT3 = new Object();
+  public static final Object ELEMENT4 = new Object();
 
   @Test
   void testUnion_oneElement_emptySet() {
@@ -162,7 +162,7 @@ class SmallSetTest {
     assertThrows(UnsupportedOperationException.class, () -> iterator.remove());
   }
 
-  private static SmallSet<Object> newSmallSet(final Object element1, final Object element2) {
+  public static SmallSet<Object> newSmallSet(final Object element1, final Object element2) {
     return (SmallSet<Object>) new SmallSet<>(element1).union(new SmallSet<>(element2));
   }
 }

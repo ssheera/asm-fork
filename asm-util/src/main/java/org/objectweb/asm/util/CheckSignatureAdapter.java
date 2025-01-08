@@ -57,36 +57,36 @@ public class CheckSignatureAdapter extends SignatureVisitor {
   public static final int TYPE_SIGNATURE = 2;
 
   /** The valid automaton states for a {@link #visitFormalTypeParameter} method call. */
-  private static final EnumSet<State> VISIT_FORMAL_TYPE_PARAMETER_STATES =
+  public static final EnumSet<State> VISIT_FORMAL_TYPE_PARAMETER_STATES =
       EnumSet.of(State.EMPTY, State.FORMAL, State.BOUND);
 
   /** The valid automaton states for a {@link #visitClassBound} method call. */
-  private static final EnumSet<State> VISIT_CLASS_BOUND_STATES = EnumSet.of(State.FORMAL);
+  public static final EnumSet<State> VISIT_CLASS_BOUND_STATES = EnumSet.of(State.FORMAL);
 
   /** The valid automaton states for a {@link #visitInterfaceBound} method call. */
-  private static final EnumSet<State> VISIT_INTERFACE_BOUND_STATES =
+  public static final EnumSet<State> VISIT_INTERFACE_BOUND_STATES =
       EnumSet.of(State.FORMAL, State.BOUND);
 
   /** The valid automaton states for a {@link #visitSuperclass} method call. */
-  private static final EnumSet<State> VISIT_SUPER_CLASS_STATES =
+  public static final EnumSet<State> VISIT_SUPER_CLASS_STATES =
       EnumSet.of(State.EMPTY, State.FORMAL, State.BOUND);
 
   /** The valid automaton states for a {@link #visitInterface} method call. */
-  private static final EnumSet<State> VISIT_INTERFACE_STATES = EnumSet.of(State.SUPER);
+  public static final EnumSet<State> VISIT_INTERFACE_STATES = EnumSet.of(State.SUPER);
 
   /** The valid automaton states for a {@link #visitParameterType} method call. */
-  private static final EnumSet<State> VISIT_PARAMETER_TYPE_STATES =
+  public static final EnumSet<State> VISIT_PARAMETER_TYPE_STATES =
       EnumSet.of(State.EMPTY, State.FORMAL, State.BOUND, State.PARAM);
 
   /** The valid automaton states for a {@link #visitReturnType} method call. */
-  private static final EnumSet<State> VISIT_RETURN_TYPE_STATES =
+  public static final EnumSet<State> VISIT_RETURN_TYPE_STATES =
       EnumSet.of(State.EMPTY, State.FORMAL, State.BOUND, State.PARAM);
 
   /** The valid automaton states for a {@link #visitExceptionType} method call. */
-  private static final EnumSet<State> VISIT_EXCEPTION_TYPE_STATES = EnumSet.of(State.RETURN);
+  public static final EnumSet<State> VISIT_EXCEPTION_TYPE_STATES = EnumSet.of(State.RETURN);
 
   /** The possible states of the automaton used to check the order of method calls. */
-  private enum State {
+  public enum State {
     EMPTY,
     FORMAL,
     BOUND,
@@ -98,19 +98,19 @@ public class CheckSignatureAdapter extends SignatureVisitor {
     END;
   }
 
-  private static final String INVALID = "Invalid ";
+  public static final String INVALID = "Invalid ";
 
   /** The type of the visited signature. */
-  private final int type;
+  public final int type;
 
   /** The current state of the automaton used to check the order of method calls. */
-  private State state;
+  public State state;
 
   /** Whether the visited signature can be 'V'. */
-  private boolean canBeVoid;
+  public boolean canBeVoid;
 
   /** The visitor to which this adapter must delegate calls. May be {@literal null}. */
-  private final SignatureVisitor signatureVisitor;
+  public final SignatureVisitor signatureVisitor;
 
   /**
    * Constructs a new {@link CheckSignatureAdapter}. <i>Subclasses must not use this
@@ -136,7 +136,7 @@ public class CheckSignatureAdapter extends SignatureVisitor {
    * @param signatureVisitor the visitor to which this adapter must delegate calls. May be {@literal
    *     null}.
    */
-  protected CheckSignatureAdapter(
+  public CheckSignatureAdapter(
       final int api, final int type, final SignatureVisitor signatureVisitor) {
     super(api);
     this.type = type;
@@ -333,7 +333,7 @@ public class CheckSignatureAdapter extends SignatureVisitor {
     }
   }
 
-  private void checkClassName(final String name, final String message) {
+  public void checkClassName(final String name, final String message) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException(INVALID + message + " (must not be null or empty)");
     }
@@ -345,7 +345,7 @@ public class CheckSignatureAdapter extends SignatureVisitor {
     }
   }
 
-  private void checkIdentifier(final String name, final String message) {
+  public void checkIdentifier(final String name, final String message) {
     if (name == null || name.length() == 0) {
       throw new IllegalArgumentException(INVALID + message + " (must not be null or empty)");
     }

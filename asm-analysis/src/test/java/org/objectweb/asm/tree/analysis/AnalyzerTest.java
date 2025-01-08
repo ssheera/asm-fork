@@ -50,29 +50,29 @@ import org.objectweb.asm.tree.MethodNode;
  */
 class AnalyzerTest extends AsmTest {
 
-  private static final String CLASS_NAME = "C";
+  public static final String CLASS_NAME = "C";
 
   // Some local variable numbers used in tests.
-  private static final int LOCAL1 = 1;
-  private static final int LOCAL2 = 2;
-  private static final int LOCAL3 = 3;
-  private static final int LOCAL4 = 4;
-  private static final int LOCAL5 = 5;
+  public static final int LOCAL1 = 1;
+  public static final int LOCAL2 = 2;
+  public static final int LOCAL3 = 3;
+  public static final int LOCAL4 = 4;
+  public static final int LOCAL5 = 5;
 
   // Labels used to generate test cases.
-  private final Label label0 = new Label();
-  private final Label label1 = new Label();
-  private final Label label2 = new Label();
-  private final Label label3 = new Label();
-  private final Label label4 = new Label();
-  private final Label label5 = new Label();
-  private final Label label6 = new Label();
-  private final Label label7 = new Label();
-  private final Label label8 = new Label();
-  private final Label label9 = new Label();
-  private final Label label10 = new Label();
-  private final Label label11 = new Label();
-  private final Label label12 = new Label();
+  public final Label label0 = new Label();
+  public final Label label1 = new Label();
+  public final Label label2 = new Label();
+  public final Label label3 = new Label();
+  public final Label label4 = new Label();
+  public final Label label5 = new Label();
+  public final Label label6 = new Label();
+  public final Label label7 = new Label();
+  public final Label label8 = new Label();
+  public final Label label9 = new Label();
+  public final Label label10 = new Label();
+  public final Label label11 = new Label();
+  public final Label label12 = new Label();
 
   @Test
   void testAnalyze_runtimeExceptions() {
@@ -83,7 +83,7 @@ class AnalyzerTest extends AsmTest {
             new Analyzer<MockValue>(new MockInterpreter()) {
 
               @Override
-              protected Frame<MockValue> newFrame(final int numLocals, final int numStack) {
+              public Frame<MockValue> newFrame(final int numLocals, final int numStack) {
                 throw new RuntimeException("newFrame error");
               }
             }.analyze(CLASS_NAME, methodNode);
@@ -1148,11 +1148,11 @@ class AnalyzerTest extends AsmTest {
     assertDoesNotThrow(() -> MethodNodeBuilder.buildClassWithMethod(methodNode).newInstance());
   }
 
-  private static Analyzer<MockValue> newAnalyzer() {
+  public static Analyzer<MockValue> newAnalyzer() {
     return new Analyzer<>(new MockInterpreter());
   }
 
-  private static MethodMaxs computeMaxStackAndLocalsFromFrames(final Frame<?>[] frames) {
+  public static MethodMaxs computeMaxStackAndLocalsFromFrames(final Frame<?>[] frames) {
     int maxStack = 0;
     int maxLocals = 0;
     for (Frame<?> frame : frames) {
@@ -1168,7 +1168,7 @@ class AnalyzerTest extends AsmTest {
     return new MethodMaxs(maxStack, maxLocals);
   }
 
-  private static class MethodMaxs {
+  public static class MethodMaxs {
 
     public final int maxStack;
     public final int maxLocals;
@@ -1179,7 +1179,7 @@ class AnalyzerTest extends AsmTest {
     }
   }
 
-  private static enum MockValue implements Value {
+  public static enum MockValue implements Value {
     INT,
     LONG,
     REFERENCE,
@@ -1192,7 +1192,7 @@ class AnalyzerTest extends AsmTest {
     }
   }
 
-  private static class MockInterpreter extends Interpreter<MockValue> {
+  public static class MockInterpreter extends Interpreter<MockValue> {
 
     MockInterpreter() {
       super(/* latest */ Opcodes.ASM10_EXPERIMENTAL);
