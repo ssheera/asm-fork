@@ -67,9 +67,7 @@ class ClassRemapperTest extends AsmTest {
   void testVisit() {
     ClassNode classNode = new ClassNode();
     ClassRemapper classRemapper =
-        new ClassRemapper(
-            classNode,
-            new SimpleRemapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL, "pkg/C", "new/pkg/C"));
+        new ClassRemapper(classNode, new SimpleRemapper("pkg/C", "new/pkg/C"));
 
     classRemapper.visit(Opcodes.V1_5, Opcodes.ACC_PUBLIC, "pkg/C", null, "java/lang/Object", null);
 
@@ -82,7 +80,7 @@ class ClassRemapperTest extends AsmTest {
     ClassRemapper remapper =
         new ClassRemapper(
             classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
+            new Remapper() {
               @Override
               public String mapAnnotationAttributeName(final String descriptor, final String name) {
                 if ("Lpkg/A;".equals(descriptor)) {
@@ -104,7 +102,7 @@ class ClassRemapperTest extends AsmTest {
     ClassRemapper remapper =
         new ClassRemapper(
             classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
+            new Remapper() {
               @Override
               public String map(final String internalName) {
                 if ("pkg/C".equals(internalName)) {
@@ -131,7 +129,7 @@ class ClassRemapperTest extends AsmTest {
     ClassRemapper remapper =
         new ClassRemapper(
             classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
+            new Remapper() {
               @Override
               public String map(final String internalName) {
                 if ("pkg/C".equals(internalName)) {
@@ -158,7 +156,7 @@ class ClassRemapperTest extends AsmTest {
     ClassRemapper remapper =
         new ClassRemapper(
             classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
+            new Remapper() {
               @Override
               public String map(final String internalName) {
                 if ("pkg/C".equals(internalName)) {
@@ -185,7 +183,7 @@ class ClassRemapperTest extends AsmTest {
     ClassRemapper classRemapper =
         new ClassRemapper(
             classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
+            new Remapper() {
               @Override
               public String mapModuleName(final String name) {
                 return "new." + name;
@@ -202,8 +200,7 @@ class ClassRemapperTest extends AsmTest {
   }
 
   @Test
-  @SuppressWarnings("deprecation")
-  void testVisitLdcInsn_constantDynamic_deprecated() {
+  void testVisitLdcInsn_constantDynamic() {
     ClassNode classNode = new ClassNode();
     ClassRemapper classRemapper =
         new ClassRemapper(
@@ -212,51 +209,6 @@ class ClassRemapperTest extends AsmTest {
             new Remapper() {
               @Override
               public String mapInvokeDynamicMethodName(final String name, final String descriptor) {
-                return "new." + name;
-              }
-
-              @Override
-              public String map(final String internalName) {
-                if (internalName.equals("java/lang/String")) {
-                  return "java/lang/Integer";
-                }
-                return internalName;
-              }
-            }) {
-          /* inner class so it can access the public constructor */
-        };
-    classRemapper.visit(Opcodes.V11, Opcodes.ACC_PUBLIC, "C", null, "java/lang/Object", null);
-    MethodVisitor methodVisitor =
-        classRemapper.visitMethod(Opcodes.ACC_PUBLIC, "hello", "()V", null, null);
-    methodVisitor.visitCode();
-
-    methodVisitor.visitLdcInsn(
-        new ConstantDynamic(
-            "foo",
-            "Ljava/lang/String;",
-            new Handle(Opcodes.H_INVOKESTATIC, "BSMHost", "bsm", "()Ljava/lang/String;", false)));
-
-    ConstantDynamic constantDynamic =
-        (ConstantDynamic) ((LdcInsnNode) classNode.methods.get(0).instructions.get(0)).cst;
-    assertEquals("new.foo", constantDynamic.getName());
-    assertEquals("Ljava/lang/Integer;", constantDynamic.getDescriptor());
-    assertEquals("()Ljava/lang/Integer;", constantDynamic.getBootstrapMethod().getDesc());
-  }
-
-  @Test
-  void testVisitLdcInsn_constantDynamic() {
-    ClassNode classNode = new ClassNode();
-    ClassRemapper classRemapper =
-        new ClassRemapper(
-            /* latest api */ Opcodes.ASM9,
-            classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
-              @Override
-              public String mapBasicInvokeDynamicMethodName(
-                  final String name,
-                  final String descriptor,
-                  final Handle bootstrapMethodHandle,
-                  final Object... bootstrapMethodArguments) {
                 return "new." + name;
               }
 
@@ -289,62 +241,13 @@ class ClassRemapperTest extends AsmTest {
   }
 
   @Test
-  void testInvokeDynamicInsn_field_deprecated() {
-    ClassNode classNode = new ClassNode();
-    @SuppressWarnings("deprecation")
-    ClassRemapper classRemapper =
-        new ClassRemapper(
-            /* latest api */ Opcodes.ASM9,
-            classNode,
-            new Remapper() {
-              @Override
-              @Deprecated
-              public String mapInvokeDynamicMethodName(final String name, final String descriptor) {
-                return "new." + name;
-              }
-
-              @Override
-              public String mapFieldName(
-                  final String owner, final String name, final String descriptor) {
-                if ("a".equals(name)) {
-                  return "demo";
-                }
-                return name;
-              }
-            });
-    classRemapper.visit(Opcodes.V11, Opcodes.ACC_PUBLIC, "C", null, "java/lang/Object", null);
-    MethodVisitor methodVisitor =
-        classRemapper.visitMethod(Opcodes.ACC_PUBLIC, "hello", "()V", null, null);
-    methodVisitor.visitCode();
-
-    methodVisitor.visitInvokeDynamicInsn(
-        "foo",
-        "()Ljava/lang/String;",
-        new Handle(Opcodes.H_GETFIELD, "pkg/B", "a", "Ljava/lang/String;", false));
-
-    InvokeDynamicInsnNode invokeDynamic =
-        (InvokeDynamicInsnNode) classNode.methods.get(0).instructions.get(0);
-    assertEquals("new.foo", invokeDynamic.name);
-    assertEquals("demo", invokeDynamic.bsm.getName());
-  }
-
-  @Test
   void testInvokeDynamicInsn_field() {
     ClassNode classNode = new ClassNode();
     ClassRemapper classRemapper =
         new ClassRemapper(
             /* latest api */ Opcodes.ASM9,
             classNode,
-            new Remapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL) {
-              @Override
-              public String mapBasicInvokeDynamicMethodName(
-                  final String name,
-                  final String descriptor,
-                  final Handle bootstrapMethodHandle,
-                  final Object... bootstrapMethodArguments) {
-                return "new." + name;
-              }
-
+            new Remapper() {
               @Override
               public String mapFieldName(
                   final String owner, final String name, final String descriptor) {
@@ -366,7 +269,6 @@ class ClassRemapperTest extends AsmTest {
 
     InvokeDynamicInsnNode invokeDynamic =
         (InvokeDynamicInsnNode) classNode.methods.get(0).instructions.get(0);
-    assertEquals("new.foo", invokeDynamic.name);
     assertEquals("demo", invokeDynamic.bsm.getName());
   }
 
@@ -379,10 +281,7 @@ class ClassRemapperTest extends AsmTest {
     ClassReader classReader = new ClassReader(classFile);
     ClassWriter classWriter = new ClassWriter(0);
     ClassRemapper classRemapper =
-        newClassRemapper(
-            apiParameter.value(),
-            classWriter,
-            new SimpleRemapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL, Map.of()));
+        newClassRemapper(apiParameter.value(), classWriter, new SimpleRemapper(Map.of()));
 
     Executable accept =
         () -> classReader.accept(classRemapper, new Attribute[] {new CodeComment()}, 0);
@@ -416,9 +315,7 @@ class ClassRemapperTest extends AsmTest {
     byte[] classFile = classFileWriter.toByteArray();
     ClassReader classReader = new ClassReader(classFile);
     ClassWriter classWriter = new ClassWriter(0);
-    ClassRemapper classRemapper =
-        new ClassRemapper(
-            classWriter, new SimpleRemapper(/* latest */ Opcodes.ASM10_EXPERIMENTAL, Map.of()));
+    ClassRemapper classRemapper = new ClassRemapper(classWriter, new SimpleRemapper(Map.of()));
 
     classReader.accept(classRemapper, new Attribute[] {new CodeComment()}, 0);
 
@@ -483,13 +380,13 @@ class ClassRemapperTest extends AsmTest {
     }
   }
 
-  public static void checkDescriptor(final String descriptor) {
+  private static void checkDescriptor(final String descriptor) {
     CheckMethodAdapter checkMethodAdapter = new CheckMethodAdapter(null);
     checkMethodAdapter.visitCode();
     checkMethodAdapter.visitFieldInsn(Opcodes.GETFIELD, "Owner", "name", descriptor);
   }
 
-  public static void checkInternalName(final String internalName) {
+  private static void checkInternalName(final String internalName) {
     CheckMethodAdapter checkMethodAdapter = new CheckMethodAdapter(null);
     checkMethodAdapter.version = Opcodes.V1_5;
     checkMethodAdapter.visitCode();
@@ -503,13 +400,12 @@ class ClassRemapperTest extends AsmTest {
 
   static class UpperCaseRemapper extends Remapper {
 
-    public static final Locale LOCALE = Locale.ENGLISH;
+    private static final Locale LOCALE = Locale.ENGLISH;
 
-    public final String internalClassName;
-    public final String remappedInternalClassName;
+    private final String internalClassName;
+    private final String remappedInternalClassName;
 
     UpperCaseRemapper(final String internalClassName) {
-      super(/* latest */ Opcodes.ASM10_EXPERIMENTAL);
       this.internalClassName = internalClassName;
       this.remappedInternalClassName =
           internalClassName.equals("module-info")
@@ -544,11 +440,7 @@ class ClassRemapperTest extends AsmTest {
     }
 
     @Override
-    public String mapBasicInvokeDynamicMethodName(
-        final String name,
-        final String descriptor,
-        final Handle bootstrapMethodHandle,
-        final Object... bootstrapMethodArguments) {
+    public String mapInvokeDynamicMethodName(final String name, final String descriptor) {
       return name.toUpperCase(LOCALE);
     }
 

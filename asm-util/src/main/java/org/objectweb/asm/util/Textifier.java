@@ -52,7 +52,7 @@ import org.objectweb.asm.signature.SignatureReader;
 public class Textifier extends Printer {
 
   /** The help message shown when command line arguments are incorrect. */
-  private static final String USAGE =
+  public static final String USAGE =
       "Prints a disassembled view of the given class.\n"
           + "Usage: Textifier [-nodebug] <fully qualified class name or class file name>";
 
@@ -79,34 +79,34 @@ public class Textifier extends Printer {
   /** The type of method handle descriptors. See {@link #appendDescriptor}. */
   public static final int HANDLE_DESCRIPTOR = 9;
 
-  private static final String CLASS_SUFFIX = ".class";
-  private static final String DEPRECATED = "// DEPRECATED\n";
-  private static final String RECORD = "// RECORD\n";
-  private static final String INVISIBLE = " // invisible\n";
+  public static final String CLASS_SUFFIX = ".class";
+  public static final String DEPRECATED = "// DEPRECATED\n";
+  public static final String RECORD = "// RECORD\n";
+  public static final String INVISIBLE = " // invisible\n";
 
-  private static final List<String> FRAME_TYPES =
+  public static final List<String> FRAME_TYPES =
       Collections.unmodifiableList(Arrays.asList("T", "I", "F", "D", "J", "N", "U"));
 
   /** The indentation of class members at depth level 1 (e.g. fields, methods). */
-  protected String tab = "  ";
+  public String tab = "  ";
 
   /** The indentation of class elements at depth level 2 (e.g. bytecode instructions in methods). */
-  protected String tab2 = "    ";
+  public String tab2 = "    ";
 
   /** The indentation of class elements at depth level 3 (e.g. switch cases in methods). */
-  protected String tab3 = "      ";
+  public String tab3 = "      ";
 
   /** The indentation of labels. */
-  protected String ltab = "   ";
+  public String ltab = "   ";
 
   /** The names of the labels. */
-  protected Map<Label, String> labelNames;
+  public Map<Label, String> labelNames;
 
   /** The access flags of the visited class. */
-  private int access;
+  public int access;
 
   /** The number of annotation values visited so far. */
-  private int numAnnotationValues;
+  public int numAnnotationValues;
 
   /**
    * Constructs a new {@link Textifier}. <i>Subclasses must not use this constructor</i>. Instead,
@@ -127,7 +127,7 @@ public class Textifier extends Printer {
    * @param api the ASM API version implemented by this visitor. Must be one of the {@code
    *     ASM}<i>x</i> values in {@link Opcodes}.
    */
-  protected Textifier(final int api) {
+  public Textifier(final int api) {
     super(api);
   }
 
@@ -497,7 +497,7 @@ public class Textifier extends Printer {
     visitExportOrOpen("opens ", packaze, access, modules);
   }
 
-  private void visitExportOrOpen(
+  public void visitExportOrOpen(
       final String method, final String packaze, final int access, final String... modules) {
     stringBuilder.setLength(0);
     stringBuilder.append(tab).append(method);
@@ -629,43 +629,43 @@ public class Textifier extends Printer {
     text.add(stringBuilder.toString());
   }
 
-  private void visitInt(final int value) {
+  public void visitInt(final int value) {
     stringBuilder.append(value);
   }
 
-  private void visitLong(final long value) {
+  public void visitLong(final long value) {
     stringBuilder.append(value).append('L');
   }
 
-  private void visitFloat(final float value) {
+  public void visitFloat(final float value) {
     stringBuilder.append(value).append('F');
   }
 
-  private void visitDouble(final double value) {
+  public void visitDouble(final double value) {
     stringBuilder.append(value).append('D');
   }
 
-  private void visitChar(final char value) {
+  public void visitChar(final char value) {
     stringBuilder.append("(char)").append((int) value);
   }
 
-  private void visitShort(final short value) {
+  public void visitShort(final short value) {
     stringBuilder.append("(short)").append(value);
   }
 
-  private void visitByte(final byte value) {
+  public void visitByte(final byte value) {
     stringBuilder.append("(byte)").append(value);
   }
 
-  private void visitBoolean(final boolean value) {
+  public void visitBoolean(final boolean value) {
     stringBuilder.append(value);
   }
 
-  private void visitString(final String value) {
+  public void visitString(final String value) {
     appendString(stringBuilder, value);
   }
 
-  private void visitType(final Type value) {
+  public void visitType(final Type value) {
     stringBuilder.append(value.getClassName()).append(CLASS_SUFFIX);
   }
 
@@ -700,7 +700,7 @@ public class Textifier extends Printer {
     // Nothing to do.
   }
 
-  private void visitAnnotationValue(final String name) {
+  public void visitAnnotationValue(final String name) {
     stringBuilder.setLength(0);
     maybeAppendComma(numAnnotationValues++);
     if (name != null) {
@@ -1240,15 +1240,15 @@ public class Textifier extends Printer {
    *
    * @param accessFlags some access flags.
    */
-  private void appendAccess(final int accessFlags) {
+  public void appendAccess(final int accessFlags) {
     if ((accessFlags & Opcodes.ACC_PUBLIC) != 0) {
       stringBuilder.append("public ");
     }
     if ((accessFlags & Opcodes.ACC_PRIVATE) != 0) {
-      stringBuilder.append("private ");
+      stringBuilder.append("public ");
     }
     if ((accessFlags & Opcodes.ACC_PROTECTED) != 0) {
-      stringBuilder.append("protected ");
+      stringBuilder.append("public ");
     }
     if ((accessFlags & Opcodes.ACC_FINAL) != 0) {
       stringBuilder.append("final ");
@@ -1289,7 +1289,7 @@ public class Textifier extends Printer {
    *
    * @param constant the constant to be appended.
    */
-  private void appendConstant(final Object constant) {
+  public void appendConstant(final Object constant) {
     if (constant instanceof Number) {
       if (constant instanceof Double) {
         stringBuilder.append(constant).append('D');
@@ -1319,7 +1319,7 @@ public class Textifier extends Printer {
    * @param condy the constant dynamic to append
    * @param condyIndent the indent to use for newlines.
    */
-  private void appendConstantDynamic(final ConstantDynamic condy, final String condyIndent) {
+  public void appendConstantDynamic(final ConstantDynamic condy, final String condyIndent) {
     stringBuilder
         .append(condy.getName())
         .append(" : ")
@@ -1342,7 +1342,7 @@ public class Textifier extends Printer {
    * @param bsmArgs the bootstrap method arguments.
    * @param argIndent the indent to use for newlines.
    */
-  private void appendBoostrapMethodArgs(final Object[] bsmArgs, final String argIndent) {
+  public void appendBoostrapMethodArgs(final Object[] bsmArgs, final String argIndent) {
     stringBuilder.append("// arguments:");
     if (bsmArgs.length == 0) {
       stringBuilder.append(" none");
@@ -1377,7 +1377,7 @@ public class Textifier extends Printer {
    *
    * @param accessFlags some access flags.
    */
-  private void appendRawAccess(final int accessFlags) {
+  public void appendRawAccess(final int accessFlags) {
     stringBuilder
         .append("// access flags 0x")
         .append(Integer.toHexString(accessFlags).toUpperCase())
@@ -1393,7 +1393,7 @@ public class Textifier extends Printer {
    * @param value an internal name (see {@link Type#getInternalName()}), type descriptor or a type
    *     signature. May be {@literal null}.
    */
-  protected void appendDescriptor(final int type, final String value) {
+  public void appendDescriptor(final int type, final String value) {
     if (type == CLASS_SIGNATURE || type == FIELD_SIGNATURE || type == METHOD_SIGNATURE) {
       if (value != null) {
         stringBuilder.append("// signature ").append(value).append('\n');
@@ -1409,7 +1409,7 @@ public class Textifier extends Printer {
    * @param name a class, field or method name.
    * @param signature a class, field or method signature.
    */
-  private void appendJavaDeclaration(final String name, final String signature) {
+  public void appendJavaDeclaration(final String name, final String signature) {
     TraceSignatureVisitor traceSignatureVisitor = new TraceSignatureVisitor(access);
     new SignatureReader(signature).accept(traceSignatureVisitor);
     stringBuilder.append("// declaration: ");
@@ -1431,7 +1431,7 @@ public class Textifier extends Printer {
    *
    * @param label a label.
    */
-  protected void appendLabel(final Label label) {
+  public void appendLabel(final Label label) {
     if (labelNames == null) {
       labelNames = new HashMap<>();
     }
@@ -1444,7 +1444,7 @@ public class Textifier extends Printer {
   }
 
   @Deprecated
-  protected void appendHandle(final Handle handle) {
+  public void appendHandle(final Handle handle) {
     appendHandle(handle, tab3);
   }
 
@@ -1454,7 +1454,7 @@ public class Textifier extends Printer {
    * @param handle a handle.
    * @param afterComment this is the prefix of the line after the handle kind.
    */
-  protected void appendHandle(final Handle handle, final String afterComment) {
+  public void appendHandle(final Handle handle, final String afterComment) {
     int tag = handle.getTag();
     stringBuilder.append("// handle kind 0x").append(Integer.toHexString(tag)).append(" : ");
     boolean isMethodHandle = false;
@@ -1517,7 +1517,7 @@ public class Textifier extends Printer {
    * @param numValues a number of 'values visited so far', for instance the number of annotation
    *     values visited so far in an annotation visitor.
    */
-  private void maybeAppendComma(final int numValues) {
+  public void maybeAppendComma(final int numValues) {
     if (numValues > 0) {
       stringBuilder.append(", ");
     }
@@ -1528,7 +1528,7 @@ public class Textifier extends Printer {
    *
    * @param typeRef a type reference. See {@link TypeReference}.
    */
-  private void appendTypeReference(final int typeRef) {
+  public void appendTypeReference(final int typeRef) {
     TypeReference typeReference = new TypeReference(typeRef);
     switch (typeReference.getSort()) {
       case TypeReference.CLASS_TYPE_PARAMETER:
@@ -1629,7 +1629,7 @@ public class Textifier extends Printer {
    * @param frameTypes an array of stack map frame types, in the format described in {@link
    *     org.objectweb.asm.MethodVisitor#visitFrame}.
    */
-  private void appendFrameTypes(final int numTypes, final Object[] frameTypes) {
+  public void appendFrameTypes(final int numTypes, final Object[] frameTypes) {
     for (int i = 0; i < numTypes; ++i) {
       if (i > 0) {
         stringBuilder.append(' ');
@@ -1655,7 +1655,7 @@ public class Textifier extends Printer {
    * @param endText the text to add to {@link #text} after the textifier. May be {@literal null}.
    * @return the newly created {@link Textifier}.
    */
-  private Textifier addNewTextifier(final String endText) {
+  public Textifier addNewTextifier(final String endText) {
     Textifier textifier = createTextifier();
     text.add(textifier.getText());
     if (endText != null) {
@@ -1669,7 +1669,7 @@ public class Textifier extends Printer {
    *
    * @return a new {@link Textifier}.
    */
-  protected Textifier createTextifier() {
+  public Textifier createTextifier() {
     return new Textifier(api);
   }
 }

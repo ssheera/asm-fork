@@ -122,7 +122,7 @@ public class MethodRemapper extends MethodVisitor {
         remapFrameTypes(numStack, stack));
   }
 
-  public Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
+    public Object[] remapFrameTypes(final int numTypes, final Object[] frameTypes) {
     if (frameTypes == null) {
       return frameTypes;
     }

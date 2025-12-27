@@ -601,7 +601,7 @@ class AdviceAdapterTest extends AsmTest {
   }
 
   @Test
-  void testAllMethods_constructorWithHandlerFallthroughToPrivateMethodCall() {
+  void testAllMethods_constructorWithHandlerFallthroughTopublicMethodCall() {
     Label label1 = new Label();
     Label label2 = new Label();
     Label label3 = new Label();
@@ -617,7 +617,7 @@ class AdviceAdapterTest extends AsmTest {
             .astore(1)
             .label(label3)
             .aload(0)
-            .methodInsn(Opcodes.INVOKESPECIAL, "C", "privateMethod", "()V", false)
+            .methodInsn(Opcodes.INVOKESPECIAL, "C", "publicMethod", "()V", false)
             // After instrumentation, expect an after advice here, before instruction #9.
             .vreturn()
             .build();
@@ -703,7 +703,7 @@ class AdviceAdapterTest extends AsmTest {
         toText(outputMethod));
   }
 
-  private static InsnList newBasicAdvice(final boolean isAfterAdvice) {
+  public static InsnList newBasicAdvice(final boolean isAfterAdvice) {
     InsnList insnList = new InsnList();
     insnList.add(
         new FieldInsnNode(Opcodes.GETSTATIC, "java/lang/System", "err", "Ljava/io/PrintStream;"));
@@ -718,7 +718,7 @@ class AdviceAdapterTest extends AsmTest {
     return insnList;
   }
 
-  private static class BasicAdviceAdapter extends AdviceAdapter {
+  public static class BasicAdviceAdapter extends AdviceAdapter {
 
     BasicAdviceAdapter(final MethodVisitor methodVisitor) {
       super(
@@ -761,10 +761,10 @@ class AdviceAdapterTest extends AsmTest {
     }
   }
 
-  private static class ExpectedMethodBuilder {
+  public static class ExpectedMethodBuilder {
 
-    private final MethodNode inputMethod;
-    private final ArrayList<Advice> advices;
+    public final MethodNode inputMethod;
+    public final ArrayList<Advice> advices;
 
     ExpectedMethodBuilder(final MethodNode inputMethod) {
       this.inputMethod = inputMethod;
@@ -819,7 +819,7 @@ class AdviceAdapterTest extends AsmTest {
     }
   }
 
-  private static class EmptyAdviceClassAdapter extends ClassVisitor {
+  public static class EmptyAdviceClassAdapter extends ClassVisitor {
 
     EmptyAdviceClassAdapter(final int api, final ClassVisitor classVisitor) {
       super(api, classVisitor);

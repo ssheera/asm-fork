@@ -283,7 +283,7 @@ public class Attribute {
    *
    * @return the number of attributes of the attribute list that begins with this attribute.
    */
-  public  int getAttributeCount() {
+  public int getAttributeCount() {
     int count = 0;
     Attribute attribute = this;
     while (attribute != null) {
@@ -302,7 +302,7 @@ public class Attribute {
    * @return the size of all the attributes in this attribute list. This size includes the size of
    *     the attribute headers.
    */
-  public final int computeAttributesSize(final SymbolTable symbolTable) {
+  public int computeAttributesSize(final SymbolTable symbolTable) {
     final byte[] code = null;
     final int codeLength = 0;
     final int maxStack = -1;
@@ -329,7 +329,7 @@ public class Attribute {
    * @return the size of all the attributes in this attribute list. This size includes the size of
    *     the attribute headers.
    */
-  public  int computeAttributesSize(
+  public int computeAttributesSize(
       final SymbolTable symbolTable,
       final byte[] code,
       final int codeLength,
@@ -358,7 +358,7 @@ public class Attribute {
    * @return the size of all the attributes in bytes. This size includes the size of the attribute
    *     headers.
    */
-  public static int computeAttributesSize(
+    public static int computeAttributesSize(
       final SymbolTable symbolTable, final int accessFlags, final int signatureIndex) {
     int size = 0;
     // Before Java 1.5, synthetic fields are represented with a Synthetic attribute.
@@ -390,7 +390,7 @@ public class Attribute {
    * @param symbolTable where the constants used in the attributes must be stored.
    * @param output where the attributes must be written.
    */
-  public void putAttributes(final SymbolTable symbolTable, final ByteVector output) {
+    public void putAttributes(final SymbolTable symbolTable, final ByteVector output) {
     final byte[] code = null;
     final int codeLength = 0;
     final int maxStack = -1;
@@ -445,7 +445,7 @@ public class Attribute {
    * @param signatureIndex the constant pool index of a field, method of class signature.
    * @param output where the attributes must be written.
    */
-  static void putAttributes(
+    public static void putAttributes(
       final SymbolTable symbolTable,
       final int accessFlags,
       final int signatureIndex,
@@ -467,14 +467,14 @@ public class Attribute {
   }
 
   /** A set of attribute prototypes (attributes with the same type are considered equal). */
-  public static class Set {
+    public static final class Set {
 
-    public static final int SIZE_INCREMENT = 6;
+    private static final int SIZE_INCREMENT = 6;
 
-    public int size;
-    public Attribute[] data = new Attribute[SIZE_INCREMENT];
+    private int size;
+    private Attribute[] data = new Attribute[SIZE_INCREMENT];
 
-    public void addAttributes(final Attribute attributeList) {
+    void addAttributes(final Attribute attributeList) {
       Attribute attribute = attributeList;
       while (attribute != null) {
         if (!contains(attribute)) {
@@ -484,13 +484,13 @@ public class Attribute {
       }
     }
 
-    public Attribute[] toArray() {
+      public Attribute[] toArray() {
       Attribute[] result = new Attribute[size];
       System.arraycopy(data, 0, result, 0, size);
       return result;
     }
 
-    public boolean contains(final Attribute attribute) {
+      public boolean contains(final Attribute attribute) {
       for (int i = 0; i < size; ++i) {
         if (data[i].type.equals(attribute.type)) {
           return true;
@@ -499,7 +499,7 @@ public class Attribute {
       return false;
     }
 
-    public void add(final Attribute attribute) {
+      public void add(final Attribute attribute) {
       if (size >= data.length) {
         Attribute[] newData = new Attribute[data.length + SIZE_INCREMENT];
         System.arraycopy(data, 0, newData, 0, size);
